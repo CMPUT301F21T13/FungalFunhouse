@@ -3,7 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/activity_home_tab.xml" value="0.33" />
+        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/daily_fragment.xml" value="0.3140625" />
         <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/friend_request.xml" value="0.35125115848007415" />
+        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/friends_fragment.xml" value="0.3140625" />
         <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/request_inbox.xml" value="0.33" />
         <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/tabbed_home.xml" value="0.33" />
       </map>
