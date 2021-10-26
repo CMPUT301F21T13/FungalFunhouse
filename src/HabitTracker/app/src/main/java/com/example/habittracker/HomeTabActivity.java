@@ -33,9 +33,11 @@ public class HomeTabActivity extends AppCompatActivity {
 
         // The Fragment Manager for the four tabs
         // Initializes the Home Tab to show the HABITS section
-        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        ft.add(R.id.tabbed_section, new HabitsFragment());
-        ft.commit();
+        if (savedInstanceState == null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.fragment_container, new HabitsFragment());
+            ft.commit();
+        }
 
         habitButton = findViewById(R.id.habit_button);
         habitButton.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +45,7 @@ public class HomeTabActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Replace the contents of the container with the new fragment
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.tabbed_section, new HabitsFragment());
+                ft.replace(R.id.fragment_container, new HabitsFragment());
                 ft.commit();
             }
         });
@@ -54,7 +56,7 @@ public class HomeTabActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Replace the contents of the container with the new fragment
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.tabbed_section, new DailyFragment());
+                ft.replace(R.id.fragment_container, new DailyFragment());
                 ft.commit();
             }
         });
@@ -65,7 +67,7 @@ public class HomeTabActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Replace the contents of the container with the new fragment
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.tabbed_section, new EventsFragment());
+                ft.replace(R.id.fragment_container, new EventsFragment());
                 ft.commit();
             }
         });
@@ -75,7 +77,7 @@ public class HomeTabActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.tabbed_section, new FriendsFragment());
+                ft.replace(R.id.fragment_container, new FriendsFragment());
                 ft.commit();
             }
         });
