@@ -19,12 +19,12 @@ public class Habit {
     public WeeklySchedule weeklySchedule;
     public CompletionSchedule completionSchedule;
 
-    public Habit(String title, String reason, String dateToStart, WeeklySchedule weeklySchedule) {
+    public Habit(String title, String reason, String dateToStart) {
         this.title = title;
         this.reason = reason;
         this.hid = UUID.randomUUID();
         this.dateToStart = dateToStart;
-        this.weeklySchedule = weeklySchedule;
+        this.weeklySchedule = new WeeklySchedule();
         this.completionSchedule = new CompletionSchedule();
     }
 
@@ -32,7 +32,7 @@ public class Habit {
         this.title = "No title entered";
         this.reason = "No reason entered";
         this.hid = UUID.randomUUID();
-        this.dateToStart = new SimpleDateFormat("yyyy=MM-dd").format(new Date()); //Today's date
+        this.dateToStart = new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //Today's date
         this.weeklySchedule = new WeeklySchedule();
         this.completionSchedule = new CompletionSchedule();
     }
