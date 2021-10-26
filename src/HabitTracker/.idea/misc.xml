@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DesignSurface">
-    <option name="filePathToZoomLevelMap">
-      <map>
-        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/activity_home_tab.xml" value="0.33" />
-        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/daily_fragment.xml" value="0.3140625" />
-        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/friend_request.xml" value="0.35125115848007415" />
-        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/friends_fragment.xml" value="0.3140625" />
-        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/request_inbox.xml" value="0.33" />
-        <entry key="..\:/Users/gbcoc/OneDrive/Documents/GitHub/FungalFunhouse/src/HabitTracker/app/src/main/res/layout/tabbed_home.xml" value="0.33" />
-      </map>
-    </option>
-  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
