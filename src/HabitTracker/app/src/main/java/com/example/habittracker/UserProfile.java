@@ -20,5 +20,8 @@ public class UserProfile extends Profile {
         followers.removeProfile(profile);
     }
 
+    public FollowerList getFollowing(){return this.following; }
+
+    public FollowerList getFollowers(){return this.followers; }
 
 }
