@@ -24,12 +24,20 @@ public class HomeTabActivity extends AppCompatActivity {
     Button dailyButton;
     Button eventsButton;
     Button followButton;
+    UserProfile currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_tab);
 
+
+        // test user
+        UserProfile follower1 = new UserProfile("tester2");
+        UserProfile follower2 = new UserProfile("tester3");
+        currentUser = new UserProfile("tester1");
+        currentUser.followUser(follower2);
+        currentUser.followUser(follower1);
 
         // The Fragment Manager for the four tabs
         // Initializes the Home Tab to show the HABITS section
@@ -76,8 +84,14 @@ public class HomeTabActivity extends AppCompatActivity {
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                FriendsFragment fragment = new FriendsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("user", currentUser);
+                fragment.setArguments(bundle);
+
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, new FriendsFragment());
+                ft.replace(R.id.fragment_container, fragment);
                 ft.commit();
             }
         });

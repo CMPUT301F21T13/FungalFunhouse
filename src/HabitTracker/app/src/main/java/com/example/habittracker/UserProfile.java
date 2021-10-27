@@ -1,8 +1,34 @@
 package com.example.habittracker;
 
-public class UserProfile extends Profile {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+
+public class UserProfile extends Profile implements Parcelable {
     private FollowerList following;
     private FollowerList followers;
+
+    public UserProfile(String username) {
+        this.following = new FollowerList();
+        this.followers = new FollowerList();
+        this.username = username;
+    }
+
+    protected UserProfile(Parcel in) {
+    }
+
+    public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>() {
+        @Override
+        public UserProfile createFromParcel(Parcel in) {
+            return new UserProfile(in);
+        }
+
+        @Override
+        public UserProfile[] newArray(int size) {
+            return new UserProfile[size];
+        }
+    };
 
     public void followUser(UserProfile profile) {
         following.addProfile(profile);
@@ -13,6 +39,7 @@ public class UserProfile extends Profile {
     }
 
     public void addFollower(UserProfile profile) {
+        System.out.println("this is the user profile: "+ profile);
         followers.addProfile(profile);
     }
 
@@ -20,8 +47,16 @@ public class UserProfile extends Profile {
         followers.removeProfile(profile);
     }
 
-    public FollowerList getFollowing(){return this.following; }
+    public ArrayList<Profile> getFollowing(){return following.getList();}
 
-    public FollowerList getFollowers(){return this.followers; }
+    public ArrayList<Profile> getFollowers(){ return followers.getList();  }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+    }
 }
