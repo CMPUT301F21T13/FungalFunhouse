@@ -21,5 +21,4 @@ public class UserProfile extends Profile {
         followers.removeProfile(profile);
     }
 
-
 }
