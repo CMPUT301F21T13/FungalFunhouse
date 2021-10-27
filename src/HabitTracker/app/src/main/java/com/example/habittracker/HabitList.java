@@ -13,6 +13,10 @@ public class HabitList {
         habitList = new ArrayList<Habit>();
     }
 
+    public Habit getHabit(int position) {
+        return habitList.get(position);
+    }
+
     public void addHabit(Habit habit) {
         habitList.add(habit);
     }

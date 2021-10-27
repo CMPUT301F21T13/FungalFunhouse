@@ -3,6 +3,7 @@ package com.example.habittracker;
 public class UserProfile extends Profile {
     private FollowerList following;
     private FollowerList followers;
+    public HabitList habitList;
 
     public void followUser(UserProfile profile) {
         following.addProfile(profile);
