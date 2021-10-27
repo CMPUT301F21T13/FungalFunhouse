@@ -34,7 +34,7 @@
         android:textColor="@color/black"
         android:textSize="13sp" />
 
-<!--    code for password field-->
+<!--    code for username field-->
     <EditText
         android:id="@+id/username"
         android:layout_width="match_parent"
@@ -53,7 +53,7 @@
         android:textColor="@color/black"
         android:textColorHint="#313131" />
 
-<!--    code for username field -->
+<!--    code for password field -->
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
@@ -67,6 +67,7 @@
         android:drawablePadding="10dp"
         android:drawableTint="#313131"
         android:hint="@string/password"
+        android:inputType="textPassword"
         android:padding="15dp"
         android:textColor="@color/black"
         android:textColorHint="#313131" />
@@ -81,7 +82,7 @@
         android:layout_marginTop="10dp"
         android:gravity="start"
         android:textColor="@color/blue"
-        />
+        android:clickable="true" />
 
 <!--    code for login button-->
     <com.google.android.material.button.MaterialButton
@@ -104,7 +105,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginVertical="20dp"
         android:textColor="@color/black"
-        />
+        android:clickable="true" />
 
 
 </RelativeLayout>
