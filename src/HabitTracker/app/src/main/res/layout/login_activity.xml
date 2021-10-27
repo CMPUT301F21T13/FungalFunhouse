@@ -4,12 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/opacity_planner_background"
+    android:id="@+id/logincontainer"
     tools:context=".LogInActivity">
-
-    <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/logintitle"
@@ -90,7 +86,7 @@
             android:clickable="true" />
 
     <!--    code for login button-->
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/loginbutton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -98,7 +94,7 @@
             android:backgroundTint="#D76340"
             android:text="@string/log_in_button"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="70dp"
+            android:layout_marginTop="40dp"
             android:layout_marginStart="60dp"/>
 
         <TextView
