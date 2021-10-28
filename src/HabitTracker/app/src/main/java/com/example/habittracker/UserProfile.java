@@ -6,6 +6,7 @@ import android.os.Parcelable;
 public class UserProfile extends Profile implements Parcelable {
     private FollowerList following;
     private FollowerList followers;
+    public HabitList habitList;
 
     public UserProfile(String username) {
         this.username = username;
@@ -51,4 +52,4 @@ public class UserProfile extends Profile implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
     }
-}
+
