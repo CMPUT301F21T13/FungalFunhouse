@@ -3,11 +3,30 @@ package com.example.habittracker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
 import java.util.ArrayList;
+
 
 public class UserProfile extends Profile implements Parcelable {
     private FollowerList following;
     private FollowerList followers;
+    public HabitList habitList;
+
+
+    protected UserProfile(Parcel in) {
+    }
+
+    public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>() {
+        @Override
+        public UserProfile createFromParcel(Parcel in) {
+            return new UserProfile(in);
+        }
+
+        @Override
+        public UserProfile[] newArray(int size) {
+            return new UserProfile[size];
+        }
+    };
 
     public UserProfile(String username) {
         this.following = new FollowerList();
@@ -15,8 +34,7 @@ public class UserProfile extends Profile implements Parcelable {
         this.username = username;
     }
 
-    protected UserProfile(Parcel in) {
-    }
+
 
     public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>() {
         @Override
@@ -60,3 +78,4 @@ public class UserProfile extends Profile implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
     }
 }
+
