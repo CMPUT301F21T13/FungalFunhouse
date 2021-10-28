@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Habit Tracker</string>
+    <string name="username_hint">Username</string>
+    <string name="login_hint">Login into your Account</string>
+    <string name="create_new_account">Create new Account</string>
+    <string name="log_in_button">Log In</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="password">Password</string>
 </resources>
