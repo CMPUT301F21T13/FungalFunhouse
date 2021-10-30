@@ -2,8 +2,12 @@ package com.example.habittracker;
 
 import java.util.ArrayList;
 
+
 public abstract class ProfileList {
     protected ArrayList<Profile> profileList;
+    public ProfileList(){
+        this.profileList = new ArrayList<Profile>();
+    }
 
     public void addProfile(Profile profile) {
         profileList.add(profile);
