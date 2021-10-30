@@ -12,6 +12,12 @@ public class UserProfile extends Profile implements Parcelable {
     private FollowerList followers;
     public HabitList habitList;
 
+    public UserProfile(String username) {
+        this.username = username;
+        this.following = new FollowerList();
+        this.followers = new FollowerList();
+    }
+
 
     protected UserProfile(Parcel in) {
     }
@@ -28,11 +34,6 @@ public class UserProfile extends Profile implements Parcelable {
         }
     };
 
-    public UserProfile(String username) {
-        this.following = new FollowerList();
-        this.followers = new FollowerList();
-        this.username = username;
-    }
 
 
     public void followUser(UserProfile profile) {
