@@ -28,7 +28,6 @@ public class FriendsFragment extends Fragment {
     }
 
     ListView friendsList;
-    ArrayList<Profile> friendsDataList;
     ArrayAdapter<Profile> friendsAdapter;
     UserProfile currentUser;
     Button requestButton;
@@ -44,10 +43,8 @@ public class FriendsFragment extends Fragment {
 
         if (currentUser.getFollowing() != null) {
             friendsList = view.findViewById(R.id.friends_list);
-            friendsDataList = new ArrayList<Profile>();
-            friendsDataList.addAll((Collection<? extends Profile>) currentUser.getFollowing());
             Context context = getContext();
-            friendsAdapter = new ProfileAdapter(context, friendsDataList);
+            friendsAdapter = new ProfileListAdapterGrid(context, currentUser.getFollowing());
             friendsList.setAdapter(friendsAdapter);
         }
 
@@ -69,7 +66,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), InboxActivity.class);
-                getActivity().startActivity(intent); 
+                getActivity().startActivity(intent);
             }
         });
         return view;
