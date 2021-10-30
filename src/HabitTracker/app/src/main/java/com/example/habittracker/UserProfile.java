@@ -35,19 +35,6 @@ public class UserProfile extends Profile implements Parcelable {
     }
 
 
-
-    public static final Creator<UserProfile> CREATOR = new Creator<UserProfile>() {
-        @Override
-        public UserProfile createFromParcel(Parcel in) {
-            return new UserProfile(in);
-        }
-
-        @Override
-        public UserProfile[] newArray(int size) {
-            return new UserProfile[size];
-        }
-    };
-
     public void followUser(UserProfile profile) {
         following.addProfile(profile);
     }
@@ -61,7 +48,7 @@ public class UserProfile extends Profile implements Parcelable {
         followers.addProfile(profile);
     }
 
-    public void removerFollower(UserProfile profile) {
+    public void removeFollower(UserProfile profile) {
         followers.removeProfile(profile);
     }
 
@@ -76,6 +63,7 @@ public class UserProfile extends Profile implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+
     }
 }
 

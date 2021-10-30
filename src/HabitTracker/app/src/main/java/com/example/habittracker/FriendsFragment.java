@@ -3,10 +3,12 @@ package com.example.habittracker;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,8 @@ public class FriendsFragment extends Fragment {
     ArrayList<Profile> friendsDataList;
     ArrayAdapter<Profile> friendsAdapter;
     UserProfile currentUser;
+    Button requestButton;
+    Button mailButton;
 
     @Nullable
     @Override
@@ -38,12 +42,36 @@ public class FriendsFragment extends Fragment {
         currentUser = (UserProfile) bundle.getParcelable("user");
         View view = inflater.inflate(R.layout.friends_fragment, container, false);
 
-        friendsList = view.findViewById(R.id.friends_list);
-        friendsDataList = new ArrayList<Profile>();
-        friendsDataList.addAll((Collection<? extends Profile>) currentUser.getFollowing());
-        Context context = getContext();
-        friendsAdapter =  new ProfileAdapter(context, friendsDataList);
-        friendsList.setAdapter(friendsAdapter);
+        if (currentUser.getFollowing() != null) {
+            friendsList = view.findViewById(R.id.friends_list);
+            friendsDataList = new ArrayList<Profile>();
+            friendsDataList.addAll((Collection<? extends Profile>) currentUser.getFollowing());
+            Context context = getContext();
+            friendsAdapter = new ProfileAdapter(context, friendsDataList);
+            friendsList.setAdapter(friendsAdapter);
+        }
+
+
+        // Sends user to the RequestInboxActivity
+        requestButton = view.findViewById(R.id.request_button);
+        requestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), RequestActivity.class);
+                getActivity().startActivity(intent);
+            }
+        });
+
+
+        // Sends User to the MailActivity
+        mailButton = view.findViewById(R.id.mail_button);
+        mailButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), InboxActivity.class);
+                getActivity().startActivity(intent); 
+            }
+        });
         return view;
 
     }
