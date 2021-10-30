@@ -2,6 +2,7 @@ package com.example.habittracker;
 
 import java.util.ArrayList;
 
+
 public abstract class ProfileList {
     protected ArrayList<Profile> profileList;
     public ProfileList(){

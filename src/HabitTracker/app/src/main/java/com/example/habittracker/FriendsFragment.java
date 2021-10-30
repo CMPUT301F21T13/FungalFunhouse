@@ -20,7 +20,9 @@ import java.util.Collection;
 
 /**
  * This is a Fragment for the FRIENDS tab
- * that uses the xml file friends_fragment.xml
+ * This allows a user to view all followed users and their habits, daily and events
+ * Go into their inbox to control follow requests
+ * And go to a user search fragment, where requests can be sent
  */
 public class FriendsFragment extends Fragment {
     public FriendsFragment(){
@@ -72,19 +74,4 @@ public class FriendsFragment extends Fragment {
         return view;
 
     }
-
-    // Implement new Friends activity that shows all following
-        // how do I show followers!!!!!
-
-    // Selecting a user (from a listview) sends into new Activity
-        // has to be new activity unless fragments are re-thought
-
-    // selecting request leads to new activity
-        // create new request inbox if none exists for user
-        // followers are shown using general profileList
-        // FollowRequestInbox.addRequest (request)
-
-    // Selecting Mail leads to mew activity
-        // must have a pre-existing request inbox to show anything
-        // FollowerRequestInbox.acceptRequest or .denyRequest
 }
