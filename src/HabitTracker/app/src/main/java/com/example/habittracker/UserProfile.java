@@ -10,6 +10,8 @@ public class UserProfile extends Profile implements Parcelable {
 
     public UserProfile(String username) {
         this.username = username;
+        this.following = new FollowerList();
+        this.followers = new FollowerList();
     }
 
     protected UserProfile(Parcel in) {
