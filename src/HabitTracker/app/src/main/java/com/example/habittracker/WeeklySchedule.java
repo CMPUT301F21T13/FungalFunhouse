@@ -1,7 +1,7 @@
 package com.example.habittracker;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.LinkedHashMap;
 
 /**
  * To be used in Habit class.
@@ -12,7 +12,7 @@ import java.util.Hashtable;
  */
 public class WeeklySchedule {
 
-    private Hashtable<String, Boolean> schedule;
+    private LinkedHashMap<String, Boolean> schedule;
 
     //Constants
     private static final String SUNDAY = "Sunday";
@@ -27,7 +27,7 @@ public class WeeklySchedule {
      * Default constructor, initiates every day of the week to be false
      */
     public WeeklySchedule() {
-        schedule = new Hashtable<String, Boolean>();
+        schedule = new LinkedHashMap<>();
         schedule.put(SUNDAY, false);
         schedule.put(MONDAY, false);
         schedule.put(TUESDAY, false);
@@ -124,7 +124,7 @@ public class WeeklySchedule {
      * @return ArrayList of type string
      */
     public ArrayList<String> getSchedule() {
-        ArrayList<String> days = new ArrayList<String>();
+        ArrayList<String> days = new ArrayList<>();
 
         for(String key : schedule.keySet()){
             if(schedule.get(key)){

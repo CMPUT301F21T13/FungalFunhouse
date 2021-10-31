@@ -26,7 +26,6 @@ public class HomeTabActivity extends AppCompatActivity {
     Button eventsButton;
     Button followButton;
     UserProfile currentUser;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +42,8 @@ public class HomeTabActivity extends AppCompatActivity {
         // The Fragment Manager for the four tabs
         // Initializes the Home Tab to show the HABITS section
         if (savedInstanceState == null) {
+            //TODO(GLENN): Change from hardcoded data in HabitsFragment to FireStore DB
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_container, new HabitsFragment());
             ft.commit();
@@ -52,7 +53,8 @@ public class HomeTabActivity extends AppCompatActivity {
         habitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Replace the contents of the container with the new fragment
+                //TODO(GLENN): Change from hardcoded data in HabitsFragment to FireStore DB
+
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, new HabitsFragment());
                 ft.commit();
