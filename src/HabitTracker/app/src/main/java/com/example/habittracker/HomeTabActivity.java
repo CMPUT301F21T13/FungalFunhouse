@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,12 +25,20 @@ public class HomeTabActivity extends AppCompatActivity {
     Button dailyButton;
     Button eventsButton;
     Button followButton;
+    UserProfile currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_tab);
 
+        //this is only for testing purposes
+        //and will be replaced upon database implementation
+        currentUser = new UserProfile("user1");
+        UserProfile user2 = new UserProfile("user2");
+        UserProfile user3 = new UserProfile("user3");
+        currentUser.followUser(user2);
+        currentUser.addFollower(user3);
 
         // The Fragment Manager for the four tabs
         // Initializes the Home Tab to show the HABITS section
@@ -76,8 +85,14 @@ public class HomeTabActivity extends AppCompatActivity {
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                FriendsFragment fragment = new FriendsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("user", currentUser);
+                fragment.setArguments(bundle);
+
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                ft.replace(R.id.fragment_container, new FriendsFragment());
+                ft.replace(R.id.fragment_container, fragment);
                 ft.commit();
             }
         });
