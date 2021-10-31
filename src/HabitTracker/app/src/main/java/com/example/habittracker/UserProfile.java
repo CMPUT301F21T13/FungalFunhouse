@@ -18,6 +18,7 @@ public class UserProfile extends Profile implements Parcelable {
         this.following = new FollowerList();
         this.followers = new FollowerList();
         this.requestInbox = new FollowRequestInbox(this);
+        this.habitList = new HabitList();
     }
 
 
