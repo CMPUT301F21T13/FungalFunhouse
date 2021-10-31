@@ -14,6 +14,7 @@ public class Habit {
     private String reason;
     private UUID hid;
     private String dateToStart;
+    private Boolean publicVisibility;
 
     //public variables
     public WeeklySchedule weeklySchedule;
@@ -24,6 +25,7 @@ public class Habit {
         this.reason = reason;
         this.hid = UUID.randomUUID();
         this.dateToStart = dateToStart;
+        this.publicVisibility = true;
         this.weeklySchedule = new WeeklySchedule();
         this.completionSchedule = new CompletionSchedule();
     }
@@ -33,6 +35,7 @@ public class Habit {
         this.reason = "No reason entered";
         this.hid = UUID.randomUUID();
         this.dateToStart = new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //Today's date
+        this.publicVisibility = true;
         this.weeklySchedule = new WeeklySchedule();
         this.completionSchedule = new CompletionSchedule();
     }
@@ -51,6 +54,10 @@ public class Habit {
 
     public String getDateToStart() {
         return dateToStart;
+    }
+
+    public Boolean getPublicVisibility() {
+        return publicVisibility;
     }
 
     public WeeklySchedule getWeeklySchedule() {
@@ -83,6 +90,15 @@ public class Habit {
      */
     public void setDateToStart(String dateToStart) {
         this.dateToStart = dateToStart;
+    }
+
+    /**
+     * Set the visibility of the habit for followers. If the Boolean value is true then it is public
+     * if the value is false then it is private.
+     * @param visibility Boolean, true for public, false for private.
+     */
+    public void setPublicVisibility(Boolean visibility) {
+        this.publicVisibility = visibility;
     }
 
     /**
