@@ -82,7 +82,7 @@ public class RequestActivity extends AppCompatActivity {
      * This function filters usernames using a user inputted word
      * @param profiles  ArrayList<Profile>: an initial ArrayList of Profiles to be sorted from
      * @param username_to_search String: the word to be filtered
-     * @return ArrayList<Profiles>: the final sorted list
+     * @return ArrayList<Profile>: the final sorted list
      */
     public ArrayList<Profile> filterUsers(ArrayList<Profile> profiles, String username_to_search){
         ArrayList<Profile> filtered_users = new ArrayList<>();

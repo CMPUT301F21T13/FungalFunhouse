@@ -31,6 +31,8 @@ public class InboxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.request_inbox);
 
+        //For testing purposes [REPLACE AFTER DATABASE SERIALIZATION IS COMPLETE]
+        currentUser = new UserProfile("user1");
         requestList = findViewById(R.id.request_list);
         requestAdapter = new RequestAdapter(this, currentUser.getRequestInbox().getRequests());
         requestList.setAdapter(requestAdapter);

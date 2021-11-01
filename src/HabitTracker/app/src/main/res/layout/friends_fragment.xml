@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/mail_button"
+        android:layout_above="@id/mail_inbox_activity_button"
         android:padding="30dp">
         <ListView
             android:id="@+id/friends_list"
@@ -19,19 +21,31 @@
         />
     </LinearLayout>
 
-    <Button
-        android:id="@+id/mail_button"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/mail_inbox_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:text="MAILBOX"></Button>
+        android:layout_marginBottom="32dp"
+        android:layout_marginStart="32dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@android:drawable/ic_dialog_email"
+        tools:ignore="SpeakableTextPresentCheck" />
 
-    <Button
-        android:id="@+id/request_button"
-        android:layout_width="wrap_content"
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/send_request_activity_button"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="SEND REQUEST"></Button>
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:layout_marginEnd="32dp"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_search"
+        tools:ignore="SpeakableTextPresentCheck" />
 
-</RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
