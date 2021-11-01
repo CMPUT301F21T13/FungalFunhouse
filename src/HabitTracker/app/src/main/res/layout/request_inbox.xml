@@ -7,20 +7,20 @@
 
 
     <ListView
-        android:id="@+id/user_list"
+        android:id="@+id/request_list"
         android:layout_width="wrap_content"
         android:layout_height="480dp"
         android:choiceMode="singleChoice"
+        android:listSelector="#999999"
         />
 
     <LinearLayout
         android:id="@+id/request_handler"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="invisible"
         android:orientation="vertical"
-        android:layout_below="@+id/user_list"
-        android:layout_alignParentRight="true">
+        android:layout_below="@+id/request_list"
+        android:layout_alignParentEnd="true">
 
         <Button
             android:id="@+id/accept_button"
@@ -29,7 +29,7 @@
             android:text="ACCEPT"/>
 
         <Button
-            android:id="@+id/reject_button"
+            android:id="@+id/deny_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="REJECT"/>

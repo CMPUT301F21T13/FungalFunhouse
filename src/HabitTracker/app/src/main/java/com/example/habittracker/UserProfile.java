@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class UserProfile extends Profile implements Parcelable {
     private FollowerList following;
     private FollowerList followers;
-    public FollowRequestInbox requestInbox;
+    private FollowRequestInbox requestInbox;
     public HabitList habitList;
 
     public UserProfile(String username) {
@@ -35,6 +35,10 @@ public class UserProfile extends Profile implements Parcelable {
             return new UserProfile[size];
         }
     };
+
+    public FollowRequestInbox getRequestInbox() {
+        return this.requestInbox;
+    }
 
     public void followUser(UserProfile profile) {
         following.addProfile(profile);
