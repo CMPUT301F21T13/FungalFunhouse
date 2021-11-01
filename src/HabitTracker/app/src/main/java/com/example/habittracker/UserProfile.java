@@ -52,4 +52,4 @@ public class UserProfile extends Profile implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
     }
-
+}
