@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class AddHabitActivity extends AppCompatActivity {
 
+    //TODO(GLENN): Add all functionality for xml layout
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

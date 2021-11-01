@@ -23,12 +23,7 @@ public class HabitsFragment extends Fragment {
     public HabitsFragment() {
         super(R.layout.habit_fragment);
     }
-    /*TODO(GLENN): Create logic for Habits fragment including: selecting a habit, add button,
-       edit button, delete button, and visual indicator.
-
-       After this move onto the activities for add habit and edit habit (should be able to reuse
-       the same activity just with a different data Bundle.
-     */
+    //TODO(GLENN): Add visual indicator of how well the user is following the habits
 
     //Declare variables
     public HabitListAdapter habitListAdapter;
@@ -73,6 +68,7 @@ public class HabitsFragment extends Fragment {
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //TODO(GLENN): Add highlight functionality to the selected item
                 editHabit.setVisibility(View.VISIBLE);
                 deleteHabit.setVisibility(View.VISIBLE);
                 selectedHabit = i;// i = position of the current habit selected
@@ -83,7 +79,6 @@ public class HabitsFragment extends Fragment {
         addHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO(GLENN): add functionality
                 Intent intent = new Intent(getActivity(), AddHabitActivity.class);
                 startActivity(intent);
             }
