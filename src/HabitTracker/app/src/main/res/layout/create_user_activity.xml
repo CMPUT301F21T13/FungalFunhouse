@@ -16,6 +16,8 @@
         android:gravity="center"
         android:alpha=".75"
         android:text="create user"
+        android:text="Create Account"
+
         android:textColor="@color/white"
         android:textSize="40sp"/>
 
@@ -30,7 +32,7 @@
         android:layout_marginBottom="5dp"
         android:gravity="center"
         android:alpha=".65"
-        android:text="Enter you account credentials below"
+        android:text="Enter your account credentials below"
         android:textColor="@color/white"
         android:textSize="13sp" />
 

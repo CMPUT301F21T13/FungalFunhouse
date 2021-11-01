@@ -12,12 +12,12 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 
-public class ProfileListAdapterGrid extends ArrayAdapter<UserProfile> {
+public class ProfileListAdapterGrid extends ArrayAdapter<Profile> {
 
-    private ArrayList<UserProfile> profiles;
+    private ArrayList<Profile> profiles;
     private Context context;
 
-    public ProfileListAdapterGrid(Context context, ArrayList<UserProfile> profiles){
+    public ProfileListAdapterGrid(Context context, ArrayList<Profile> profiles){
         super(context, 0, profiles);
             this.context = context;
             this.profiles = profiles;
