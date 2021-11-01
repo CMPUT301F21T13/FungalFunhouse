@@ -1,6 +1,7 @@
 package com.example.habittracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,25 +62,34 @@ public class HabitsFragment extends Fragment {
             habitListView.setAdapter(habitListAdapter);
         }
 
+        //Initialize variables
+        addHabit = view.findViewById(R.id.add_habbit_floating_button);
+        editHabit = view.findViewById(R.id.edit_habit_floating_button);
+        deleteHabit = view.findViewById(R.id.delete_habit_floating_button);
+        editHabit.setVisibility(View.GONE);//Gone until an item on the list is selected
+        deleteHabit.setVisibility(View.GONE);//Gone until an item on the list is selected
+
         //habitListView listener
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                editHabit.setVisibility(View.VISIBLE);
+                deleteHabit.setVisibility(View.VISIBLE);
                 selectedHabit = i;// i = position of the current habit selected
             }
         });
 
         //Add habit button listener
-        addHabit = view.findViewById(R.id.add_habbit_floating_button);
         addHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO(GLENN): add functionality
+                Intent intent = new Intent(getActivity(), AddHabitActivity.class);
+                startActivity(intent);
             }
         });
 
         //Edit habit button listener
-        editHabit = view.findViewById(R.id.edit_habit_floating_button);
         editHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,7 +98,6 @@ public class HabitsFragment extends Fragment {
         });
 
         //Delete habit button listener
-        deleteHabit = view.findViewById(R.id.delete_habit_floating_button);
         deleteHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

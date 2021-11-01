@@ -1,5 +1,7 @@
 package com.example.habittracker;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
@@ -8,6 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class AddHabitActivity extends AppCompatActivity {
 
-
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.add_habit_activity);
+    }
 
 }
