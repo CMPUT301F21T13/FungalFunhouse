@@ -1,5 +1,6 @@
 package com.example.habittracker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,6 +63,7 @@ public class LogInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 usernameStr = username.getText().toString();
                 passwordStr = password.getText().toString();
+
                 if (usernameStr.isEmpty()) {
                     username.setError("Username required");
                     username.requestFocus();
@@ -69,34 +71,7 @@ public class LogInActivity extends AppCompatActivity {
                     password.setError("Password required");
                     password.requestFocus();
                 } else {
-                    db.collection("users").document(usernameStr).get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists()) {
-                                    String username_db = documentSnapshot.getString(KEY_USERNAME);
-                                    String password_db = documentSnapshot.getString(KEY_PASSWORD);
-                                    if (username_db.equals(usernameStr) && password_db.equals(passwordStr)) {
-                                        // user exists
-                                        Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
-                                        Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
-                                        intent.putExtra("user", usernameStr);
-                                        startActivity(intent);
-                                    } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
-                                        Toast.makeText(LogInActivity.this, "password incorrect", Toast.LENGTH_SHORT).show();
-                                    }
-                                } else {
-                                    Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(LogInActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, e.toString()); //will pass exception so we can see error
-                            }
-                        });
+                    logInUserDB(usernameStr, passwordStr);
                 }
             }
         });
@@ -112,16 +87,25 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
-    public Boolean userExists(String username) {
-        Boolean returnVal = null;
-        db.collection("users").document(username).get()
+    public void logInUserDB(String usernameStr, String passwordStr) {
+        db.collection("users").document(usernameStr).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            Boolean returnVal = true;
+                            String username_db = documentSnapshot.getString(KEY_USERNAME);
+                            String password_db = documentSnapshot.getString(KEY_PASSWORD);
+                            if (username_db.equals(usernameStr) && password_db.equals(passwordStr)) {
+                                // user exists
+                                Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
+                                intent.putExtra("user", usernameStr);
+                                startActivity(intent);
+                            } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
+                                Toast.makeText(LogInActivity.this, "password incorrect", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Boolean returnVal = false;
+                            Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
@@ -129,10 +113,9 @@ public class LogInActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Toast.makeText(LogInActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, e.toString());
+                        Log.d(TAG, e.toString()); //will pass exception so we can see error
                     }
                 });
-        return returnVal;
     }
 
 
