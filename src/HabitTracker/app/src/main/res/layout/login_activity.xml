@@ -52,7 +52,8 @@
             android:hint="@string/username_hint"
             android:padding="15dp"
             android:textColor="@color/black"
-            android:textColorHint="#313131" />
+            android:textColorHint="#313131"
+            android:focusableInTouchMode="true" />
 
     <!--    code for password field -->
         <EditText
@@ -71,19 +72,20 @@
             android:inputType="textPassword"
             android:padding="15dp"
             android:textColor="@color/black"
-            android:textColorHint="#313131" />
+            android:textColorHint="#313131"
+            android:focusableInTouchMode="true" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/forgotpassword"
-            android:text="@string/forgot_password"
-            android:layout_below="@id/password"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="10dp"
-            android:gravity="start"
-            android:textColor="@color/blue"
-            android:clickable="true" />
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/forgotpassword"-->
+<!--            android:text="@string/forgot_password"-->
+<!--            android:layout_below="@id/password"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:gravity="start"-->
+<!--            android:textColor="@color/blue"-->
+<!--            android:clickable="true" />-->
 
     <!--    code for login button-->
         <Button
