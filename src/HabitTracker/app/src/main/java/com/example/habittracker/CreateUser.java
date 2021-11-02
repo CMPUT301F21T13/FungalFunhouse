@@ -75,7 +75,6 @@ public class CreateUser extends AppCompatActivity {
     }
 
     public void addUser(String usernameStr, String passwordStr) {
-        
         Map<String, Object> user = new HashMap<>();
         user.put(KEY_USERNAME, usernameStr);
         user.put(KEY_PASSWORD, passwordStr);

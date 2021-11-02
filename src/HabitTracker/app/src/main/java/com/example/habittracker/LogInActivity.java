@@ -102,7 +102,8 @@ public class LogInActivity extends AppCompatActivity {
                                 intent.putExtra("user", usernameStr);
                                 startActivity(intent);
                             } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
-                                Toast.makeText(LogInActivity.this, "password incorrect", Toast.LENGTH_SHORT).show();
+                                password.setError("Incorrect password");
+                                password.requestFocus();
                             }
                         } else {
                             Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
