@@ -15,6 +15,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -32,15 +34,15 @@ public class FriendsFragment extends Fragment {
     ListView friendsList;
     ArrayAdapter<Profile> friendsAdapter;
     UserProfile currentUser;
-    Button requestButton;
-    Button mailButton;
+    FloatingActionButton requestButton;
+    FloatingActionButton mailButton;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         Bundle bundle = getArguments();
-        currentUser = (UserProfile) bundle.getParcelable("user");
+        currentUser = bundle.getParcelable("user");
         View view = inflater.inflate(R.layout.friends_fragment, container, false);
 
         if (currentUser.getFollowing() != null) {
@@ -52,7 +54,7 @@ public class FriendsFragment extends Fragment {
 
 
         // Sends user to the RequestInboxActivity
-        requestButton = view.findViewById(R.id.request_button);
+        requestButton = view.findViewById(R.id.send_request_activity_button);
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,7 +65,7 @@ public class FriendsFragment extends Fragment {
 
 
         // Sends User to the MailActivity
-        mailButton = view.findViewById(R.id.mail_button);
+        mailButton = view.findViewById(R.id.mail_inbox_activity_button);
         mailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

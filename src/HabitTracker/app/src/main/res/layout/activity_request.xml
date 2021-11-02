@@ -14,7 +14,9 @@
             android:id="@+id/username_input"
             android:layout_width="260dp"
             android:layout_height="wrap_content"
-            android:hint="username..."/>
+            android:autofillHints="username"
+            android:hint="username..."
+            android:inputType="text"/>
 
         <Button
             android:id="@+id/search_button"

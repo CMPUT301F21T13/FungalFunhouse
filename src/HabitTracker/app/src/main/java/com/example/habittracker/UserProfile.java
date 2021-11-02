@@ -8,16 +8,16 @@ import java.util.ArrayList;
 
 
 public class UserProfile extends Profile implements Parcelable {
-    private FollowerList following;
     private FollowerList followers;
-    public FollowRequestInbox requestInbox;
+    private FollowerList following;
+    private FollowRequestInbox inbox;
     public HabitList habitList;
 
     public UserProfile(String username) {
         this.username = username;
-        this.following = new FollowerList();
         this.followers = new FollowerList();
-        this.requestInbox = new FollowRequestInbox(this);
+        this.following = new FollowerList();
+        this.inbox = new FollowRequestInbox(this);
     }
 
 
@@ -55,6 +55,8 @@ public class UserProfile extends Profile implements Parcelable {
     public ArrayList<Profile> getFollowing(){return following.getList();}
 
     public ArrayList<Profile> getFollowers(){ return followers.getList();  }
+
+    public FollowRequestInbox getInbox(){return this.inbox;}
 
     @Override
     public int describeContents() {

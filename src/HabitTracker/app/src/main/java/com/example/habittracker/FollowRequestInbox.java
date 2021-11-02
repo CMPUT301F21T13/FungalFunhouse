@@ -17,7 +17,7 @@ public class FollowRequestInbox {
      * @param owner UserProfile: the owner of the inbox
      */
     public FollowRequestInbox(UserProfile owner){
-        requests = new ArrayList<FollowRequest>();
+        requests = new ArrayList<>();
         this.owner = owner;
     }
 
@@ -42,7 +42,9 @@ public class FollowRequestInbox {
      * @param request FollowRequest: the accepted request (leads to addRequest)
      */
     public void acceptRequest(FollowRequest request) {
-        addRequest(request);
+        owner.addFollower(request.getSender());
+        request.getSender().followUser(owner);
+        removeRequest(request);
     }
 
     /**
@@ -68,4 +70,6 @@ public class FollowRequestInbox {
     public void setOwner(UserProfile profile) {
         this.owner = profile;
     }
+
+    public ArrayList<FollowRequest> getRequests(){return this.requests;}
 }
