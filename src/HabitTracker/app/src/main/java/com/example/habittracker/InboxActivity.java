@@ -2,6 +2,7 @@ package com.example.habittracker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -22,9 +23,9 @@ public class InboxActivity extends AppCompatActivity {
     Button acceptButton;
     Button denyButton;
     ListView requestList;
-    ArrayAdapter<Profile> requestAdapter;
+    ArrayAdapter<FollowRequest> requestAdapter;
     UserProfile currentUser;
-    UserProfile selectedRequest;
+    FollowRequest selectedRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,29 +34,37 @@ public class InboxActivity extends AppCompatActivity {
 
         //For testing purposes [REPLACE AFTER DATABASE SERIALIZATION IS COMPLETE]
         currentUser = new UserProfile("user1");
+        UserProfile user2 = new UserProfile("user2");
+        UserProfile user3 = new UserProfile("user3");
+        currentUser.getInbox().addRequest(new FollowRequest(user2, currentUser));
+        currentUser.getInbox().addRequest(new FollowRequest(user3, currentUser));
+
         requestList = findViewById(R.id.request_list);
-        requestAdapter = new ProfileListAdapterGrid(this, currentUser.getSocials().getRequestInbox().getRequests());
+        requestAdapter = new RequestAdapter(this, currentUser.getInbox().getRequests());
         requestList.setAdapter(requestAdapter);
 
         acceptButton = findViewById(R.id.accept_button);
         denyButton = findViewById(R.id.deny_button);
-        if(requestAdapter.isEmpty()){
+
+        /*
+            if(requestAdapter.isEmpty()){
             acceptButton.setVisibility(View.INVISIBLE);
             denyButton.setVisibility(View.INVISIBLE);
-        }
+             }
+            */
 
-        requestList.setOnItemClickListener((adapterView, view, i, l) -> selectedRequest = (UserProfile) requestAdapter.getItem(i));
+        requestList.setOnItemClickListener((adapterView, view, i, l) -> selectedRequest = requestAdapter.getItem(i));
 
         acceptButton.setOnClickListener(view -> {
             if(selectedRequest != null) {
-                currentUser.getSocials().getRequestInbox().acceptRequest(selectedRequest);
+                currentUser.getInbox().acceptRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
             }
         });
 
         denyButton.setOnClickListener(view -> {
             if(selectedRequest != null) {
-                currentUser.getSocials().getRequestInbox().denyRequest(selectedRequest);
+                currentUser.getInbox().denyRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
             }
         });

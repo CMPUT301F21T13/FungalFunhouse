@@ -8,12 +8,16 @@ import java.util.ArrayList;
 
 
 public class UserProfile extends Profile implements Parcelable {
-    private Social socials;
+    private FollowerList followers;
+    private FollowerList following;
+    private FollowRequestInbox inbox;
     public HabitList habitList;
 
     public UserProfile(String username) {
         this.username = username;
-        this.socials = new Social(this);
+        this.followers = new FollowerList();
+        this.following = new FollowerList();
+        this.inbox = new FollowRequestInbox(this);
     }
 
 
@@ -31,7 +35,28 @@ public class UserProfile extends Profile implements Parcelable {
             return new UserProfile[size];
         }
     };
-    public Social getSocials(){return this.socials;}
+
+    public void followUser(UserProfile profile) {
+        following.addProfile(profile);
+    }
+
+    public void unfollowUser(UserProfile profile) {
+        following.removeProfile(profile);
+    }
+
+    public void addFollower(UserProfile profile) {
+        followers.addProfile(profile);
+    }
+
+    public void removeFollower(UserProfile profile) {
+        followers.removeProfile(profile);
+    }
+
+    public ArrayList<Profile> getFollowing(){return following.getList();}
+
+    public ArrayList<Profile> getFollowers(){ return followers.getList();  }
+
+    public FollowRequestInbox getInbox(){return this.inbox;}
 
     @Override
     public int describeContents() {

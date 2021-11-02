@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class FollowRequestInbox {
 
-    private ArrayList<Profile> requests;
+    private ArrayList<FollowRequest> requests;
     private UserProfile owner;
 
     /**
@@ -23,35 +23,36 @@ public class FollowRequestInbox {
 
     /**
      * Adds a request to this inbox
-     * @param sender UserProfile: sender of the request
+     * @param request FollowRequest: the added request
      */
-    public void addRequest(UserProfile sender) {
-        requests.add(sender);
+    public void addRequest(FollowRequest request) {
+        requests.add(request);
     }
 
     /**
      * Removes a request from this inbox
-     * @param sender UserProfile: sender of the request
+     * @param request FollowRequest: the removed request
      */
-    public void removeRequest(UserProfile sender) { requests.remove(sender);
+    public void removeRequest(FollowRequest request) {
+        requests.remove(request);
     }
 
     /**
      * Accepts a request from this inbox
-     * @param sender UserProfile: sender of the request
+     * @param request FollowRequest: the accepted request (leads to addRequest)
      */
-    public void acceptRequest(UserProfile sender) {
-        owner.getSocials().addFollower(sender);
-        sender.getSocials().followUser(owner);
-        removeRequest(sender);
+    public void acceptRequest(FollowRequest request) {
+        owner.addFollower(request.getSender());
+        request.getSender().followUser(owner);
+        removeRequest(request);
     }
 
     /**
      * Denies a request from this inbox
-     * @param sender UserProfile: sender of the request
+     * @param request FollowRequest: the denied request (leads to RemoveRequest)
      */
-    public void denyRequest(UserProfile sender) {
-        removeRequest(sender);
+    public void denyRequest(FollowRequest request) {
+        removeRequest(request);
     }
 
     /**
@@ -70,5 +71,5 @@ public class FollowRequestInbox {
         this.owner = profile;
     }
 
-    public ArrayList<Profile> getRequests(){ return this.requests; }
+    public ArrayList<FollowRequest> getRequests(){return this.requests;}
 }
