@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "348311646179",
+    "project_id": "fungalfunhouse",
+    "storage_bucket": "fungalfunhouse.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:348311646179:android:8e1b7f562af54101fcbad6",
+        "android_client_info": {
+          "package_name": "com.example.habittracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "348311646179-qfjt26u07b3ac0uh5jbd9fraqi9vq4gt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBNmhGTByAPXhuR335WuD9G8qh8Pp39HGk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "348311646179-qfjt26u07b3ac0uh5jbd9fraqi9vq4gt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
