@@ -45,10 +45,10 @@ public class FriendsFragment extends Fragment {
         currentUser = bundle.getParcelable("user");
         View view = inflater.inflate(R.layout.friends_fragment, container, false);
 
-        if (currentUser.getFollowing() != null) {
+        if (currentUser.getSocials().getFollowing() != null) {
             friendsList = view.findViewById(R.id.friends_list);
             Context context = getContext();
-            friendsAdapter = new ProfileListAdapterGrid(context, currentUser.getFollowing());
+            friendsAdapter = new ProfileListAdapterGrid(context, currentUser.getSocials().getFollowing());
             friendsList.setAdapter(friendsAdapter);
         }
 

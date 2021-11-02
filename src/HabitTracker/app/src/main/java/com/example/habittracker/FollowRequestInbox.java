@@ -41,8 +41,8 @@ public class FollowRequestInbox {
      * @param sender UserProfile: sender of the request
      */
     public void acceptRequest(UserProfile sender) {
-        owner.addFollower(sender);
-        sender.followUser(owner);
+        owner.getSocials().addFollower(sender);
+        sender.getSocials().followUser(owner);
         removeRequest(sender);
     }
 

@@ -65,7 +65,7 @@ public class RequestActivity extends AppCompatActivity {
         // sends a follow request from currentUser to selectedUser (from Listview)
         enterButton = findViewById(R.id.enter_button);
         enterButton.setOnClickListener(view -> {
-            selectedUser.getRequestInbox().addRequest(currentUser);
+            selectedUser.getSocials().getRequestInbox().addRequest(currentUser);
             //set up dialog that says "request sent"
             //also add in exceptions for if the user is already followed
         });

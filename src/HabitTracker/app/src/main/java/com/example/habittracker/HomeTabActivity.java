@@ -37,8 +37,8 @@ public class HomeTabActivity extends AppCompatActivity {
         currentUser = new UserProfile("user1");
         UserProfile user2 = new UserProfile("user2");
         UserProfile user3 = new UserProfile("user3");
-        currentUser.followUser(user2);
-        currentUser.addFollower(user3);
+        currentUser.getSocials().followUser(user2);
+        currentUser.getSocials().addFollower(user3);
 
         // The Fragment Manager for the four tabs
         // Initializes the Home Tab to show the HABITS section

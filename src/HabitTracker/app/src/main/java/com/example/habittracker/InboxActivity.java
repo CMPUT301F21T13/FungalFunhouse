@@ -34,7 +34,7 @@ public class InboxActivity extends AppCompatActivity {
         //For testing purposes [REPLACE AFTER DATABASE SERIALIZATION IS COMPLETE]
         currentUser = new UserProfile("user1");
         requestList = findViewById(R.id.request_list);
-        requestAdapter = new ProfileListAdapterGrid(this, currentUser.getRequestInbox().getRequests());
+        requestAdapter = new ProfileListAdapterGrid(this, currentUser.getSocials().getRequestInbox().getRequests());
         requestList.setAdapter(requestAdapter);
 
         acceptButton = findViewById(R.id.accept_button);
@@ -48,14 +48,14 @@ public class InboxActivity extends AppCompatActivity {
 
         acceptButton.setOnClickListener(view -> {
             if(selectedRequest != null) {
-                currentUser.getRequestInbox().acceptRequest(selectedRequest);
+                currentUser.getSocials().getRequestInbox().acceptRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
             }
         });
 
         denyButton.setOnClickListener(view -> {
             if(selectedRequest != null) {
-                currentUser.getRequestInbox().denyRequest(selectedRequest);
+                currentUser.getSocials().getRequestInbox().denyRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
             }
         });
