@@ -62,10 +62,10 @@ public class LogInActivity extends AppCompatActivity {
                 usernameStr = username.getText().toString();
                 passwordStr = password.getText().toString();
                 if (usernameStr.isEmpty()) {
-                    // add code later to display text to user: "Username Required!"
+                    username.setError("Username required");
                     username.requestFocus();
                 } else if (passwordStr.isEmpty()) {
-                    // add code later to display text to user: "Password Required!"
+                    password.setError("Password required");
                     password.requestFocus();
                 } else {
                     db.collection("users").document(usernameStr).get()
@@ -85,7 +85,7 @@ public class LogInActivity extends AppCompatActivity {
                                         Toast.makeText(LogInActivity.this, "password incorrect", Toast.LENGTH_SHORT).show();
                                     }
                                 } else {
-                                    Toast.makeText(LogInActivity.this, "account doesn't exist", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
                                 }
                             }
                         })
@@ -104,7 +104,7 @@ public class LogInActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(LogInActivity.this, CreateUser.class));
-                finish();
+//                finish();
             }
         });;
 
