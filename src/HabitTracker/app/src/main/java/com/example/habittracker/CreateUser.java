@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -50,29 +51,53 @@ public class CreateUser extends AppCompatActivity {
                 usernameStr = username.getText().toString();
                 passwordStr = password.getText().toString();
 
-                Map<String, Object> user = new HashMap<>();
-                user.put(KEY_USERNAME, usernameStr);
-                user.put(KEY_PASSWORD, passwordStr);
-
-                db.collection("users").document(usernameStr).set(user)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(CreateUser.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(CreateUser.this, "Error!", Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, e.toString()); //will pass exception so we can see error
-                        }
-                    });
-                Intent intent = new Intent(CreateUser.this, LogInActivity.class);;
-                startActivity(intent);
-                finish();
+                db.collection("users").document(usernameStr).get()
+                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                            @Override
+                            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                if (documentSnapshot.exists()) {
+                                    username.setError("Username Taken");
+                                    username.requestFocus();
+                                } else {
+                                    addUser(usernameStr, passwordStr);
+                                }
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(CreateUser.this, "Error!", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, e.toString());
+                            }
+                        });
             }
         });
     }
+
+    public void addUser(String usernameStr, String passwordStr) {
+        
+        Map<String, Object> user = new HashMap<>();
+        user.put(KEY_USERNAME, usernameStr);
+        user.put(KEY_PASSWORD, passwordStr);
+
+        db.collection("users").document(usernameStr).set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Toast.makeText(CreateUser.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(CreateUser.this, "Error!", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, e.toString()); //will pass exception so we can see error
+                    }
+                });
+        Intent intent = new Intent(CreateUser.this, LogInActivity.class);;
+        startActivity(intent);
+        finish();
+    }
+
 
 }
