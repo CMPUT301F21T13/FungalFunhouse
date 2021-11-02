@@ -22,9 +22,9 @@ public class InboxActivity extends AppCompatActivity {
     Button acceptButton;
     Button denyButton;
     ListView requestList;
-    ArrayAdapter<FollowRequest> requestAdapter;
+    ArrayAdapter<Profile> requestAdapter;
     UserProfile currentUser;
-    FollowRequest selectedRequest;
+    UserProfile selectedRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class InboxActivity extends AppCompatActivity {
         //For testing purposes [REPLACE AFTER DATABASE SERIALIZATION IS COMPLETE]
         currentUser = new UserProfile("user1");
         requestList = findViewById(R.id.request_list);
-        requestAdapter = new RequestAdapter(this, currentUser.getRequestInbox().getRequests());
+        requestAdapter = new ProfileListAdapterGrid(this, currentUser.getRequestInbox().getRequests());
         requestList.setAdapter(requestAdapter);
 
         acceptButton = findViewById(R.id.accept_button);
@@ -44,16 +44,20 @@ public class InboxActivity extends AppCompatActivity {
             denyButton.setVisibility(View.INVISIBLE);
         }
 
-        requestList.setOnItemClickListener((adapterView, view, i, l) -> selectedRequest = requestAdapter.getItem(i));
+        requestList.setOnItemClickListener((adapterView, view, i, l) -> selectedRequest = (UserProfile) requestAdapter.getItem(i));
 
         acceptButton.setOnClickListener(view -> {
-            currentUser.getRequestInbox().acceptRequest(selectedRequest);
-            requestAdapter.remove(selectedRequest);
+            if(selectedRequest != null) {
+                currentUser.getRequestInbox().acceptRequest(selectedRequest);
+                requestAdapter.remove(selectedRequest);
+            }
         });
 
         denyButton.setOnClickListener(view -> {
-            currentUser.getRequestInbox().denyRequest(selectedRequest);
-            requestAdapter.remove(selectedRequest);
+            if(selectedRequest != null) {
+                currentUser.getRequestInbox().denyRequest(selectedRequest);
+                requestAdapter.remove(selectedRequest);
+            }
         });
         //Sends the user back to HomeTabActivity
         backButton = findViewById(R.id.back_button);

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public class FollowRequestInbox {
 
-    private ArrayList<FollowRequest> requests;
+    private ArrayList<Profile> requests;
     private UserProfile owner;
 
     /**
@@ -23,35 +23,35 @@ public class FollowRequestInbox {
 
     /**
      * Adds a request to this inbox
-     * @param request FollowRequest: the added request
+     * @param sender UserProfile: sender of the request
      */
-    public void addRequest(FollowRequest request) {
-        requests.add(request);
+    public void addRequest(UserProfile sender) {
+        requests.add(sender);
     }
 
     /**
      * Removes a request from this inbox
-     * @param request FollowRequest: the removed request
+     * @param sender UserProfile: sender of the request
      */
-    public void removeRequest(FollowRequest request) { requests.remove(request);
+    public void removeRequest(UserProfile sender) { requests.remove(sender);
     }
 
     /**
      * Accepts a request from this inbox
-     * @param request FollowRequest: the accepted request (leads to addRequest)
+     * @param sender UserProfile: sender of the request
      */
-    public void acceptRequest(FollowRequest request) {
-        owner.addFollower(request.getSender());
-        request.getSender().followUser(owner);
-        removeRequest(request);
+    public void acceptRequest(UserProfile sender) {
+        owner.addFollower(sender);
+        sender.followUser(owner);
+        removeRequest(sender);
     }
 
     /**
      * Denies a request from this inbox
-     * @param request FollowRequest: the denied request (leads to RemoveRequest)
+     * @param sender UserProfile: sender of the request
      */
-    public void denyRequest(FollowRequest request) {
-        removeRequest(request);
+    public void denyRequest(UserProfile sender) {
+        removeRequest(sender);
     }
 
     /**
@@ -70,5 +70,5 @@ public class FollowRequestInbox {
         this.owner = profile;
     }
 
-    public ArrayList<FollowRequest> getRequests(){ return this.requests; }
+    public ArrayList<Profile> getRequests(){ return this.requests; }
 }
