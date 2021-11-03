@@ -1,7 +1,8 @@
 package com.example.habittracker;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 /**
  * To be used in Habit class.
@@ -12,7 +13,7 @@ import java.util.Hashtable;
  */
 public class WeeklySchedule {
 
-    private Hashtable<String, Boolean> schedule;
+    private LinkedHashMap<String, Boolean> schedule;
 
     //Constants
     private static final String SUNDAY = "Sunday";
@@ -22,12 +23,21 @@ public class WeeklySchedule {
     private static final String THURSDAY = "Thursday";
     private static final String FRIDAY = "Friday";
     private static final String SATURDAY = "Saturday";
+    private static final ArrayList<String> WEEKDAYS = new ArrayList<String>() {{
+        add(SUNDAY);
+        add(MONDAY);
+        add(TUESDAY);
+        add(WEDNESDAY);
+        add(THURSDAY);
+        add(FRIDAY);
+        add(SATURDAY);
+    }};
 
     /**
      * Default constructor, initiates every day of the week to be false
      */
     public WeeklySchedule() {
-        schedule = new Hashtable<String, Boolean>();
+        schedule = new LinkedHashMap<>();
         schedule.put(SUNDAY, false);
         schedule.put(MONDAY, false);
         schedule.put(TUESDAY, false);
@@ -35,6 +45,21 @@ public class WeeklySchedule {
         schedule.put(THURSDAY, false);
         schedule.put(FRIDAY, false);
         schedule.put(SATURDAY, false);
+    }
+
+    /**
+     * Default constructor, initiates every day of the week to be false
+     */
+    public WeeklySchedule(ArrayList<String> weekdays) {
+        schedule = new LinkedHashMap<>();
+        schedule.put(SUNDAY, false);
+        schedule.put(MONDAY, false);
+        schedule.put(TUESDAY, false);
+        schedule.put(WEDNESDAY, false);
+        schedule.put(THURSDAY, false);
+        schedule.put(FRIDAY, false);
+        schedule.put(SATURDAY, false);
+
     }
 
     public void addSunday() {
@@ -93,6 +118,47 @@ public class WeeklySchedule {
         schedule.put(SATURDAY, false);
     }
 
+    public boolean checkSunday() {
+        return schedule.get(SUNDAY);
+    }
+
+    public boolean checkMonday() {
+        return schedule.get(MONDAY);
+    }
+
+    public boolean checkTuesday() {
+        return schedule.get(TUESDAY);
+    }
+
+    public boolean checkWednesday() {
+        return schedule.get(WEDNESDAY);
+    }
+
+    public boolean checkThursday() {
+        return schedule.get(THURSDAY);
+    }
+
+    public boolean checkFriday() {
+        return schedule.get(FRIDAY);
+    }
+
+    public boolean checkSaturday() {
+        return schedule.get(SATURDAY);
+    }
+
+    /**
+     * Checks if all the days of the week are set to false
+     * @return true if all false, false if at least one is true;
+     */
+    public boolean checkAllFalse() {
+        for(String key : schedule.keySet()){
+            if(schedule.get(key)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Sets every weekday to false
      */
@@ -119,12 +185,40 @@ public class WeeklySchedule {
         addSaturday();
     }
 
+    private void fillWithArray(ArrayList<String> weekdays) {
+        for (String day:weekdays) {
+            switch(day) {
+                case SUNDAY:
+                    addSunday();
+                    break;
+                case MONDAY:
+                    addMonday();
+                    break;
+                case TUESDAY:
+                    addTuesday();
+                    break;
+                case WEDNESDAY:
+                    addWednesday();
+                    break;
+                case THURSDAY:
+                    addThursday();
+                    break;
+                case FRIDAY:
+                    addFriday();
+                    break;
+                case SATURDAY:
+                    addSaturday();
+                    break;
+            }
+        }
+    }
+
     /**
      * Provides an ArrayList with the Strings of each day the habit is to be completed on
      * @return ArrayList of type string
      */
     public ArrayList<String> getSchedule() {
-        ArrayList<String> days = new ArrayList<String>();
+        ArrayList<String> days = new ArrayList<>();
 
         for(String key : schedule.keySet()){
             if(schedule.get(key)){

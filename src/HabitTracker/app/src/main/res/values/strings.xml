@@ -6,4 +6,5 @@
     <string name="log_in_button">Log In</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="password">Password</string>
+    <string name="edit_habit_title">Edit Habit</string>
 </resources>

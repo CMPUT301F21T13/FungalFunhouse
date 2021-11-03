@@ -11,19 +11,21 @@ import androidx.annotation.Nullable;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 /**
  * Custom adapter for the listview in habit_fragment, uses habit_listview_context
  *
  * NOTE: In the storyboard we show that the items in the list will expand when you click
  *      on them, for now they do not expand. Instead they just show all the content.
  */
-public class HabitListAdapter extends ArrayAdapter {
+public class HabitListAdapter extends ArrayAdapter<Habit> {
 
-    private HabitList habits;
+    private ArrayList<Habit> habits;
     private Context context;
 
-    public HabitListAdapter(Context context, HabitList habits) {
-        super(context, 0, habits.getList());
+    public HabitListAdapter(Context context, ArrayList<Habit> habits) {
+        super(context, 0, habits);
         this.context = context;
         this.habits = habits;
     }
@@ -35,7 +37,7 @@ public class HabitListAdapter extends ArrayAdapter {
             view = LayoutInflater.from(context).inflate(R.layout.habit_listview_content, parent, false);
         }
 
-        Habit habit = habits.getHabit(position);
+        Habit habit = habits.get(position);
 
         //Setup required TextViews
         TextView habitTitle = (TextView) view.findViewById(R.id.habit_title);
@@ -47,7 +49,8 @@ public class HabitListAdapter extends ArrayAdapter {
         habitTitle.setText(habit.getTitle());
         habitReason.setText(habit.getReason());
         habitDateToStart.setText(habit.getDateToStart());
-        habitWeekdays.setText(habit.getWeeklySchedule().getSchedule().toString()); //getSchedule().toString() needs to be tested
+        String weekdays = habit.getWeeklySchedule().getSchedule().toString().replace("[", "").replace("]", "");
+        habitWeekdays.setText(weekdays);
 
         return view;
     }

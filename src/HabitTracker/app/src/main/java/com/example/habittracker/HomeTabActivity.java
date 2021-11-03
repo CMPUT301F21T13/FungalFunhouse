@@ -11,6 +11,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,13 +24,14 @@ import java.util.Arrays;
  */
 public class HomeTabActivity extends AppCompatActivity {
 
-    Button habitButton;
-    Button dailyButton;
-    Button eventsButton;
-    Button followButton;
-    ConstraintLayout buttonPanel;
-    Button backButton;
-    UserProfile currentUser;
+    private Button habitButton;
+    private Button dailyButton;
+    private Button eventsButton;
+    private Button followButton;
+    private ConstraintLayout buttonPanel;
+    private Button backButton;
+    private UserProfile currentUser;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,7 @@ public class HomeTabActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_tab);
 
         buttonPanel = findViewById(R.id.button_panel);
+        db = FirebaseFirestore.getInstance();
 
         //this is only for testing purposes
         //and will be replaced upon database implementation
@@ -45,13 +49,17 @@ public class HomeTabActivity extends AppCompatActivity {
         currentUser.followUser(user2);
         currentUser.addFollower(user3);
 
-        // The Fragment Manager for the four tabs
-        // Initializes the Home Tab to show the HABITS section
+        //Initialize Variables
+        habitButton = findViewById(R.id.habit_button);
+        dailyButton = findViewById(R.id.daily_button);
+        eventsButton = findViewById(R.id.event_button);
+        followButton = findViewById(R.id.follow_button);
+        backButton = findViewById(R.id.back_button);
+
         if (savedInstanceState == null) {
             OpenHabitsFragment(false, currentUser);
         }
 
-        habitButton = findViewById(R.id.habit_button);
         habitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,7 +67,6 @@ public class HomeTabActivity extends AppCompatActivity {
             }
         });
 
-        dailyButton = findViewById(R.id.daily_button);
         dailyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,7 +74,6 @@ public class HomeTabActivity extends AppCompatActivity {
             }
         });
 
-        eventsButton = findViewById(R.id.event_button);
         eventsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,7 +81,6 @@ public class HomeTabActivity extends AppCompatActivity {
             }
         });
 
-        followButton = findViewById(R.id.follow_button);
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,7 +88,6 @@ public class HomeTabActivity extends AppCompatActivity {
             }
         });
 
-        backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -110,6 +114,7 @@ public class HomeTabActivity extends AppCompatActivity {
         HabitsFragment fragment = new HabitsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("user", userToPrint);
+        bundle.putBoolean("following", following);
         fragment.setArguments(bundle);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment);
