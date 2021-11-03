@@ -56,6 +56,13 @@ public class UserProfile extends Profile implements Parcelable {
 
     public ArrayList<Profile> getFollowers(){ return followers.getList();  }
 
+    public ArrayList<FollowRequest> getRequests(){
+        return requestInbox.getRequests();
+    }
+    public ArrayList<Habit> getHabits(){
+        return habitList.getList();
+    }
+
     @Override
     public int describeContents() {
         return 0;
