@@ -72,8 +72,18 @@ public class LogInActivity extends AppCompatActivity {
                     password.requestFocus();
                 } else {
                     if (checkUserExists(usernameStr)) {
-                        //code for log in
-
+                        // user account exists in db
+                        if (verifyPassword(usernameStr, passwordStr)) {
+                            // password correct, log in user
+                            Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
+                            intent.putExtra("user", usernameStr);
+                            startActivity(intent);
+                        } else {
+                            // password incorrect
+                            password.setError("Incorrect password");
+                            password.requestFocus();
+                        }
                     } else {
                         Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
                     }
@@ -92,48 +102,50 @@ public class LogInActivity extends AppCompatActivity {
     }
 
 
-    public void logInUserDB(String usernameStr, String passwordStr) {
-        db.collection("users").document(usernameStr).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        if (documentSnapshot.exists()) {
-                            String username_db = documentSnapshot.getString(KEY_USERNAME);
-                            String password_db = documentSnapshot.getString(KEY_PASSWORD);
-                            if (username_db.equals(usernameStr) && password_db.equals(passwordStr)) {
-                                // user exists
-                                Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
-                                intent.putExtra("user", usernameStr);
-                                startActivity(intent);
-                            } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
-                                password.setError("Incorrect password");
-                                password.requestFocus();
-                            }
-                        } else {
-                            Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(LogInActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, e.toString()); //will pass exception so we can see error
-                    }
-                });
-    }
+//    public void logInUserDB(String usernameStr, String passwordStr) {
+//        db.collection("users").document(usernameStr).get()
+//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+//                    @Override
+//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+//                        if (documentSnapshot.exists()) {
+//                            String username_db = documentSnapshot.getString(KEY_USERNAME);
+//                            String password_db = documentSnapshot.getString(KEY_PASSWORD);
+//                            if (username_db.equals(usernameStr) && password_db.equals(passwordStr)) {
+//                                // user exists
+//                                Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
+//                                Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
+//                                intent.putExtra("user", usernameStr);
+//                                startActivity(intent);
+//                            } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
+//                                password.setError("Incorrect password");
+//                                password.requestFocus();
+//                            }
+//                        } else {
+//                            Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
+//                        }
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(LogInActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+//                        Log.d(TAG, e.toString()); //will pass exception so we can see error
+//                    }
+//                });
+//    }
 
-    public Boolean checkUserExists(String username) {
+    public Boolean checkUserExists(String username) { ;
         final Boolean[] returnVal = new Boolean[1];
-
+        returnVal[0] = false;
         db.collection("users").document(username).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
+                            Toast.makeText(LogInActivity.this, "check 1", Toast.LENGTH_SHORT).show();
                             returnVal[0] = true;
                         } else {
+                            Toast.makeText(LogInActivity.this, "check 2", Toast.LENGTH_SHORT).show();
                             returnVal[0] = false;
                         }
                     }
@@ -148,8 +160,11 @@ public class LogInActivity extends AppCompatActivity {
         return returnVal[0];
     }
 
+
+
     public Boolean verifyPassword(String username, String password) {
         final Boolean[] returnVal = new Boolean[1];
+        returnVal[0] = false;
 
         db.collection("users").document(username).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -172,7 +187,7 @@ public class LogInActivity extends AppCompatActivity {
         return returnVal[0];
     }
 
-   
+
 
 
 }
