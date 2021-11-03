@@ -122,6 +122,7 @@ public class Serialization {
 		return true;
 	}
 
+	//TODO(GLENN): finish this
 	//W.I.P set to return Habit when complete
 	//cannot figure out how to get data out of onSuccess into scope of getHabit
 	public void getHabit(String username, String habitTitle) {
@@ -141,6 +142,29 @@ public class Serialization {
 						habit.setDateToStart(documentSnapshot.getString("dateToStart"));
 						habit.setWeeklySchedule(new WeeklySchedule((ArrayList<String>) dbMap.get("weekdays")));
 
+					}
+				});
+
+	}
+
+	/**
+	 * Permanently delete the provided habit from the users database file
+	 * @param username The current user logged in
+	 * @param habit The habit to be deleted
+	 */
+	public void deleteHabit(String username, Habit habit) {
+		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS)
+				.document(habit.getTitle()).delete()
+				.addOnSuccessListener(new OnSuccessListener<Void>() {
+					@Override
+					public void onSuccess(Void unused) {
+						Log.d(TAG, "Habit has been removed successfully");
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e) {
+						Log.d(TAG, "Error while deleting habit", e);
 					}
 				});
 
