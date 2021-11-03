@@ -30,7 +30,6 @@ import java.util.Map;
 public class Serialization {
 	private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-
 	private static final String TAG = "Serialization";
 
 	// Firebase collection constants
@@ -52,7 +51,6 @@ public class Serialization {
 	private static final String KEY_HABIT_HID = "hid";
 	private static final String KEY_HABIT_DATE_TO_START = "dateToStart";
 	private static final String KEY_HABIT_WEEKDAYS = "weekdays";
-
 
 	public static void serializeUserProfile(UserProfile user) {
 		ArrayList<Profile> followers = user.getFollowers();
@@ -298,6 +296,7 @@ public class Serialization {
 	public void deleteHabit(String username, Habit habit) {
 		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS).document(habit.getTitle())
 				.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+
 					@Override
 					public void onSuccess(Void unused) {
 						Log.d(TAG, "Habit has been removed successfully");
@@ -312,3 +311,5 @@ public class Serialization {
 	}
 
 }
+
+

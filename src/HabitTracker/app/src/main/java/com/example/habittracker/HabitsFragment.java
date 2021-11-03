@@ -35,6 +35,7 @@ public class HabitsFragment extends Fragment {
     private UserProfile currentUser;
     private int selectedHabit;
     private String usernameStr;
+    private boolean following;
 
 
     @Override
@@ -48,6 +49,7 @@ public class HabitsFragment extends Fragment {
             Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
         }
 
+        /*
         //Hardcoded data for testing habit tab
         currentUser = new UserProfile("user1");
         Habit testHabit = new Habit();
@@ -57,8 +59,16 @@ public class HabitsFragment extends Fragment {
         testHabit.weeklySchedule.addWednesday();
         testHabit.weeklySchedule.addFriday();
         currentUser.addHabit(testHabit);
-
+         */
+        currentUser = bundle.getParcelable("user");
         View view = inflater.inflate(R.layout.habit_fragment, container, false);
+
+        try {
+            following = bundle.getBoolean("following");
+        }catch(NullPointerException e){
+            Log.e("HabitsFragment: ", "could not get 'following' from bundle" + e);
+        }
+
 
         if(currentUser.getHabitList() != null){
             habitListView = view.findViewById(R.id.habit_listview);
@@ -74,13 +84,23 @@ public class HabitsFragment extends Fragment {
         editHabit.setVisibility(View.GONE);//Gone until an item on the list is selected
         deleteHabit.setVisibility(View.GONE);//Gone until an item on the list is selected
 
+        //Sets the buttons to not display if the Fragment is currently in following view
+        if(following) {
+            addHabit.setVisibility(View.INVISIBLE);
+            editHabit.setVisibility(View.INVISIBLE);
+            deleteHabit.setVisibility(View.INVISIBLE);
+        }
+
         //habitListView listener
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //TODO(GLENN): Add highlight functionality to the selected item
-                editHabit.setVisibility(View.VISIBLE);
-                deleteHabit.setVisibility(View.VISIBLE);
+
+                if(!following) {
+                    editHabit.setVisibility(View.VISIBLE);
+                    deleteHabit.setVisibility(View.VISIBLE);
+                }
                 selectedHabit = i;// i = position of the current habit selected
             }
         });

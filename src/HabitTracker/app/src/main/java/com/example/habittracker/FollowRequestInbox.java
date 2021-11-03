@@ -52,7 +52,8 @@ public class FollowRequestInbox {
 
 
         //TODO Implement Database updates
-        request.getSender().followUser(owner);
+
+        //request.getSender().followUser(owner);
         removeRequest(request);
     }
 
@@ -87,3 +88,4 @@ public class FollowRequestInbox {
         return requests;
     }
 }
+
