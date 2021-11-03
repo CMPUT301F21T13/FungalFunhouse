@@ -36,18 +36,23 @@ public class UserProfile extends Profile implements Parcelable {
         }
     };
 
+    //public void followUser(FollowedProfile profile)
     public void followUser(UserProfile profile) {
         following.addProfile(profile);
     }
 
+    //public void unfollowUser(FollowedProfile profile)
     public void unfollowUser(UserProfile profile) {
         following.removeProfile(profile);
     }
 
+
+    //public void addFollower(FollowedProfile profile)
     public void addFollower(UserProfile profile) {
         followers.addProfile(profile);
     }
 
+    //public void removeFollower(FollowedProfile profile)
     public void removeFollower(UserProfile profile) {
         followers.removeProfile(profile);
     }
