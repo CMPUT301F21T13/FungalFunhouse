@@ -7,7 +7,7 @@ public class FollowedProfile extends Profile{
     private String follwer;
 
 
-    public String getFollwer(){
+    public String getFollower(){
         return follwer;
     }
     public void setFollower(String username){
