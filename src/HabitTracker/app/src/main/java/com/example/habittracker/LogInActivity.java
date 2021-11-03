@@ -54,7 +54,6 @@ public class LogInActivity extends AppCompatActivity {
         username = (TextView) findViewById(R.id.username);
         password = (TextView) findViewById(R.id.password);
         newAccount = (TextView) findViewById(R.id.newuser);
-//        TextView forgotPassword = (TextView) findViewById(R.id.forgotpassword); //no "forgot password?" functionality implemented yet
 
         loginButton =  findViewById(R.id.loginbutton);
 
