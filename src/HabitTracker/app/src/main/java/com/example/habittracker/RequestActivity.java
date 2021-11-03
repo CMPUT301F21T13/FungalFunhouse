@@ -35,14 +35,14 @@ public class RequestActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.friend_request);
+        setContentView(R.layout.activity_request);
 
         //test features
         currentUser = new UserProfile("user1");
         UserProfile user2 = new UserProfile("user2");
         UserProfile user3 = new UserProfile("user3");
 
-        profileList = new ArrayList<Profile>();
+        profileList = new ArrayList<>();
         profileList.add(currentUser);
         profileList.add(user2);
         profileList.add(user3);
@@ -50,44 +50,31 @@ public class RequestActivity extends AppCompatActivity {
 
         // set ListView to give us selected_item
         userList = findViewById(R.id.user_list);
-        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                selectedUser = (UserProfile) userList.getItemAtPosition(i);
-            }
-        });
+        userList.setOnItemClickListener((adapterView, view, i, l) -> selectedUser = (UserProfile) userList.getItemAtPosition(i));
 
         // Searches profileList using text entered in usernameText
         usernameText = findViewById(R.id.username_input);
         searchButton = findViewById(R.id.search_button);
         userList = findViewById(R.id.user_list);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                filteredList = filterUsers(profileList, usernameText.getText().toString());
-                UserAdapter = new ProfileListAdapterGrid(RequestActivity.this, filteredList);
-                userList.setAdapter(UserAdapter);
-            }
+        searchButton.setOnClickListener(view -> {
+            filteredList = filterUsers(profileList, usernameText.getText().toString());
+            UserAdapter = new ProfileListAdapterGrid(RequestActivity.this, filteredList);
+            userList.setAdapter(UserAdapter);
         });
 
         // sends a follow request from currentUser to selectedUser (from Listview)
         enterButton = findViewById(R.id.enter_button);
-        enterButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                selectedUser.requestInbox.addRequest(new FollowRequest(currentUser, selectedUser));
-                //set up dialog that says "request sent"
-            }
+        enterButton.setOnClickListener(view -> {
+            selectedUser.getInbox().addRequest(new FollowRequest(currentUser, selectedUser));
+            //set up dialog that says "request sent"
+            //also add in exceptions for if the user is already followed
         });
 
         // Sends User back to HometabActivity
         backButton = findViewById(R.id.back_button);
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(RequestActivity.this, HomeTabActivity.class);
-                startActivity(intent);
-            }
+        backButton.setOnClickListener(view -> {
+            Intent intent = new Intent(RequestActivity.this, HomeTabActivity.class);
+            startActivity(intent);
         });
     }
 
@@ -95,10 +82,10 @@ public class RequestActivity extends AppCompatActivity {
      * This function filters usernames using a user inputted word
      * @param profiles  ArrayList<Profile>: an initial ArrayList of Profiles to be sorted from
      * @param username_to_search String: the word to be filtered
-     * @return ArrayList<Profiles>: the final sorted list
+     * @return ArrayList<Profile>: the final sorted list
      */
     public ArrayList<Profile> filterUsers(ArrayList<Profile> profiles, String username_to_search){
-        ArrayList<Profile> filtered_users = new ArrayList<Profile>();
+        ArrayList<Profile> filtered_users = new ArrayList<>();
         for(Profile i : profiles){
             if (i.getUsername().contains(username_to_search) && i != currentUser){
                 filtered_users.add(i);

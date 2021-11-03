@@ -14,7 +14,6 @@
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
         android:alpha=".75"
-        android:gravity="center"
         android:text="Create Account"
         android:textColor="@color/white"
         android:textSize="40sp" />

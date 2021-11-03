@@ -3,24 +3,21 @@ package com.example.habittracker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
 import java.util.ArrayList;
 
-
 public class UserProfile extends Profile implements Parcelable {
-    private FollowerList following;
     private FollowerList followers;
     private ArrayList<Habit> habitList;
-    public FollowRequestInbox requestInbox;
+    private FollowerList following;
+    private FollowRequestInbox inbox;
 
     public UserProfile(String username) {
         this.username = username;
-        this.following = new FollowerList();
         this.followers = new FollowerList();
-        this.requestInbox = new FollowRequestInbox(this);
         this.habitList = new ArrayList<Habit>();
+        this.following = new FollowerList();
+        this.inbox = new FollowRequestInbox(this);
     }
-
 
     protected UserProfile(Parcel in) {
     }
@@ -53,9 +50,17 @@ public class UserProfile extends Profile implements Parcelable {
         followers.removeProfile(profile);
     }
 
-    public ArrayList<Profile> getFollowing(){return following.getList();}
+    public ArrayList<Profile> getFollowing() {
+        return following.getList();
+    }
 
-    public ArrayList<Profile> getFollowers(){ return followers.getList();  }
+    public ArrayList<Profile> getFollowers() {
+        return followers.getList();
+    }
+
+    public FollowRequestInbox getInbox() {
+        return this.inbox;
+    }
 
     @Override
     public int describeContents() {
@@ -67,7 +72,7 @@ public class UserProfile extends Profile implements Parcelable {
 
     }
 
-    //Habit list functions
+    // Habit list functions
     public Habit getHabit(int position) {
         return habitList.get(position);
     }
@@ -93,4 +98,3 @@ public class UserProfile extends Profile implements Parcelable {
     }
 
 }
-
