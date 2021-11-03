@@ -1,6 +1,7 @@
 package com.example.habittracker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -18,15 +19,15 @@ public class Habit {
 
     //public variables
     public WeeklySchedule weeklySchedule;
-    public CompletionSchedule completionSchedule;
+    public CompletionSchedule completionSchedule; // This may or may not be redundant when habit events are created
 
-    public Habit(String title, String reason, String dateToStart) {
+    public Habit(String title, String reason, String dateToStart, ArrayList<String> weekdays) {
         this.title = title;
         this.reason = reason;
         this.hid = UUID.randomUUID();
         this.dateToStart = dateToStart;
         this.publicVisibility = true;
-        this.weeklySchedule = new WeeklySchedule();
+        this.weeklySchedule = new WeeklySchedule(weekdays);
         this.completionSchedule = new CompletionSchedule();
     }
 
@@ -84,6 +85,10 @@ public class Habit {
         return false;
     }
 
+    public void setHid(UUID hid) {
+        this.hid = hid;
+    }
+
     /**
      * Sets the date to be started
      * @param dateToStart Must be of format yyyy-MM-dd
@@ -99,6 +104,10 @@ public class Habit {
      */
     public void setPublicVisibility(Boolean visibility) {
         this.publicVisibility = visibility;
+    }
+
+    public void setWeeklySchedule(WeeklySchedule weeklySchedule) {
+        this.weeklySchedule = weeklySchedule;
     }
 
     /**

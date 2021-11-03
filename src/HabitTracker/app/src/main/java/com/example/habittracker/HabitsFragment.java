@@ -3,6 +3,7 @@ package com.example.habittracker;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,17 +27,26 @@ public class HabitsFragment extends Fragment {
     //TODO(GLENN): Add visual indicator of how well the user is following the habits
 
     //Declare variables
-    public HabitListAdapter habitListAdapter;
-    public ListView habitListView;
-    public FloatingActionButton addHabit;
-    public FloatingActionButton editHabit;
-    public FloatingActionButton deleteHabit;
-    public UserProfile currentUser;
-    public int selectedHabit;
+    private HabitListAdapter habitListAdapter;
+    private ListView habitListView;
+    private FloatingActionButton addHabit;
+    private FloatingActionButton editHabit;
+    private FloatingActionButton deleteHabit;
+    private UserProfile currentUser;
+    private int selectedHabit;
+    private String usernameStr;
 
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        //Grab the username of the current logged in user
+        Bundle bundle = getArguments();
+        try {
+            usernameStr = bundle.get("user").toString();
+        } catch (NullPointerException e) {
+            Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
+        }
 
         //Hardcoded data for testing habit tab
         currentUser = new UserProfile("user1");
@@ -80,6 +90,7 @@ public class HabitsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddHabitActivity.class);
+                intent.putExtra("user", usernameStr);
                 startActivity(intent);
             }
         });
@@ -88,7 +99,14 @@ public class HabitsFragment extends Fragment {
         editHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO(GLENN): add functionality
+                Intent intent = new Intent(getActivity(), AddHabitActivity.class);
+                //Need to send editing boolean and habit title to the activity
+                intent.putExtra("user", usernameStr);
+                intent.putExtra("editing", true);
+
+                //Change this to hid
+                intent.putExtra("habitTitle", habitListAdapter.getItem(selectedHabit).getTitle());
+                startActivity(intent);
             }
         });
 
@@ -96,7 +114,10 @@ public class HabitsFragment extends Fragment {
         deleteHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO(GLENN): add functionality
+                //TODO(GLENN): when highlight functionality is added, will need to remove ghost highlight after deleting a habit
+                //TODO(GLENN): Need to remove the habit from the database
+                habitListAdapter.remove(habitListAdapter.getItem(selectedHabit));
+                habitListAdapter.notifyDataSetChanged();
             }
         });
 

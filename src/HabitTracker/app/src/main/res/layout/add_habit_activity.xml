@@ -77,8 +77,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
 
-    <TextView
-        android:id="@+id/habit_datetostart_textview"
+    <EditText
+        android:id="@+id/habit_datetostart_editText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -86,6 +86,7 @@
         android:hint='Press "Add Start Date"'
         android:textAlignment="center"
         android:textSize="18sp"
+        android:inputType="none"
         app:layout_constraintStart_toEndOf="@+id/habit_startdate_textview"
         app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
 
@@ -97,7 +98,7 @@
         android:layout_marginTop="16dp"
         android:text="Add Start Date"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_datetostart_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_datetostart_editText" />
 
     <TextView
         android:id="@+id/habit_weekdays_textview"
@@ -122,78 +123,104 @@
         app:srcCompat="?attr/actionModeCloseDrawable"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/habit_sunday_chip"
-        android:layout_width="wrap_content"
+    <com.google.android.material.chip.ChipGroup
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="16dp"
-        android:text="S"
+        android:layout_marginTop="420dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_weekdays_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview">
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/habit_monday_chip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="M"
-        app:layout_constraintStart_toEndOf="@+id/habit_sunday_chip"
-        app:layout_constraintTop_toBottomOf="@+id/habit_weekdays_textview" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/habit_sunday_chip"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:checkable="true"
+            android:checked="false"
+            android:text="S" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/habit_tuesday_chip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="T"
-        app:layout_constraintStart_toEndOf="@+id/habit_monday_chip"
-        app:layout_constraintTop_toBottomOf="@+id/habit_weekdays_textview" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/habit_monday_chip"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:checkable="true"
+            android:text="M" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/habit_wednesday_chip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="W"
-        app:layout_constraintStart_toEndOf="@+id/habit_tuesday_chip"
-        app:layout_constraintTop_toBottomOf="@+id/habit_weekdays_textview" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/habit_tuesday_chip"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:checkable="true"
+            android:text="T" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/habit_thursday_chip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="T"
-        app:layout_constraintStart_toEndOf="@+id/habit_wednesday_chip"
-        app:layout_constraintTop_toBottomOf="@+id/habit_weekdays_textview" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/habit_wednesday_chip"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:checkable="true"
+            android:text="W" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/habit_friday_chip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="F"
-        app:layout_constraintStart_toEndOf="@+id/habit_thursday_chip"
-        app:layout_constraintTop_toBottomOf="@+id/habit_weekdays_textview" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/habit_thursday_chip"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:checkable="true"
+            android:text="T" />
 
-    <com.google.android.material.chip.Chip
-        android:id="@+id/habit_saturday_chip"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="S"
-        app:layout_constraintStart_toEndOf="@+id/habit_friday_chip"
-        app:layout_constraintTop_toBottomOf="@+id/habit_weekdays_textview" />
+        <com.google.android.material.chip.Chip
+            android:id="@+id/habit_friday_chip"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:checkable="true"
+            android:text="F" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/habit_saturday_chip"
+            style="@style/customChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:layout_marginTop="16dp"
+            android:checkable="true"
+            android:text="S" />
+    </com.google.android.material.chip.ChipGroup>
 
     <Button
         android:id="@+id/habit_finish_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="64dp"
-        android:layout_marginBottom="148dp"
+        android:layout_marginBottom="136dp"
         android:text="Finish"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Switch
+        android:id="@+id/habit_publicVisibility_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="136dp"
+        android:minHeight="48dp"
+        android:text="Show Followers"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
