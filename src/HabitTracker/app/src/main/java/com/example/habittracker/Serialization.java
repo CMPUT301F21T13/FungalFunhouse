@@ -38,7 +38,7 @@ public class Serialization {
 	private static final String COLLECTION_SOCIAL = "social";
 
 	//profile document keys
-	private static final String KEY_FOLLOWERS = "followers";
+	private static final String KEY_FOLLOWERS = "follower";
 	private static final String KEY_FOLLOWING = "following";
 	private static final String KEY_FOLLOW_REQUESTS = "followRequests";
 
@@ -65,9 +65,8 @@ public class Serialization {
 		ArrayList<String> followRequestSenders = getProfileNames(getRequestSenders(requestInbox));
 
 		Map<String, Object> profile = new HashMap<>();
-		profile.put(KEY_FOLLOWERS, followerNames);
-		profile.put(KEY_FOLLOWING, followingNames);
-		profile.put(KEY_FOLLOW_REQUESTS, followRequestSenders);
+		profile.put("username", username);
+
 
 		db.collection(COLLECTION_USERS).document(username)
 				.set(profile)
@@ -83,6 +82,67 @@ public class Serialization {
 						Log.w(TAG, "Profile writing document", e);
 					}
 				});
+
+		Map<String, Object> followerMap = new HashMap<>();
+		for (String follower : followerNames) {
+			followerMap.put("username", follower);
+		}
+
+		Map<String, Object> followingMap = new HashMap<>();
+		for (String followed : followingNames) {
+			followerMap.put("username", followed);
+		}
+
+		Map<String, Object> requestMap = new HashMap<>();
+		for (String sender : followRequestSenders) {
+			followerMap.put("sender", sender);
+		}
+
+
+
+		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_SOCIAL).document(KEY_FOLLOWERS)
+				.set(followerMap)
+				.addOnSuccessListener(new OnSuccessListener<Void>() {
+					@Override
+					public void onSuccess(Void aVoid) {
+						Log.d(TAG, "Profile successfully written!");
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e) {
+						Log.w(TAG, "Profile writing document", e);
+					}
+				});
+		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_SOCIAL).document(KEY_FOLLOWING)
+				.set(followingMap)
+				.addOnSuccessListener(new OnSuccessListener<Void>() {
+					@Override
+					public void onSuccess(Void aVoid) {
+						Log.d(TAG, "Profile successfully written!");
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e) {
+						Log.w(TAG, "Profile writing document", e);
+					}
+				});
+		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_SOCIAL).document(KEY_FOLLOW_REQUESTS)
+				.set(requestMap)
+				.addOnSuccessListener(new OnSuccessListener<Void>() {
+					@Override
+					public void onSuccess(Void aVoid) {
+						Log.d(TAG, "Profile successfully written!");
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e) {
+						Log.w(TAG, "Profile writing document", e);
+					}
+				});
+		
 		for (Habit habit : habits){
 			addHabit(username, habit);
 		}
