@@ -68,4 +68,8 @@ public class FollowRequestInbox {
     public void setOwner(UserProfile profile) {
         this.owner = profile;
     }
+
+    public ArrayList<FollowRequest> getRequests(){
+        return requests;
+    }
 }
