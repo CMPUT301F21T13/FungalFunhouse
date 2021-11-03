@@ -7,6 +7,7 @@ import android.provider.Telephony;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -34,6 +35,7 @@ public class FriendsFragment extends Fragment {
     ListView friendsList;
     ArrayAdapter<Profile> friendsAdapter;
     UserProfile currentUser;
+    UserProfile followedUser;
     FloatingActionButton requestButton;
     FloatingActionButton mailButton;
 
@@ -51,6 +53,14 @@ public class FriendsFragment extends Fragment {
             friendsAdapter = new ProfileListAdapterGrid(context, currentUser.getFollowing());
             friendsList.setAdapter(friendsAdapter);
         }
+
+        friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                followedUser = (UserProfile) friendsAdapter.getItem(i);
+                ((HomeTabActivity) getActivity()).OpenHabitsFragment(true, followedUser);
+            }
+        });
 
 
         // Sends user to the RequestInboxActivity
