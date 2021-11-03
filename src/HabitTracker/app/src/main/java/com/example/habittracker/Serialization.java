@@ -24,9 +24,7 @@ import java.util.Map;
  * 		Will eventually be used for habit event transactions as well
  */
 public class Serialization {
-	private FirebaseFirestore db;
-
-	private static final Serialization instance = new Serialization();
+	private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 	private static final String TAG = "Serialization";
 
@@ -43,21 +41,13 @@ public class Serialization {
 	private static final String KEY_HABIT_DATE_TO_START = "dateToStart";
 	private static final String KEY_HABIT_WEEKDAYS = "weekdays";
 
-	private Serialization() {
-		db = FirebaseFirestore.getInstance();
-	}
-
-	public static Serialization getInstance() {
-		return instance;
-	}
-
 	/**
 	 * Add a new habit to the user "username" in the firebase database
 	 * @param username User the habit will be added to
 	 * @param habit The new habit to be added to the Users firebase database
 	 * @return true if database transaction was successful, false if unsuccessful
 	 */
-	public boolean addHabit(String username, Habit habit) {
+	public static boolean addHabit(String username, Habit habit) {
 		final boolean[] successFlag = {false};
 		Map<String, Object> habitMap = new HashMap<>();
 		habitMap.put(KEY_HABIT_TITLE, habit.getTitle());
@@ -94,7 +84,7 @@ public class Serialization {
 	 * @param habit The updated habit to be sent to the database
 	 * @return true if database transaction was successful, false if unsuccessful
 	 */
-	public boolean updateHabit(String username, Habit habit) {
+	public static boolean updateHabit(String username, Habit habit) {
 		Map<String, Object> habitMap = new HashMap<>();
 		habitMap.put(KEY_HABIT_TITLE, habit.getTitle());
 		habitMap.put(KEY_HABIT_REASON, habit.getReason());
@@ -125,7 +115,7 @@ public class Serialization {
 	//TODO(GLENN): finish this
 	//W.I.P set to return Habit when complete
 	//cannot figure out how to get data out of onSuccess into scope of getHabit
-	public void getHabit(String username, String habitTitle) {
+	public static void getHabit(String username, String habitTitle) {
 		Habit habit = new Habit();
 
 		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS)

@@ -24,7 +24,6 @@ import java.util.Date;
 public class AddHabitActivity extends AppCompatActivity implements AddHabitCalendarFragment.OnFragmentInteractionListener {
 
     //Database and View declaration
-    Serialization db;
     private TextView activityTitleTextView;
     private EditText dateToStartEditText;
     private EditText titleEditText;
@@ -70,8 +69,6 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         publicVisibilitySwitch = findViewById(R.id.habit_publicVisibility_switch);
         finishButton = findViewById(R.id.habit_finish_button);
         backActionButton = findViewById(R.id.habit_back_floatingbutton);
-
-        db = Serialization.getInstance();
 
         Intent intent = getIntent();
         //usernameStr = intent.getStringExtra("user"); //grabs the current user
@@ -196,7 +193,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
                     habit.setPublicVisibility(publicVisibility);
                     habit.setWeeklySchedule(schedule);
 
-                    if(db.addHabit(usernameStr, habit)){
+                    if(Serialization.addHabit(usernameStr, habit)){
                         finish();
                     }
                     else {
