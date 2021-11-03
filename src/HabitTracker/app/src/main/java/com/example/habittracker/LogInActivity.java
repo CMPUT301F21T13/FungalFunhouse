@@ -71,7 +71,12 @@ public class LogInActivity extends AppCompatActivity {
                     password.setError("Password required");
                     password.requestFocus();
                 } else {
-                    logInUserDB(usernameStr, passwordStr);
+                    if (checkUserExists(usernameStr)) {
+                        //code for log in
+
+                    } else {
+                        Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -119,10 +124,10 @@ public class LogInActivity extends AppCompatActivity {
                 });
     }
 
-    public Boolean checkUserExists(String usernameStr) {
-
+    public Boolean checkUserExists(String username) {
         final Boolean[] returnVal = new Boolean[1];
-        db.collection("users").document(usernameStr).get()
+
+        db.collection("users").document(username).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -140,6 +145,30 @@ public class LogInActivity extends AppCompatActivity {
                     }
                 });
 
+        return returnVal[0];
+    }
+
+    public Boolean verifyPassword(String username, String password) {
+        final Boolean[] returnVal = new Boolean[1];
+
+        db.collection("users").document(username).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        String dbPassword = documentSnapshot.getString(KEY_PASSWORD);
+                        if (dbPassword.equals(password)) {
+                            returnVal[0] = true;
+                        } else {
+                            returnVal[0] = false;
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("verifyPassword", e.toString());
+                    }
+                });
         return returnVal[0];
     }
 
