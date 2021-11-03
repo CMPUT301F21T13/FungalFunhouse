@@ -15,6 +15,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * This is a Fragment for the HABITS tab
@@ -35,10 +43,22 @@ public class HabitsFragment extends Fragment {
     private UserProfile currentUser;
     private int selectedHabit;
     private String usernameStr;
+    private ArrayList<Habit> habitArrayList;
 
+    //Constants
+    private static final String TAG = "HabitsFragment";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.habit_fragment, container, false);
+
+        //Initialize variables
+        habitListView = view.findViewById(R.id.habit_listview);
+        addHabit = view.findViewById(R.id.add_habbit_floating_button);
+        editHabit = view.findViewById(R.id.edit_habit_floating_button);
+        deleteHabit = view.findViewById(R.id.delete_habit_floating_button);
+        editHabit.setVisibility(View.GONE);//Gone until an item on the list is selected
+        deleteHabit.setVisibility(View.GONE);//Gone until an item on the list is selected
 
         //Grab the username of the current logged in user
         Bundle bundle = getArguments();
@@ -58,21 +78,43 @@ public class HabitsFragment extends Fragment {
         testHabit.weeklySchedule.addFriday();
         currentUser.addHabit(testHabit);
 
-        View view = inflater.inflate(R.layout.habit_fragment, container, false);
 
-        if(currentUser.getHabitList() != null){
-            habitListView = view.findViewById(R.id.habit_listview);
-            Context context = getContext();
-            habitListAdapter = new HabitListAdapter(context, currentUser.getHabitList());
-            habitListView.setAdapter(habitListAdapter);
-        }
+        //Hardcode current user for testing
+        usernameStr = "mockUser";
 
-        //Initialize variables
-        addHabit = view.findViewById(R.id.add_habbit_floating_button);
-        editHabit = view.findViewById(R.id.edit_habit_floating_button);
-        deleteHabit = view.findViewById(R.id.delete_habit_floating_button);
-        editHabit.setVisibility(View.GONE);//Gone until an item on the list is selected
-        deleteHabit.setVisibility(View.GONE);//Gone until an item on the list is selected
+
+        habitArrayList = new ArrayList<>();
+        Context context = getContext();
+        habitListAdapter = new HabitListAdapter(context, habitArrayList);
+        habitListView.setAdapter(habitListAdapter);
+
+
+        final CollectionReference habitCollection = Serialization.getHabitCollection(usernameStr);
+        habitCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException error) {
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    Log.d(TAG, doc.getId());
+                    /*
+                    String title = doc.getString("title");
+                    String reason = doc.getString("reason");
+                    String dateToStart = doc.getString("dateToStart");
+                    UUID hid = (UUID) doc.getData().get("hid");
+                    boolean publicVisibility = doc.getBoolean("publicVisibility");
+                    ArrayList<String> weeklySchedule = (ArrayList<String>) doc.getData().get("weekdays");
+                     */
+
+                    Habit habit = Serialization.getHabit(usernameStr, doc.getId());
+                    Log.d(TAG, habit.toString());
+                    habitArrayList.add(habit); //Adding the habits from firestore
+                }
+                habitListAdapter.notifyDataSetChanged();// Notifying the adapter to render new data
+            }
+        });
+
+
+
+
 
         //habitListView listener
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -116,7 +158,16 @@ public class HabitsFragment extends Fragment {
             public void onClick(View view) {
                 //TODO(GLENN): when highlight functionality is added, will need to remove ghost highlight after deleting a habit
                 //TODO(GLENN): Need to remove the habit from the database
-                habitListAdapter.remove(habitListAdapter.getItem(selectedHabit));
+
+                /*
+                Serialization.deleteHabit(usernameStr, habitListAdapter.getItem(selectedHabit));
+
+                final CollectionReference habitCollection = Serialization.getHabitCollection();
+
+                 */
+
+
+
                 habitListAdapter.notifyDataSetChanged();
             }
         });

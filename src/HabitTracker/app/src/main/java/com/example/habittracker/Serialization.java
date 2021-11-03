@@ -4,14 +4,20 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Primary class for all firebase database transactions.
@@ -93,6 +99,8 @@ public class Serialization {
 		habitMap.put(KEY_HABIT_DATE_TO_START, habit.getDateToStart());
 		habitMap.put(KEY_HABIT_WEEKDAYS, habit.weeklySchedule.getSchedule());
 
+		//MAY NEED TO USE .set(data, SetOptions.merge() https://firebase.google.com/docs/firestore/manage-data/add-data
+
 		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS)
 				.document(habit.getTitle()).update(habitMap)
 				.addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -115,25 +123,52 @@ public class Serialization {
 	//TODO(GLENN): finish this
 	//W.I.P set to return Habit when complete
 	//cannot figure out how to get data out of onSuccess into scope of getHabit
-	public static void getHabit(String username, String habitTitle) {
-		Habit habit = new Habit();
+	public static Habit getHabit(String username, String habitTitle) {
+		final Habit[] habit = new Habit[1];
 
-		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS)
-				.document(habitTitle).get()
-				.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-					@Override
-					public void onSuccess(DocumentSnapshot documentSnapshot) {
-						//habit = documentSnapshot.toObject(Habit.class);
-						//This is all a W.I.P
-						Map dbMap = documentSnapshot.getData();
-						habit.setTitle(documentSnapshot.getString("title"));
-						habit.setReason(documentSnapshot.getString("reason"));
-						//Figure out how to set hid, currently the title is the primary distinction
-						habit.setDateToStart(documentSnapshot.getString("dateToStart"));
-						habit.setWeeklySchedule(new WeeklySchedule((ArrayList<String>) dbMap.get("weekdays")));
+		Log.d(TAG, "SHOULD SEE DOCUMENTSNAPSHOT JUST BELOW HERE");
+		Log.d(TAG, "Habit Title :" + habitTitle);
 
-					}
-				});
+		DocumentReference docRef = db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS)
+				.document(habitTitle);
+
+		Source source = Source.DEFAULT;
+
+		docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+			@Override
+			public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+				if(task.isSuccessful()) {
+					DocumentSnapshot document = task.getResult();
+					Map<String, Object> data = document.getData();
+
+					//habit[0] = documentSnapshot.toObject(Habit.class);
+					//This is all a W.I.P
+
+					String title = (String) data.get("title");
+					String reason = (String) data.get("reason");
+					String dateToStart = (String) data.get("dateToStart");
+					boolean publicVisibility = (boolean) data.get("publicVisibility");
+					ArrayList<String> weeklySchedule = (ArrayList<String>) data.get("weekdays");
+
+					habit[0] = new Habit(title, reason, dateToStart, publicVisibility, weeklySchedule);
+
+					/*
+					habit[0].setTitle(data.get("title"));
+					habit[0].setReason(documentSnapshot.getString("reason"));
+					//Figure out how to set hid, currently the title is the primary distinction
+					habit[0].setDateToStart(documentSnapshot.getString("dateToStart"));
+					habit[0].setPublicVisibility(documentSnapshot.getBoolean("publicVisibility"));
+					habit[0].setWeeklySchedule(new WeeklySchedule((ArrayList<String>) dbMap.get("weekdays")));
+					 */
+
+					Log.d(TAG, data.toString());
+					Log.d(TAG, "toObject Habit: " + habit[0].toString());
+
+				}
+			}
+		});
+
+		return habit[0];
 
 	}
 
@@ -142,7 +177,7 @@ public class Serialization {
 	 * @param username The current user logged in
 	 * @param habit The habit to be deleted
 	 */
-	public void deleteHabit(String username, Habit habit) {
+	public static void deleteHabit(String username, Habit habit) {
 		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS)
 				.document(habit.getTitle()).delete()
 				.addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -158,6 +193,10 @@ public class Serialization {
 					}
 				});
 
+	}
+
+	public static CollectionReference getHabitCollection(String username) {
+		return db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS);
 	}
 
 }

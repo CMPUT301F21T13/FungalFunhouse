@@ -50,8 +50,6 @@ public class HomeTabActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             //TODO(GLENN): Change from hardcoded data in HabitsFragment to FireStore DB
 
-
-
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_container, new HabitsFragment());
             ft.commit();
