@@ -1,6 +1,7 @@
 package com.example.habittracker;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,17 +15,19 @@ public class Habit {
     private String reason;
     private UUID hid;
     private String dateToStart;
+    private Boolean publicVisibility;
 
     //public variables
     public WeeklySchedule weeklySchedule;
-    public CompletionSchedule completionSchedule;
+    public CompletionSchedule completionSchedule; // This may or may not be redundant when habit events are created
 
-    public Habit(String title, String reason, String dateToStart) {
+    public Habit(String title, String reason, String dateToStart, ArrayList<String> weekdays) {
         this.title = title;
         this.reason = reason;
         this.hid = UUID.randomUUID();
         this.dateToStart = dateToStart;
-        this.weeklySchedule = new WeeklySchedule();
+        this.publicVisibility = true;
+        this.weeklySchedule = new WeeklySchedule(weekdays);
         this.completionSchedule = new CompletionSchedule();
     }
 
@@ -33,6 +36,7 @@ public class Habit {
         this.reason = "No reason entered";
         this.hid = UUID.randomUUID();
         this.dateToStart = new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //Today's date
+        this.publicVisibility = true;
         this.weeklySchedule = new WeeklySchedule();
         this.completionSchedule = new CompletionSchedule();
     }
@@ -51,6 +55,10 @@ public class Habit {
 
     public String getDateToStart() {
         return dateToStart;
+    }
+
+    public Boolean getPublicVisibility() {
+        return publicVisibility;
     }
 
     public WeeklySchedule getWeeklySchedule() {
@@ -77,12 +85,29 @@ public class Habit {
         return false;
     }
 
+    public void setHid(UUID hid) {
+        this.hid = hid;
+    }
+
     /**
      * Sets the date to be started
      * @param dateToStart Must be of format yyyy-MM-dd
      */
     public void setDateToStart(String dateToStart) {
         this.dateToStart = dateToStart;
+    }
+
+    /**
+     * Set the visibility of the habit for followers. If the Boolean value is true then it is public
+     * if the value is false then it is private.
+     * @param visibility Boolean, true for public, false for private.
+     */
+    public void setPublicVisibility(Boolean visibility) {
+        this.publicVisibility = visibility;
+    }
+
+    public void setWeeklySchedule(WeeklySchedule weeklySchedule) {
+        this.weeklySchedule = weeklySchedule;
     }
 
     /**

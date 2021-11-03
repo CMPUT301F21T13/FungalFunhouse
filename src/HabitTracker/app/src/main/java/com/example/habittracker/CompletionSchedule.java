@@ -9,6 +9,9 @@ import java.util.Hashtable;
  * was completed and not completed. The Keys are Strings of date format yyyy-MM-dd
  * and the Values are boolean representing whether or not the habit was completed
  * on that date.
+ *
+ * NOTE: THIS CLASS MAY BE REDUNDANT WHEN THE HABITEVENT CLASS IS MADE
+ *
  */
 public class CompletionSchedule {
     private Hashtable<String, Boolean> schedule;

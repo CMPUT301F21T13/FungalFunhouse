@@ -3,23 +3,21 @@ package com.example.habittracker;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-
 import java.util.ArrayList;
 
-
 public class UserProfile extends Profile implements Parcelable {
-    private FollowerList following;
     private FollowerList followers;
-    public FollowRequestInbox requestInbox;
-    public HabitList habitList;
+    private ArrayList<Habit> habitList;
+    private FollowerList following;
+    private FollowRequestInbox inbox;
 
     public UserProfile(String username) {
         this.username = username;
-        this.following = new FollowerList();
         this.followers = new FollowerList();
-        this.requestInbox = new FollowRequestInbox(this);
+        this.habitList = new ArrayList<Habit>();
+        this.following = new FollowerList();
+        this.inbox = new FollowRequestInbox(this);
     }
-
 
     protected UserProfile(Parcel in) {
     }
@@ -57,17 +55,21 @@ public class UserProfile extends Profile implements Parcelable {
         followers.removeProfile(profile);
     }
 
-    public ArrayList<Profile> getFollowing(){return following.getList();}
+    public ArrayList<Profile> getFollowing() {
+        return following.getList();
+    }
 
-    public ArrayList<Profile> getFollowers(){ return followers.getList();  }
+    public ArrayList<Profile> getFollowers() {
+        return followers.getList();
+    }
+
+    public FollowRequestInbox getInbox() {
+        return this.inbox;
+    }
 
     public ArrayList<FollowRequest> getRequests(){
-        return requestInbox.getRequests();
+        return inbox.getRequests();
     }
-    public ArrayList<Habit> getHabits(){
-        return habitList.getList();
-    }
-
     @Override
     public int describeContents() {
         return 0;
@@ -77,5 +79,30 @@ public class UserProfile extends Profile implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
 
     }
-}
 
+    // Habit list functions
+    public Habit getHabit(int position) {
+        return habitList.get(position);
+    }
+
+    public void addHabit(Habit habit) {
+        habitList.add(habit);
+    }
+
+    public void removeHabit(Habit habit) {
+        habitList.remove(habit);
+    }
+
+    public void setHabitList(ArrayList<Habit> habitList) {
+        this.habitList = habitList;
+    }
+
+    public void clearList() {
+        habitList.clear();
+    }
+
+    public ArrayList<Habit> getHabitList() {
+        return habitList;
+    }
+
+}

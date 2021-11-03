@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,11 +28,14 @@ public class HomeTabActivity extends AppCompatActivity {
     Button eventsButton;
     Button followButton;
     UserProfile currentUser;
+    FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_tab);
+
+        db = FirebaseFirestore.getInstance();
 
         //this is only for testing purposes
         //and will be replaced upon database implementation
@@ -43,6 +48,10 @@ public class HomeTabActivity extends AppCompatActivity {
         // The Fragment Manager for the four tabs
         // Initializes the Home Tab to show the HABITS section
         if (savedInstanceState == null) {
+            //TODO(GLENN): Change from hardcoded data in HabitsFragment to FireStore DB
+
+
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.add(R.id.fragment_container, new HabitsFragment());
             ft.commit();
@@ -52,7 +61,8 @@ public class HomeTabActivity extends AppCompatActivity {
         habitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Replace the contents of the container with the new fragment
+                //TODO(GLENN): Change from hardcoded data in HabitsFragment to FireStore DB
+
                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.replace(R.id.fragment_container, new HabitsFragment());
                 ft.commit();
