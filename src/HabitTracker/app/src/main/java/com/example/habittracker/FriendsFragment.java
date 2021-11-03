@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Telephony;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +44,18 @@ public class FriendsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        //test for Fragment Arguments
         Bundle bundle = getArguments();
+        try {
+            String usernameStr = bundle.get("user").toString();
+        } catch (NullPointerException e) {
+            Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
+        }
+
         currentUser = bundle.getParcelable("user");
         View view = inflater.inflate(R.layout.friends_fragment, container, false);
 
+        //Create ListView for users
         if (currentUser.getFollowing() != null) {
             friendsList = view.findViewById(R.id.friends_list);
             Context context = getContext();
@@ -54,6 +63,7 @@ public class FriendsFragment extends Fragment {
             friendsList.setAdapter(friendsAdapter);
         }
 
+        //if user clicked, show their habits within the HabitsTab
         friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
