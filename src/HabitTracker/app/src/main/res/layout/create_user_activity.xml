@@ -13,13 +13,11 @@
         android:layout_marginStart="50dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="50dp"
-        android:gravity="center"
         android:alpha=".75"
-        android:text="create user"
+        android:gravity="center"
         android:text="Create Account"
-
         android:textColor="@color/white"
-        android:textSize="40sp"/>
+        android:textSize="40sp" />
 
     <TextView
         android:id="@+id/setcredentials"
