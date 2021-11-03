@@ -4,11 +4,15 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,6 +37,13 @@ public class Serialization {
 	private static final String COLLECTION_HABITS = "habits";
 	private static final String COLLECTION_SOCIAL = "social";
 
+	//profile document keys
+	private static final String KEY_FOLLOWERS = "followers";
+	private static final String KEY_FOLLOWING = "following";
+	private static final String KEY_FOLLOW_REQUESTS = "followRequests";
+
+
+
 	// Habit document keys
 	private static final String KEY_HABIT_TITLE = "title";
 	private static final String KEY_HABIT_REASON = "reason";
@@ -54,12 +65,11 @@ public class Serialization {
 		ArrayList<String> followRequestSenders = getProfileNames(getRequestSenders(requestInbox));
 
 		Map<String, Object> profile = new HashMap<>();
-		profile.put("username", user.getUsername());
-		profile.put("followers", followerNames);
-		profile.put("following", followingNames);
-		profile.put("follow-requests", followRequestSenders);
+		profile.put(KEY_FOLLOWERS, followerNames);
+		profile.put(KEY_FOLLOWING, followingNames);
+		profile.put(KEY_FOLLOW_REQUESTS, followRequestSenders);
 
-		db.collection("UserProfiles").document(username)
+		db.collection(COLLECTION_USERS).document(username)
 				.set(profile)
 				.addOnSuccessListener(new OnSuccessListener<Void>() {
 					@Override
@@ -78,6 +88,44 @@ public class Serialization {
 		}
 
 	}
+	public static UserProfile deserializeUserProfile(String username){
+		UserProfile profile = new UserProfile(username);
+
+
+
+		DocumentReference docRef = db.collection(COLLECTION_USERS).document(username);
+		docRef.get()
+				.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+					ArrayList<String> followerNames;
+					ArrayList<String> followingNames;
+					ArrayList<String> followRequestSenders;
+					@Override
+					public void onSuccess(DocumentSnapshot documentSnapshot) {
+						Map data = documentSnapshot.getData();
+						followerNames = (ArrayList<String>) data.get(KEY_FOLLOWERS);
+						followingNames = (ArrayList<String>) data.get(KEY_FOLLOWING);
+						followRequestSenders = (ArrayList<String>) data.get(KEY_FOLLOW_REQUESTS);
+
+						for (String follower : followerNames) {
+							FollowedProfile f = new FollowedProfile();
+							f.setUsername(follower);
+							f.setFollower(username);
+							profile.addFollower(f);
+						}
+
+						for (String following : followingNames) {
+							FollowedProfile f = new FollowedProfile();
+							f.setUsername(following);
+							f.setFollower(username);
+							profile.addFollower(f);
+						}
+
+					}
+				});
+
+		return profile;
+	}
+
 
 	private static ArrayList<Profile> getRequestSenders(ArrayList<FollowRequest> requests) {
 		ArrayList<Profile> senders = new ArrayList<>();
