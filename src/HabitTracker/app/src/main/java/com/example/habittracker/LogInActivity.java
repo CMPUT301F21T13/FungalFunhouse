@@ -101,39 +101,6 @@ public class LogInActivity extends AppCompatActivity {
 
     }
 
-
-//    public void logInUserDB(String usernameStr, String passwordStr) {
-//        db.collection("users").document(usernameStr).get()
-//                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-//                    @Override
-//                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-//                        if (documentSnapshot.exists()) {
-//                            String username_db = documentSnapshot.getString(KEY_USERNAME);
-//                            String password_db = documentSnapshot.getString(KEY_PASSWORD);
-//                            if (username_db.equals(usernameStr) && password_db.equals(passwordStr)) {
-//                                // user exists
-//                                Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
-//                                Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
-//                                intent.putExtra("user", usernameStr);
-//                                startActivity(intent);
-//                            } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
-//                                password.setError("Incorrect password");
-//                                password.requestFocus();
-//                            }
-//                        } else {
-//                            Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
-//                        }
-//                    }
-//                })
-//                .addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(LogInActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-//                        Log.d(TAG, e.toString()); //will pass exception so we can see error
-//                    }
-//                });
-//    }
-
     public Boolean checkUserExists(String username) { ;
         final Boolean[] returnVal = new Boolean[1];
         returnVal[0] = false;
