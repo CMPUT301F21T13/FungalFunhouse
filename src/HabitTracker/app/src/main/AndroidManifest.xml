@@ -33,6 +33,9 @@
         <activity
             android:name=".LogInActivity"
             android:exported="true" />
+        <activity
+            android:name=".AddHabitActivity"
+            android:exported="true"/>
     </application>
 
 </manifest>
