@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class Serialization {
 
-	FirebaseFirestore db = FirebaseFirestore.getInstance();
+	static FirebaseFirestore db = FirebaseFirestore.getInstance();
 
 	/* Class will contain the methods for 
 	 * I/O with the firestore
@@ -25,10 +25,7 @@ public class Serialization {
 		ArrayList<String> followRequestSenders = getProfileNames(getRequestSenders(requestInbox));
 
 
-
-
 	}
-
 
 	private static ArrayList<Profile> getRequestSenders(ArrayList<FollowRequest> requests){
 		ArrayList<Profile> senders = new ArrayList<>();
