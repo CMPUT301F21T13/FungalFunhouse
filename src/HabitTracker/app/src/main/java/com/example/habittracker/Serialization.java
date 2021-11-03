@@ -19,7 +19,31 @@ public class Serialization {
 		ArrayList<FollowRequest> requestInbox = user.getRequests();
 		ArrayList<Habit> habits = user.getHabits();
 
+		String username = user.getUsername();
+		ArrayList<String> followerNames = getProfileNames(followers);
+		ArrayList<String> followingNames = getProfileNames(following);
+		ArrayList<String> followRequestSenders = getProfileNames(getRequestSenders(requestInbox));
 
 
+
+
+	}
+
+
+	private static ArrayList<Profile> getRequestSenders(ArrayList<FollowRequest> requests){
+		ArrayList<Profile> senders = new ArrayList<>();
+		for (FollowRequest request : requests) {
+			senders.add(request.getTarget());
+		}
+		return senders;
+	}
+ 	private static ArrayList<String> getProfileNames(ArrayList<Profile> users) {
+		ArrayList<String> names = new ArrayList<>();
+
+		for (Profile user : users) {
+			names.add(user.getUsername());
+		}
+
+		return names;
 	}
 }
