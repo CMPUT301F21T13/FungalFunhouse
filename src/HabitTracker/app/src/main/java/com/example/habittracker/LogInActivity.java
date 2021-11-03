@@ -119,5 +119,31 @@ public class LogInActivity extends AppCompatActivity {
                 });
     }
 
+    public Boolean checkUserExists(String usernameStr) {
+
+        final Boolean[] returnVal = new Boolean[1];
+        db.collection("users").document(usernameStr).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            returnVal[0] = true;
+                        } else {
+                            returnVal[0] = false;
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("checkUserExists", e.toString());
+                    }
+                });
+
+        return returnVal[0];
+    }
+
+   
+
 
 }
