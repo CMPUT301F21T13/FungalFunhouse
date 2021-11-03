@@ -46,7 +46,12 @@ public class FollowRequestInbox {
      * @param request FollowRequest: the accepted request (leads to addRequest)
      */
     public void acceptRequest(FollowRequest request) {
-        owner.addFollower(request.getSender());
+        FollowedProfile f = new FollowedProfile();
+        f.setUsername(request.getSender());
+        owner.addFollower(f);
+
+
+        //TODO Implement Database updates
         request.getSender().followUser(owner);
         removeRequest(request);
     }

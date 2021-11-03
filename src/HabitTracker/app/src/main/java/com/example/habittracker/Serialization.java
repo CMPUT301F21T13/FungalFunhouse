@@ -13,6 +13,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,7 +63,7 @@ public class Serialization {
 		String username = user.getUsername();
 		ArrayList<String> followerNames = getProfileNames(followers);
 		ArrayList<String> followingNames = getProfileNames(following);
-		ArrayList<String> followRequestSenders = getProfileNames(getRequestSenders(requestInbox));
+		ArrayList<String> followRequestSenders = getRequestSenders(requestInbox);
 
 		Map<String, Object> profile = new HashMap<>();
 		profile.put("username", username);
@@ -96,9 +97,7 @@ public class Serialization {
 
 	private static void serializeSocials(ArrayList<String> names, String username, String mode) {
 		Map<String, Object> map = new HashMap<>();
-		for (String i : names) {
-			map.put("username", i);
-		}
+		map.put("usernames", names);
 		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_SOCIAL).document(mode)
 				.set(map)
 				.addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -115,49 +114,74 @@ public class Serialization {
 				});
 
 	}
+
 	public static UserProfile deserializeUserProfile(String username){
 		UserProfile profile = new UserProfile(username);
+		ArrayList<String> followerNames;
+		ArrayList<String> followingNames;
+		ArrayList<String> followRequestSenders;
+
+		followerNames = deserializeSocials(username, KEY_FOLLOWERS);
+		followingNames = deserializeSocials(username, KEY_FOLLOWING);
+		followRequestSenders = deserializeSocials(username, KEY_FOLLOW_REQUESTS);
 
 
+		for (String follower : followerNames) {
+			FollowedProfile f = new FollowedProfile();
+			f.setUsername(follower);
+			f.setFollower(username);
+			profile.addFollower(f);
+		}
 
-		DocumentReference docRef = db.collection(COLLECTION_USERS).document(username);
-		docRef.get()
-				.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-					ArrayList<String> followerNames;
-					ArrayList<String> followingNames;
-					ArrayList<String> followRequestSenders;
-					@Override
-					public void onSuccess(DocumentSnapshot documentSnapshot) {
-						Map data = documentSnapshot.getData();
-						followerNames = (ArrayList<String>) data.get(KEY_FOLLOWERS);
-						followingNames = (ArrayList<String>) data.get(KEY_FOLLOWING);
-						followRequestSenders = (ArrayList<String>) data.get(KEY_FOLLOW_REQUESTS);
+		for (String following : followingNames) {
+			FollowedProfile f = new FollowedProfile();
+			f.setUsername(following);
+			f.setFollower(username);
+			profile.followUser(f);
+		}
+		for (String sender : followRequestSenders) {
+			FollowRequest f = new FollowRequest(sender, username);
+			profile.getInbox().addRequest(f);
+		}
 
-						for (String follower : followerNames) {
-							FollowedProfile f = new FollowedProfile();
-							f.setUsername(follower);
-							f.setFollower(username);
-							profile.addFollower(f);
-						}
-
-						for (String following : followingNames) {
-							FollowedProfile f = new FollowedProfile();
-							f.setUsername(following);
-							f.setFollower(username);
-							profile.addFollower(f);
-						}
-
-					}
-				});
 
 		return profile;
 	}
+	private static ArrayList<String> deserializeSocials(String username, String mode) {
+
+		final ArrayList<String>[] names = new ArrayList[]{new ArrayList<>()};
+		DocumentReference docRef = db.collection(COLLECTION_USERS).document(username)
+				.collection(COLLECTION_SOCIAL).document(mode);
+
+		// Source can be CACHE, SERVER, or DEFAULT.
+		Source source = Source.DEFAULT;
+
+		// Get the document, forcing the SDK to use the offline cache
+		docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+			@Override
+			public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+				if (task.isSuccessful()) {
+
+					DocumentSnapshot document = task.getResult();
+					Map<String, Object> data = document.getData();
+					names[0] = (ArrayList<String>) data.get("usernames");
+
+					Log.d(TAG, "Cached document data: " + document.getData());
+				} else {
+					Log.d(TAG, "Cached get failed: ", task.getException());
+				}
+			}
+		});
+
+		return names[0];
+	}
 
 
-	private static ArrayList<Profile> getRequestSenders(ArrayList<FollowRequest> requests) {
-		ArrayList<Profile> senders = new ArrayList<>();
+	private static ArrayList<String> getRequestSenders(ArrayList<FollowRequest> requests) {
+		ArrayList<String> senders = new ArrayList<>();
 		for (FollowRequest request : requests) {
 			senders.add(request.getTarget());
+
 		}
 		return senders;
 	}
