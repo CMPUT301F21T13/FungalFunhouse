@@ -36,7 +36,7 @@ public class RequestAdapter extends ArrayAdapter<FollowRequest> {
 
             TextView request_content = view.findViewById(R.id.username_text_grid);
 
-            String request_text = "Follow request from: " + request.getSender().getUsername();
+            String request_text = "Follow request from: " + request.getSender();
             request_content.setText(request_text);
 
 

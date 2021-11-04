@@ -33,6 +33,7 @@ public class InboxActivity extends AppCompatActivity {
         setContentView(R.layout.request_inbox);
 
         //For testing purposes [REPLACE AFTER DATABASE SERIALIZATION IS COMPLETE]
+        /*
         currentUser = new UserProfile("user1");
         UserProfile user2 = new UserProfile("user2");
         UserProfile user3 = new UserProfile("user3");
@@ -45,7 +46,7 @@ public class InboxActivity extends AppCompatActivity {
 
         acceptButton = findViewById(R.id.accept_button);
         denyButton = findViewById(R.id.deny_button);
-
+         */
         /*
             if(requestAdapter.isEmpty()){
             acceptButton.setVisibility(View.INVISIBLE);

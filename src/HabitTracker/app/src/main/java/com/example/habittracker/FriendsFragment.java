@@ -12,15 +12,27 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import org.w3c.dom.Document;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * This is a Fragment for the FRIENDS tab
@@ -34,11 +46,14 @@ public class FriendsFragment extends Fragment {
     }
 
     ListView friendsList;
-    ArrayAdapter<Profile> friendsAdapter;
+    ArrayAdapter<String> friendsAdapter;
+    ArrayList<String> friendsDataList;
     UserProfile currentUser;
+    String currentUsername;
     UserProfile followedUser;
     FloatingActionButton requestButton;
     FloatingActionButton mailButton;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Nullable
     @Override
@@ -52,29 +67,30 @@ public class FriendsFragment extends Fragment {
             Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
         }
 
-        currentUser = bundle.getParcelable("user");
-        View view = inflater.inflate(R.layout.friends_fragment, container, false);
+        currentUsername = bundle.getString("user");
+        //query the following
 
-        //Create ListView for users
-        if (currentUser.getFollowing() != null) {
-            friendsList = view.findViewById(R.id.friends_list);
-            Context context = getContext();
-            friendsAdapter = new ProfileListAdapterGrid(context, currentUser.getFollowing());
-            friendsList.setAdapter(friendsAdapter);
-        }
+        //Initialize Variables
+        View view = inflater.inflate(R.layout.friends_fragment, container, false);
+        friendsList = view.findViewById(R.id.friends_list);
+        requestButton = view.findViewById(R.id.send_request_activity_button);
+        mailButton = view.findViewById(R.id.mail_inbox_activity_button);
+        friendsDataList = new ArrayList<>();
+        loadDatainList();
+
 
         //if user clicked, show their habits within the HabitsTab
         friendsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                followedUser = (UserProfile) friendsAdapter.getItem(i);
+                //TODO: query the User and pass into hometab
+                db.collection("COLLECTION_USER").document(friendsAdapter.getItem(i)); //username of selected Use
                 ((HomeTabActivity) getActivity()).OpenHabitsFragment(true, followedUser);
             }
         });
 
 
         // Sends user to the RequestInboxActivity
-        requestButton = view.findViewById(R.id.send_request_activity_button);
         requestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +101,6 @@ public class FriendsFragment extends Fragment {
 
 
         // Sends User to the MailActivity
-        mailButton = view.findViewById(R.id.mail_inbox_activity_button);
         mailButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,6 +109,36 @@ public class FriendsFragment extends Fragment {
             }
         });
         return view;
+
+    }
+
+    private void loadDatainList(){
+        db.collection("users").document(currentUsername).collection("following")
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.isEmpty()){
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot d : list) {
+                                Toast.makeText(getActivity(), "Document retrieval successful", Toast.LENGTH_SHORT).show();
+                                String username_db = d.getString("username");
+                                friendsDataList.add(username_db);
+                            }
+                            friendsAdapter = new ArrayAdapter<String>(getActivity(), R.layout.user_content, friendsDataList);
+                            friendsList.setAdapter(friendsAdapter);
+                        }else{
+                            Toast.makeText(getActivity(), "No Documents found", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getActivity(), "Error, query failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 }

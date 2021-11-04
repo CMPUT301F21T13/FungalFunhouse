@@ -193,12 +193,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
                     habit.setPublicVisibility(publicVisibility);
                     habit.setWeeklySchedule(schedule);
 
-                    if(Serialization.addHabit(usernameStr, habit)){
-                        finish();
-                    }
-                    else {
-                        Toast.makeText(AddHabitActivity.this, "Database Error, try again", Toast.LENGTH_LONG).show();
-                    }
+
 
                 }
                 else { //Editing a habit

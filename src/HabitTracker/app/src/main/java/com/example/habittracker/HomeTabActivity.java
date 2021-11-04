@@ -32,15 +32,14 @@ public class HomeTabActivity extends AppCompatActivity {
     private Button backButton;
     private UserProfile currentUser;
     FirebaseFirestore db;
+    String currentUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_tab);
 
-        buttonPanel = findViewById(R.id.button_panel);
-        db = FirebaseFirestore.getInstance();
-
+        /*
         //Hardcoded values for testing purposes
         //will be replaced upon database implementation
         currentUser = new UserProfile("user1");
@@ -64,8 +63,15 @@ public class HomeTabActivity extends AppCompatActivity {
         test2Habit.weeklySchedule.addWednesday();
         test2Habit.weeklySchedule.addFriday();
         user2.addHabit(test2Habit);
+        */
+
 
         //Initialize Variables
+        currentUsername = getIntent().getStringExtra("user");
+        currentUser = new UserProfile(currentUsername);
+
+        buttonPanel = findViewById(R.id.button_panel);
+        db = FirebaseFirestore.getInstance();
         habitButton = findViewById(R.id.habit_button);
         dailyButton = findViewById(R.id.daily_button);
         eventsButton = findViewById(R.id.event_button);
@@ -169,7 +175,7 @@ public class HomeTabActivity extends AppCompatActivity {
     public void OpenFriendsFragment(UserProfile userToPrint){
         FriendsFragment fragment = new FriendsFragment();
         Bundle bundle = new Bundle();
-        bundle.putParcelable("user", userToPrint);
+        bundle.putString("user", currentUsername);
         fragment.setArguments(bundle);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

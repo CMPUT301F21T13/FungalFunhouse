@@ -6,16 +6,16 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class UserProfile extends Profile implements Parcelable {
-    private FollowerList followers;
+    private ArrayList<String> followers;
+    private ArrayList<String>following;
     private ArrayList<Habit> habitList;
-    private FollowerList following;
     private FollowRequestInbox inbox;
 
     public UserProfile(String username) {
         this.username = username;
-        this.followers = new FollowerList();
+        this.followers = new ArrayList<String>();
+        this.following = new ArrayList<String>();
         this.habitList = new ArrayList<Habit>();
-        this.following = new FollowerList();
         this.inbox = new FollowRequestInbox(this);
     }
 
@@ -34,28 +34,28 @@ public class UserProfile extends Profile implements Parcelable {
         }
     };
 
-    public void followUser(UserProfile profile) {
-        following.addProfile(profile);
+    public void followUser(String profile) {
+        following.add(profile);
     }
 
-    public void unfollowUser(UserProfile profile) {
-        following.removeProfile(profile);
+    public void unfollowUser(String profile) {
+        following.remove(profile);
     }
 
-    public void addFollower(UserProfile profile) {
-        followers.addProfile(profile);
+    public void addFollower(String profile) {
+        followers.add(profile);
     }
 
-    public void removeFollower(UserProfile profile) {
-        followers.removeProfile(profile);
+    public void removeFollower(String profile) {
+        followers.remove(profile);
     }
 
-    public ArrayList<Profile> getFollowing() {
-        return following.getList();
+    public ArrayList<String> getFollowing() {
+        return this.following;
     }
 
-    public ArrayList<Profile> getFollowers() {
-        return followers.getList();
+    public ArrayList<String> getFollowers() {
+        return this.followers;
     }
 
     public FollowRequestInbox getInbox() {

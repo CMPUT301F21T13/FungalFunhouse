@@ -1,5 +1,7 @@
 package com.example.habittracker;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,7 @@ public class FollowRequestInbox {
 
     private ArrayList<FollowRequest> requests;
     private UserProfile owner;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
      * The constructor method for FollowRequestInbox
@@ -42,9 +45,13 @@ public class FollowRequestInbox {
      * @param request FollowRequest: the accepted request (leads to addRequest)
      */
     public void acceptRequest(FollowRequest request) {
+        //TODO: add sender username to followers, query sender, add following target to
+        /*
+        UserProfile sender = db.collection("users").getId(request.getSender());
         owner.addFollower(request.getSender());
         request.getSender().followUser(owner);
         removeRequest(request);
+         */
     }
 
     /**
