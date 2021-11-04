@@ -1,17 +1,31 @@
 package com.example.habittracker;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * This Activity handles the "User Search function" and allows user to search
@@ -26,44 +40,45 @@ public class RequestActivity extends AppCompatActivity {
     Button enterButton;
     EditText usernameText;
     ListView userList;
-    ArrayAdapter<Profile> UserAdapter;
-    ArrayList<Profile> profileList;
-    ArrayList<Profile> filteredList;
+    ArrayAdapter<String> userAdapter;
+    ArrayList<String> userDataList;
     UserProfile currentUser;
+    String currentUsername;
     UserProfile selectedUser;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
 
-        //test features
-        currentUser = new UserProfile("user1");
-        UserProfile user2 = new UserProfile("user2");
-        UserProfile user3 = new UserProfile("user3");
-
-        profileList = new ArrayList<>();
-        profileList.add(currentUser);
-        profileList.add(user2);
-        profileList.add(user3);
+        try{
+            currentUsername = getIntent().getStringExtra("user");
+        } catch (NullPointerException e){
+            Log.e("RequestActivity: ", "Could not get 'user' from bundle" + e);
+        }
 
 
-        // set ListView to give us selected_item
-        userList = findViewById(R.id.user_list);
-        userList.setOnItemClickListener((adapterView, view, i, l) -> selectedUser = (UserProfile) userList.getItemAtPosition(i));
-
-        // Searches profileList using text entered in usernameText
+        // Initialize Variables
         usernameText = findViewById(R.id.username_input);
         searchButton = findViewById(R.id.search_button);
+        enterButton = findViewById(R.id.enter_button);
+        backButton = findViewById(R.id.back_button);
         userList = findViewById(R.id.user_list);
+        userDataList = new ArrayList<>();
+        filterDataInList("");
+
         searchButton.setOnClickListener(view -> {
-            filteredList = filterUsers(profileList, usernameText.getText().toString());
-            UserAdapter = new ProfileListAdapterGrid(RequestActivity.this, filteredList);
-            userList.setAdapter(UserAdapter);
+            if(usernameText.getText().toString() != null) {
+                filterDataInList(usernameText.getText().toString());
+            }else{
+                filterDataInList("");
+            }
         });
 
+        userList.setOnItemClickListener((adapterView, view, i, l) -> selectedUser = (UserProfile) userList.getItemAtPosition(i));
+
         // sends a follow request from currentUser to selectedUser (from Listview)
-        enterButton = findViewById(R.id.enter_button);
         enterButton.setOnClickListener(view -> {
             //TODO: implement an addFollowRequest from currentUser to selectedUser
             //set up dialog that says "request sent"
@@ -71,7 +86,6 @@ public class RequestActivity extends AppCompatActivity {
         });
 
         // Sends User back to HometabActivity
-        backButton = findViewById(R.id.back_button);
         backButton.setOnClickListener(view -> {
             Intent intent = new Intent(RequestActivity.this, HomeTabActivity.class);
             startActivity(intent);
@@ -79,18 +93,34 @@ public class RequestActivity extends AppCompatActivity {
     }
 
     /**
-     * This function filters usernames using a user inputted word
-     * @param profiles  ArrayList<Profile>: an initial ArrayList of Profiles to be sorted from
-     * @param username_to_search String: the word to be filtered
-     * @return ArrayList<Profile>: the final sorted list
+     * This method creates a filtered list of usernames that contain filtered_word
+     * To be used in the ListView
+     * @param filtered_text String: the word to filter usernames with
      */
-    public ArrayList<Profile> filterUsers(ArrayList<Profile> profiles, String username_to_search){
-        ArrayList<Profile> filtered_users = new ArrayList<>();
-        for(Profile i : profiles){
-            if (i.getUsername().contains(username_to_search) && i != currentUser){
-                filtered_users.add(i);
-            }
-        }
-        return filtered_users;
-    }//end filterUsers
+    private void filterDataInList(@NonNull String filtered_text){
+        userDataList.clear();
+        db.collection("users")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("Request Activity", document.getId() + " => " + document.getData());
+                                String username_db = document.getString("username");
+                                if(username_db.contains(filtered_text)){
+                                    userDataList.add(username_db);
+                                }
+                            }
+                            userAdapter = new ArrayAdapter<String>(RequestActivity.this, R.layout.user_content, userDataList);
+                            userList.setAdapter(userAdapter);
+                        } else {
+                            Log.d("Request Activity", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+
+    }
 }

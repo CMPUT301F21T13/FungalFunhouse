@@ -55,15 +55,14 @@ public class InboxActivity extends AppCompatActivity {
             Log.e("InboxActivity: ", "Could not get 'user' from bundle" + e);
         }
 
-
+        //initialize variables
         requestList = findViewById(R.id.request_list);
         acceptButton = findViewById(R.id.accept_button);
         denyButton = findViewById(R.id.deny_button);
         backButton = findViewById(R.id.back_button);
         acceptButton.setVisibility(View.GONE);
         denyButton.setVisibility(View.GONE);
-
-        requestDataList = new ArrayList<FollowRequest>();
+        requestDataList = new ArrayList<>();
         loadDataInList();
 
         requestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -96,6 +95,10 @@ public class InboxActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * This method is for loading in the FollowRequestInbox to be displayed by a ListView
+     * If there are no active follow requests the method makes a Toast("No Follow Requests found")
+     */
     private void loadDataInList(){
         db.collection("users").document(currentUsername).collection("followrequestinbox")
                 .get()
@@ -113,7 +116,7 @@ public class InboxActivity extends AppCompatActivity {
                             requestAdapter = new RequestAdapter(InboxActivity.this, requestDataList);
                             requestList.setAdapter(requestAdapter);
                         }else{
-                            Toast.makeText(InboxActivity.this, "No Documents found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(InboxActivity.this, "No Follow Requests found", Toast.LENGTH_SHORT).show();
 
                         }
                     }

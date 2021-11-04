@@ -114,6 +114,10 @@ public class FriendsFragment extends Fragment {
 
     }
 
+    /**
+     * This method is for loading in the followings of a User to be displayed by a ListView
+     * If there are no active followers the method makes a Toast("No followings found")
+     */
     private void loadDataInList(){
         db.collection("users").document(currentUsername).collection("following")
                 .get()
@@ -130,7 +134,7 @@ public class FriendsFragment extends Fragment {
                             friendsAdapter = new ArrayAdapter<String>(getActivity(), R.layout.user_content, friendsDataList);
                             friendsList.setAdapter(friendsAdapter);
                         }else{
-                            Toast.makeText(getActivity(), "No Documents found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "No followings found", Toast.LENGTH_SHORT).show();
 
                         }
                     }
