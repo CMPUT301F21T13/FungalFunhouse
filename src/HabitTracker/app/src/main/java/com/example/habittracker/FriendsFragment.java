@@ -76,7 +76,7 @@ public class FriendsFragment extends Fragment {
         requestButton = view.findViewById(R.id.send_request_activity_button);
         mailButton = view.findViewById(R.id.mail_inbox_activity_button);
         friendsDataList = new ArrayList<>();
-        loadDatainList();
+        loadDataInList();
 
 
         //if user clicked, show their habits within the HabitsTab
@@ -95,6 +95,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), RequestActivity.class);
+                intent.putExtra("user", currentUsername);
                 getActivity().startActivity(intent);
             }
         });
@@ -105,6 +106,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), InboxActivity.class);
+                intent.putExtra("user", currentUsername);
                 getActivity().startActivity(intent);
             }
         });
@@ -112,7 +114,7 @@ public class FriendsFragment extends Fragment {
 
     }
 
-    private void loadDatainList(){
+    private void loadDataInList(){
         db.collection("users").document(currentUsername).collection("following")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
