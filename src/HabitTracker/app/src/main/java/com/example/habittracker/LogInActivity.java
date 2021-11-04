@@ -75,20 +75,24 @@ public class LogInActivity extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                                     if (documentSnapshot.exists()) {
+                                        //user account exists
                                         String username_db = documentSnapshot.getString(KEY_USERNAME);
                                         String password_db = documentSnapshot.getString(KEY_PASSWORD);
                                         if (username_db.equals(usernameStr) && password_db.equals(passwordStr)) {
-                                            // user exists
+                                            // user exists and password is correct for username
                                             Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
                                             Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
                                             intent.putExtra("user", usernameStr);
                                             startActivity(intent);
                                         } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
+                                            //user exists but password is incorrect
                                             password.setError("Incorrect password");
                                             password.requestFocus();
                                         }
                                     } else {
-                                        Toast.makeText(LogInActivity.this, "Account does not exist", Toast.LENGTH_SHORT).show();
+                                        //username cannot be found and so user account does no exist
+                                        username.setError("Account does not exist");
+                                        username.requestFocus();
                                     }
                                 }
                             })
