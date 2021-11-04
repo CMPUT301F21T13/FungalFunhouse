@@ -1,8 +1,16 @@
 package com.example.habittracker;
 
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * This is a class controlling all requests sent to a particular user
@@ -30,6 +38,25 @@ public class FollowRequestInbox {
      */
     public void addRequest(FollowRequest request) {
         requests.add(request);
+        HashMap<String, String> data = new HashMap<>();
+        data.put("sender", request.getSender());
+        data.put("target", request.getTarget());
+        db.collection("users")
+                .document(owner.getUsername()).collection("followrequestinbox")
+                .document(request.getSender())
+                .set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Follow Request Inbox", "Follow Request successfully sent");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Follow Request Inbox", "Follow request failed to send" + e.toString());
+                    }
+                });
     }
 
     /**
