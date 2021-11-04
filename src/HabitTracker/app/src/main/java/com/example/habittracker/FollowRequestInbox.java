@@ -51,7 +51,9 @@ public class FollowRequestInbox {
         owner.addFollower(request.getSender());
         request.getSender().followUser(owner);
         removeRequest(request);
+
          */
+
     }
 
     /**

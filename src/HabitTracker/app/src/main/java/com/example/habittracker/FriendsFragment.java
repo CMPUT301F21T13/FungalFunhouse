@@ -62,12 +62,12 @@ public class FriendsFragment extends Fragment {
         //test for Fragment Arguments
         Bundle bundle = getArguments();
         try {
-            String usernameStr = bundle.get("user").toString();
+             currentUser = bundle.getParcelable("user");
+             currentUsername = currentUser.getUsername();
         } catch (NullPointerException e) {
             Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
         }
 
-        currentUsername = bundle.getString("user");
         //Initialize Variables
         View view = inflater.inflate(R.layout.friends_fragment, container, false);
         friendsList = view.findViewById(R.id.friends_list);

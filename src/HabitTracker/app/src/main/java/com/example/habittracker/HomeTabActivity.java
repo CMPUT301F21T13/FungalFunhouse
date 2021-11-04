@@ -148,7 +148,7 @@ public class HomeTabActivity extends AppCompatActivity {
     public void OpenFriendsFragment(UserProfile userToPrint){
         FriendsFragment fragment = new FriendsFragment();
         Bundle bundle = new Bundle();
-        bundle.putString("user", currentUsername);
+        bundle.putParcelable("user", currentUser);
         fragment.setArguments(bundle);
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();

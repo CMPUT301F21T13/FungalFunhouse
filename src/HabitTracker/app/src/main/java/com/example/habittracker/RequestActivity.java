@@ -40,8 +40,8 @@ public class RequestActivity extends AppCompatActivity {
     Button enterButton;
     EditText usernameText;
     ListView userList;
-    ArrayAdapter<String> userAdapter;
-    ArrayList<String> userDataList;
+    ArrayAdapter<Profile> userAdapter;
+    ArrayList<Profile> userDataList;
     UserProfile currentUser;
     String currentUsername;
     UserProfile selectedUser;
@@ -54,6 +54,7 @@ public class RequestActivity extends AppCompatActivity {
 
         try{
             currentUsername = getIntent().getStringExtra("user");
+            currentUser = new UserProfile(currentUsername);
         } catch (NullPointerException e){
             Log.e("RequestActivity: ", "Could not get 'user' from bundle" + e);
         }
@@ -81,6 +82,7 @@ public class RequestActivity extends AppCompatActivity {
         // sends a follow request from currentUser to selectedUser (from Listview)
         enterButton.setOnClickListener(view -> {
             //TODO: implement an addFollowRequest from currentUser to selectedUser
+            sendFollowRequest(currentUser, selectedUser);
             //set up dialog that says "request sent"
             //also add in exceptions for if the user is already followed
         });
@@ -92,6 +94,9 @@ public class RequestActivity extends AppCompatActivity {
         });
     }
 
+    public void sendFollowRequest(UserProfile currentUser, UserProfile selectedUser){
+
+    }
     /**
      * This method creates a filtered list of usernames that contain filtered_word
      * To be used in the ListView
@@ -109,10 +114,10 @@ public class RequestActivity extends AppCompatActivity {
                                 Log.d("Request Activity", document.getId() + " => " + document.getData());
                                 String username_db = document.getString("username");
                                 if(username_db.contains(filtered_text)){
-                                    userDataList.add(username_db);
+                                    userDataList.add(new UserProfile(username_db));
                                 }
                             }
-                            userAdapter = new ArrayAdapter<String>(RequestActivity.this, R.layout.user_content, userDataList);
+                            userAdapter = new ProfileListAdapterGrid(RequestActivity.this,  userDataList);
                             userList.setAdapter(userAdapter);
                         } else {
                             Log.d("Request Activity", "Error getting documents: ", task.getException());
