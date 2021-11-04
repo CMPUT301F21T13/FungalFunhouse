@@ -51,6 +51,7 @@ public class InboxActivity extends AppCompatActivity {
 
         try{
             currentUsername = getIntent().getStringExtra("user");
+            currentUser = new UserProfile(currentUsername);
         } catch (NullPointerException e){
             Log.e("InboxActivity: ", "Could not get 'user' from bundle" + e);
         }
@@ -90,6 +91,7 @@ public class InboxActivity extends AppCompatActivity {
         //Sends the user back to HomeTabActivity
         backButton.setOnClickListener(view -> {
             Intent intent = new Intent(InboxActivity.this, HomeTabActivity.class);
+            intent.putExtra("user", currentUsername);
             startActivity(intent);
         });
 

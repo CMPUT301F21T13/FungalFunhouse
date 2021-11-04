@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -40,8 +41,12 @@ public class HomeTabActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home_tab);
 
         //Initialize Variables
-        currentUsername = getIntent().getStringExtra("user");
-        currentUser = new UserProfile(currentUsername);
+        try {
+            currentUsername = getIntent().getStringExtra("user");
+            currentUser = new UserProfile(currentUsername);
+        } catch (NullPointerException e) {
+            Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
+        }
 
         buttonPanel = findViewById(R.id.button_panel);
         db = FirebaseFirestore.getInstance();

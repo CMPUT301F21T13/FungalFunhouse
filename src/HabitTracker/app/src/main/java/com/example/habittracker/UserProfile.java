@@ -2,14 +2,24 @@ package com.example.habittracker;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class UserProfile extends Profile implements Parcelable {
     private ArrayList<String> followers;
     private ArrayList<String>following;
     private ArrayList<Habit> habitList;
     private FollowRequestInbox inbox;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public UserProfile(String username) {
         this.username = username;
@@ -34,16 +44,61 @@ public class UserProfile extends Profile implements Parcelable {
         }
     };
 
+    /**
+     * This method takes in a username and sets the current User
+     * to follow the profile user
+     * @param profile String: username of the user to be followed
+     */
     public void followUser(String profile) {
         following.add(profile);
+        HashMap<String, String> data = new HashMap<>();
+        data.put("username", profile);
+        db.collection("users").document(username).collection("following")
+                .document(profile)
+                .set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Followings", "Following sucessfully added");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Following", "Following request failed" + e.toString());
+                    }
+                });
     }
 
     public void unfollowUser(String profile) {
         following.remove(profile);
     }
 
+    /**
+     * This method takes in a username and sets the current user
+     * To have profile User as a follower
+     * @param profile String: username of the new follower to be added
+     */
     public void addFollower(String profile) {
         followers.add(profile);
+        HashMap<String, String> data = new HashMap<>();
+        data.put("username", profile);
+        db.collection("users").document(username).collection("followers")
+                .document(profile)
+                .set(data)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Followers", "Follower sucessfully added");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Following", "Follower request failed" + e.toString());
+                    }
+                });
+
     }
 
     public void removeFollower(String profile) {

@@ -65,6 +65,21 @@ public class FollowRequestInbox {
      */
     public void removeRequest(FollowRequest request) {
         requests.remove(request);
+        db.collection("users").document(owner.getUsername()).collection("followrequestinbox")
+                .document(request.getSender())
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Log.d("Follow Request Inbox", "Follow Request successfully deleted");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Follow Request Inbox", "Follow request failed to delete" + e.toString());
+                    }
+                });
     }
 
     /**
@@ -72,14 +87,12 @@ public class FollowRequestInbox {
      * @param request FollowRequest: the accepted request (leads to addRequest)
      */
     public void acceptRequest(FollowRequest request) {
-        //TODO: add sender username to followers, query sender, add following target to
-        /*
-        UserProfile sender = db.collection("users").getId(request.getSender());
+        // add follower for owner of request
+        // add following for sender of the request
         owner.addFollower(request.getSender());
-        request.getSender().followUser(owner);
+        UserProfile sender = new UserProfile(request.getSender());
+        sender.followUser(owner.getUsername());
         removeRequest(request);
-
-         */
 
     }
 
