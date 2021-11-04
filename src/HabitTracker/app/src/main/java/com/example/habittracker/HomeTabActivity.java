@@ -39,33 +39,6 @@ public class HomeTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_tab);
 
-        /*
-        //Hardcoded values for testing purposes
-        //will be replaced upon database implementation
-        currentUser = new UserProfile("user1");
-        UserProfile user2 = new UserProfile("user2");
-        UserProfile user3 = new UserProfile("user3");
-        currentUser.followUser(user2);
-        currentUser.addFollower(user3);
-
-        Habit testHabit = new Habit();
-        testHabit.setTitle("Water Plants");
-        testHabit.setReason("So they don't die");
-        testHabit.weeklySchedule.addMonday();
-        testHabit.weeklySchedule.addWednesday();
-        testHabit.weeklySchedule.addFriday();
-        currentUser.addHabit(testHabit);
-
-        Habit test2Habit = new Habit();
-        test2Habit.setTitle("Ride Bike");
-        test2Habit.setReason("To exercise");
-        test2Habit.weeklySchedule.addMonday();
-        test2Habit.weeklySchedule.addWednesday();
-        test2Habit.weeklySchedule.addFriday();
-        user2.addHabit(test2Habit);
-        */
-
-
         //Initialize Variables
         currentUsername = getIntent().getStringExtra("user");
         currentUser = new UserProfile(currentUsername);

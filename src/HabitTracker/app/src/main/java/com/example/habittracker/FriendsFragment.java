@@ -68,8 +68,6 @@ public class FriendsFragment extends Fragment {
         }
 
         currentUsername = bundle.getString("user");
-        //query the following
-
         //Initialize Variables
         View view = inflater.inflate(R.layout.friends_fragment, container, false);
         friendsList = view.findViewById(R.id.friends_list);
