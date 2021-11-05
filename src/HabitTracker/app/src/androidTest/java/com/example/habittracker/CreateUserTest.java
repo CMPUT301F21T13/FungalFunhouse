@@ -57,6 +57,22 @@ public class CreateUserTest {
         Espresso.onView(withId(R.id.setpassword)).check(matches(hasErrorText("Password required")));
     }
 
+    @Test
+    public void testInvalidUsernameScenario() throws InterruptedException {
+        // input taken username in username field
+        Espresso.onView(withId(R.id.setusername)).perform(typeText(takenUsername));
+        //close soft keyboard
+        Espresso.closeSoftKeyboard();
+        // input some password in password field
+        Espresso.onView(withId(R.id.setpassword)).perform(typeText(password));
+        // click sign up button
+        Espresso.onView(withId(R.id.signupbutton)).perform(click());
+        // check if correct error message is displayed
+        Thread.sleep(4000);
+        Espresso.onView(withId(R.id.setusername)).check(matches(hasErrorText("Username Taken")));
+
+    }
+
     @After
     public void tearDown() throws Exception {
         Intents.release();
