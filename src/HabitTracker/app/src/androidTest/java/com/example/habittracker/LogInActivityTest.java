@@ -39,6 +39,7 @@ public class LogInActivityTest {
     private String username = "mockUser";
     private String someUsername = "wubba lubba dub dub";
     private String password = "1234";
+    private String somePassword = "oneRingToRuleThemAll";
 
     @Before
     public void setUp() throws Exception {
@@ -62,11 +63,10 @@ public class LogInActivityTest {
 
     @Test
     public void testMissingUsernameScenario() {
-        //click log in button
+        // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
-        //check if correct error message is displayed
+        // check if correct error message is displayed
         Espresso.onView(withId(R.id.username)).check(matches(hasErrorText("Username required")));
-
     }
 
     @Test
@@ -77,6 +77,19 @@ public class LogInActivityTest {
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if correct error message is displayed
         Espresso.onView(withId(R.id.password)).check(matches(hasErrorText("Password required")));
+    }
+
+    @Test
+    public void testInvalidUsernameScenario() throws InterruptedException {
+        // input some username in username field
+        Espresso.onView(withId(R.id.username)).perform(typeText(someUsername));
+        // input some password in password field
+        Espresso.onView(withId(R.id.password)).perform(typeText(somePassword));
+        // click log in button
+        Espresso.onView(withId(R.id.loginbutton)).perform(click());
+        // check if valid error is displayed
+        Thread.sleep(900);
+        Espresso.onView(withId(R.id.username)).check(matches(hasErrorText("Account does not exist")));
 
     }
 
