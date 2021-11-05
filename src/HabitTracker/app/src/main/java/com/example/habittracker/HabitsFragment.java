@@ -188,6 +188,11 @@ public class HabitsFragment extends Fragment {
                                 Log.d(TAG, "Habit deleted");
                                 Toast.makeText(getContext(), "Habit Deleted", Toast.LENGTH_LONG).show();
 
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                                 //Currently have to reload entire data set when deleting a habit
                                 //Possible fix would be to reload this fragment when something is deleted
                                 db.collection("users").document(usernameStr).collection("habits")
