@@ -51,25 +51,33 @@ public class CreateUser extends AppCompatActivity {
                 usernameStr = username.getText().toString();
                 passwordStr = password.getText().toString();
 
-                db.collection("users").document(usernameStr).get()
-                        .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                            @Override
-                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                if (documentSnapshot.exists()) {
-                                    username.setError("Username Taken");
-                                    username.requestFocus();
-                                } else {
-                                    addUser(usernameStr, passwordStr);
+                if (usernameStr.isEmpty()) {
+                    username.setError("Username required");
+                    username.requestFocus();
+                } else if (passwordStr.isEmpty()) {
+                    password.setError("Password required");
+                    password.requestFocus();
+                } else {
+                    db.collection("users").document(usernameStr).get()
+                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                                @Override
+                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                    if (documentSnapshot.exists()) {
+                                        username.setError("Username Taken");
+                                        username.requestFocus();
+                                    } else {
+                                        addUser(usernameStr, passwordStr);
+                                    }
                                 }
-                            }
-                        })
-                        .addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(CreateUser.this, "Error!", Toast.LENGTH_SHORT).show();
-                                Log.d(TAG, e.toString());
-                            }
-                        });
+                            })
+                            .addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Toast.makeText(CreateUser.this, "Error!", Toast.LENGTH_SHORT).show();
+                                    Log.d(TAG, e.toString());
+                                }
+                            });
+                }
             }
         });
     }
