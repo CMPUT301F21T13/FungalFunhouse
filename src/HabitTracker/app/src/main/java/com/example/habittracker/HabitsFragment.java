@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -78,55 +79,48 @@ public class HabitsFragment extends Fragment {
         try {
             usernameStr = bundle.get("user").toString();
         } catch (NullPointerException e) {
-            Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
+            Log.e(TAG, "Could not get 'user' from bundle" + e);
         }
 
         try {
             following = bundle.getBoolean("following");
         } catch (NullPointerException e) {
-            Log.e("HabitsFragment: ", "could not get 'following' from bundle" + e);
+            Log.e(TAG, "could not get 'following' from bundle" + e);
         }
 
         currentUser = bundle.getParcelable("user");
+        usernameStr = currentUser.getUsername();
 
-        // Hardcode current user for testing
-        usernameStr = "mockUser";
 
         habitArrayList = new ArrayList<>();
 
+        //Grab all of the habits from the database and fill the ListView
+        //Use a snapshot listener so whenever the database is updated so is the app
         db.collection("users").document(usernameStr).collection("habits")
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
-                    Log.d(TAG, doc.getId());
-                    String title = doc.getId();
-                    String reason = (String) doc.getData().get("reason");
-                    String dateToStart = (String) doc.getData().get("dateToStart");
-                    boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
-                    ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        habitArrayList.clear();
+                        for(QueryDocumentSnapshot doc: value) {
+                            Log.d(TAG, doc.getId());
+                            String title = (String) doc.getData().get("title");
+                            String reason = (String) doc.getData().get("reason");
+                            String hid = (String) doc.getData().get("hid");
+                            String dateToStart = (String) doc.getData().get("dateToStart");
+                            boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
+                            ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                    Habit habit = new Habit(title, reason, dateToStart, publicVisibility, weekdays);
-                    Log.d(TAG, habit.toString());
-                    habitArrayList.add(habit);
+                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
+                            Log.d(TAG, habit.toString());
+                            habitArrayList.add(habit);
 
-                    Context context = getContext();
-                    habitListAdapter = new HabitListAdapter(context, habitArrayList);
-                    habitListView.setAdapter(habitListAdapter);
+                            Context context = getContext();
+                            habitListAdapter = new HabitListAdapter(context, habitArrayList);
+                            habitListView.setAdapter(habitListAdapter);
+                        }
+                    }
+                });
 
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, e.toString());
-            }
-        });
-
-        Log.d(TAG, String.valueOf(habitArrayList.size()));
-        Context context = getContext();
-        habitListAdapter = new HabitListAdapter(context, habitArrayList);
-        habitListView.setAdapter(habitListAdapter);
 
         // Sets the buttons to not display if the Fragment is currently in following
         // view
@@ -134,6 +128,15 @@ public class HabitsFragment extends Fragment {
             addHabit.setVisibility(View.INVISIBLE);
             editHabit.setVisibility(View.INVISIBLE);
             deleteHabit.setVisibility(View.INVISIBLE);
+
+            //If the habit is private then remove it from the habitlist and notify adapter of change
+            for(Habit habit: habitArrayList) {
+                if(!habit.getPublicVisibility()) {
+                    habitArrayList.remove(habit);
+                }
+            }
+
+            habitListAdapter.notifyDataSetChanged();
         }
         // habitListView listener
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -166,9 +169,7 @@ public class HabitsFragment extends Fragment {
                 // Need to send editing boolean and habit title to the activity
                 intent.putExtra("user", usernameStr);
                 intent.putExtra("editing", true);
-
-                // Change this to hid
-                intent.putExtra("habitTitle", habitListAdapter.getItem(selectedHabit).getTitle());
+                intent.putExtra("habitHID", habitListAdapter.getItem(selectedHabit).getHid());
                 startActivity(intent);
             }
         });
@@ -178,18 +179,23 @@ public class HabitsFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 // TODO(GLENN): when highlight functionality is added, will need to remove ghost
-                // highlight after deleting a habit
-                // TODO(GLENN): Need to remove the habit from the database
 
-                /*
-                 * Serialization.deleteHabit(usernameStr,
-                 * habitListAdapter.getItem(selectedHabit));
-                 * 
-                 * final CollectionReference habitCollection =
-                 * Serialization.getHabitCollection();
-                 * 
-                 */
-
+                db.collection("users").document(usernameStr).collection("habits")
+                        .document(habitListAdapter.getItem(selectedHabit).getHid())
+                        .delete()
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d(TAG, "Habit deleted");
+                                Toast.makeText(getContext(), "Habit Deleted", Toast.LENGTH_LONG).show();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, e.toString());
+                        Toast.makeText(getContext(), "Database Error", Toast.LENGTH_LONG).show();
+                    }
+                });
                 habitListAdapter.notifyDataSetChanged();
             }
         });
