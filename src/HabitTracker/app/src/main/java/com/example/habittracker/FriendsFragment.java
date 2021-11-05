@@ -82,7 +82,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //TODO: query the User and pass into hometab
-                db.collection("COLLECTION_USER").document(friendsAdapter.getItem(i)); //username of selected Use
+                followedUser = new UserProfile(friendsAdapter.getItem(i));
                 ((HomeTabActivity) getActivity()).OpenHabitsFragment(true, followedUser);
             }
         });
