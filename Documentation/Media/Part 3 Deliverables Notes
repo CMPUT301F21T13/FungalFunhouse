@@ -1,0 +1,12 @@
+Database Implementation is not modular.
+-we have trouble with the database taking to long to return queries, this would lead to values not being returned properly in methods (often resulting in NullExceptionPointers)
+-after research ways to implement a modular db we could make any type of implemention work. 
+-posts online noted that the best way to avoid the issues we were having was to not make the db implementation modular.
+-after consulting with our TA we decided to remove modularity (at least for the time being)
+
+
+
+Other Notes:
+-javadoc are incomplete
+-UML diagram is incomplete
+(due to use having only 4 members in our group we ran into time management issues to fill the requirements for part 3) 
