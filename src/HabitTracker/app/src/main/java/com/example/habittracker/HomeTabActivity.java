@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -32,40 +33,23 @@ public class HomeTabActivity extends AppCompatActivity {
     private Button backButton;
     private UserProfile currentUser;
     FirebaseFirestore db;
+    String currentUsername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_tab);
 
+        // Initialize Variables
+        try {
+            currentUsername = getIntent().getStringExtra("user");
+            currentUser = new UserProfile(currentUsername);
+        } catch (NullPointerException e) {
+            Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
+        }
+
         buttonPanel = findViewById(R.id.button_panel);
         db = FirebaseFirestore.getInstance();
-
-        // Hardcoded values for testing purposes
-        // will be replaced upon database implementation
-        currentUser = new UserProfile("user1");
-        UserProfile user2 = new UserProfile("user2");
-        UserProfile user3 = new UserProfile("user3");
-        currentUser.followUser(user2);
-        currentUser.addFollower(user3);
-
-        Habit testHabit = new Habit();
-        testHabit.setTitle("Water Plants");
-        testHabit.setReason("So they don't die");
-        testHabit.weeklySchedule.addMonday();
-        testHabit.weeklySchedule.addWednesday();
-        testHabit.weeklySchedule.addFriday();
-        currentUser.addHabit(testHabit);
-
-        Habit test2Habit = new Habit();
-        test2Habit.setTitle("Ride Bike");
-        test2Habit.setReason("To exercise");
-        test2Habit.weeklySchedule.addMonday();
-        test2Habit.weeklySchedule.addWednesday();
-        test2Habit.weeklySchedule.addFriday();
-        user2.addHabit(test2Habit);
-
-        // Initialize Variables
         habitButton = findViewById(R.id.habit_button);
         dailyButton = findViewById(R.id.daily_button);
         eventsButton = findViewById(R.id.event_button);

@@ -2,20 +2,34 @@ package com.example.habittracker;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+/**
+ * This class is for UserProfiles
+ * It handles instances of habits, followers, followinbox and usernames
+ * For this user
+ */
 public class UserProfile extends Profile implements Parcelable {
-    private FollowerList followers;
+    private ArrayList<String> followers;
+    private ArrayList<String>following;
     private ArrayList<Habit> habitList;
-    private FollowerList following;
     private FollowRequestInbox inbox;
 
     public UserProfile(String username) {
         this.username = username;
-        this.followers = new FollowerList();
+        this.followers = new ArrayList<String>();
+        this.following = new ArrayList<String>();
         this.habitList = new ArrayList<Habit>();
-        this.following = new FollowerList();
         this.inbox = new FollowRequestInbox(this);
     }
 
@@ -34,34 +48,67 @@ public class UserProfile extends Profile implements Parcelable {
         }
     };
 
-    public void followUser(UserProfile profile) {
-        following.addProfile(profile);
+    /**
+     * This method takes in a username and sets the current User
+     * to follow the profile user
+     * @param profile String: username of the user to be followed
+     */
+    public void followUser(String profile) {
+        following.add(profile);
     }
 
-    public void unfollowUser(UserProfile profile) {
-        following.removeProfile(profile);
+    /**
+     * Takes in a profile to unfollow
+     * @param profile String: the user to unfollow
+     */
+    public void unfollowUser(String profile) {
+        following.remove(profile);
     }
 
-    public void addFollower(UserProfile profile) {
-        followers.addProfile(profile);
+    /**
+     * This method takes in a username and sets the current user
+     * To have profile User as a follower
+     * @param profile String: username of the new follower to be added
+     */
+    public void addFollower(String profile) {
+        followers.add(profile);
     }
 
-    public void removeFollower(UserProfile profile) {
-        followers.removeProfile(profile);
+    /**
+     * Takes in a profile to remove
+     * @param profile String: the follower to be removed
+     */
+    public void removeFollower(String profile) {
+        followers.remove(profile);
     }
 
-    public ArrayList<Profile> getFollowing() {
-        return following.getList();
+    /**
+     * Returns a list of usernames this user is following
+     * @return ArrayList<String>: The list of following usernames
+     */
+    public ArrayList<String> getFollowing() {
+        return this.following;
     }
 
-    public ArrayList<Profile> getFollowers() {
-        return followers.getList();
+    /**
+     * Returns a list of usernames this user is being followed by
+     * @return ArrayList<String>: The list of followers usernames
+     */
+    public ArrayList<String> getFollowers() {
+        return this.followers;
     }
 
+    /**
+     * Returns an instance of this inbox
+     * @return FollowRequestInbox: The current inbox
+     */
     public FollowRequestInbox getInbox() {
         return this.inbox;
     }
 
+    public ArrayList<FollowRequest> getRequests(){
+        return inbox.getRequests();
+    }
     @Override
     public int describeContents() {
         return 0;

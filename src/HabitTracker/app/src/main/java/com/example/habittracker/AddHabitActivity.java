@@ -29,11 +29,12 @@ import java.util.Map;
  * This is the activity used for adding new habits to the UserProfile habitlist
  * to be displayed in the Habits tab of HomeTabActivity
  */
-public class AddHabitActivity extends AppCompatActivity implements AddHabitCalendarFragment.OnFragmentInteractionListener {
+public class AddHabitActivity extends AppCompatActivity
+        implements AddHabitCalendarFragment.OnFragmentInteractionListener {
 
     private static final String TAG = "AddHabitActivity";
 
-    //View declaration
+    // View declaration
     private EditText activityTitleEditText;
     private EditText dateToStartEditText;
     private EditText titleEditText;
@@ -50,7 +51,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
     private Button finishButton;
     private FloatingActionButton backActionButton;
 
-    //Variable declaration
+    // Variable declaration
     private String dateToStart;
     private boolean publicVisibility;
     private String usernameStr;
@@ -59,11 +60,11 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
     private WeeklySchedule schedule;
     private Intent intent;
 
-    //Firebase collection constants
+    // Firebase collection constants
     private static final String COLLECTION_USERS = "users";
     private static final String COLLECTION_HABITS = "habits";
 
-    //Habit document keys
+    // Habit document keys
     private static final String KEY_HABIT_TITLE = "title";
     private static final String KEY_HABIT_REASON = "reason";
     private static final String KEY_HABIT_PUBLIC_VISIBILITY = "publicVisibility";
@@ -71,7 +72,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
     private static final String KEY_HABIT_DATE_TO_START = "dateToStart";
     private static final String KEY_HABIT_WEEKDAYS = "weekdays";
 
-    //Database declaration
+    // Database declaration
     private FirebaseFirestore db;
 
     @Override
@@ -97,18 +98,17 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         finishButton = findViewById(R.id.habit_finish_button);
         backActionButton = findViewById(R.id.habit_back_floatingbutton);
 
-        //Grab intent and all data from it
+        // Grab intent and all data from it
         intent = getIntent();
-        usernameStr = intent.getStringExtra("user"); //grabs the current user
+        usernameStr = intent.getStringExtra("user"); // grabs the current user
 
         editing = intent.getBooleanExtra("editing", false);
-
 
         dateToStart = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         schedule = new WeeklySchedule();
 
-        //Pulls up a fragment of a calendar to select start date
-        dateToStartEditText.setText(dateToStart);//default value
+        // Pulls up a fragment of a calendar to select start date
+        dateToStartEditText.setText(dateToStart);// default value
         addStartDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,7 +118,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
             }
         });
 
-        //Public visibility default is true
+        // Public visibility default is true
         publicVisibility = true;
         publicVisibilitySwitch.setChecked(true);
         publicVisibilitySwitch.setOnClickListener(new View.OnClickListener() {
@@ -128,11 +128,11 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
             }
         });
 
-        //Listeners for all the chips
+        // Listeners for all the chips
         sundayChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(schedule.checkSunday()){
+                if (schedule.checkSunday()) {
                     schedule.removeSunday();
                 } else {
                     schedule.addSunday();
@@ -143,7 +143,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         mondayChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(schedule.checkMonday()) {
+                if (schedule.checkMonday()) {
                     schedule.removeMonday();
                 } else {
                     schedule.addMonday();
@@ -154,7 +154,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         tuesdayChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(schedule.checkTuesday()) {
+                if (schedule.checkTuesday()) {
                     schedule.removeTuesday();
                 } else {
                     schedule.addTuesday();
@@ -165,7 +165,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         wednesdayChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(schedule.checkWednesday()) {
+                if (schedule.checkWednesday()) {
                     schedule.removeWednesday();
                 } else {
                     schedule.addWednesday();
@@ -176,7 +176,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         thursdayChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(schedule.checkThursday()) {
+                if (schedule.checkThursday()) {
                     schedule.removeThursday();
                 } else {
                     schedule.addThursday();
@@ -187,7 +187,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         fridayChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(schedule.checkFriday()) {
+                if (schedule.checkFriday()) {
                     schedule.removeFriday();
                 } else {
                     schedule.addFriday();
@@ -198,7 +198,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         saturdayChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(schedule.checkSaturday()) {
+                if (schedule.checkSaturday()) {
                     schedule.removeSaturday();
                 } else {
                     schedule.addSaturday();
@@ -206,51 +206,52 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
             }
         });
 
-
-        //If editing grab the selected habit from the database and fill parameters
-        if(editing) {
+        // If editing grab the selected habit from the database and fill parameters
+        if (editing) {
             db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
-                    .document(intent.getStringExtra("habitHID"))//Grab hid from intent only when editing
+                    .document(intent.getStringExtra("habitHID"))// Grab hid from intent only when editing
                     .get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                @Override
-                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                    if(documentSnapshot.exists()) {
-                        String title = (String) documentSnapshot.getData().get(KEY_HABIT_TITLE);
-                        String reason = (String) documentSnapshot.getData().get(KEY_HABIT_REASON);
-                        String hid = (String) documentSnapshot.getData().get(KEY_HABIT_HID);
-                        String startDate = (String) documentSnapshot.getData().get(KEY_HABIT_DATE_TO_START);
-                        boolean publicVisibility = (boolean) documentSnapshot.getData().get(KEY_HABIT_PUBLIC_VISIBILITY);
-                        ArrayList<String> weekdays = (ArrayList<String>) documentSnapshot.getData().get(KEY_HABIT_WEEKDAYS);
+                        @Override
+                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                            if (documentSnapshot.exists()) {
+                                String title = (String) documentSnapshot.getData().get(KEY_HABIT_TITLE);
+                                String reason = (String) documentSnapshot.getData().get(KEY_HABIT_REASON);
+                                String hid = (String) documentSnapshot.getData().get(KEY_HABIT_HID);
+                                String startDate = (String) documentSnapshot.getData().get(KEY_HABIT_DATE_TO_START);
+                                boolean publicVisibility = (boolean) documentSnapshot.getData()
+                                        .get(KEY_HABIT_PUBLIC_VISIBILITY);
+                                ArrayList<String> weekdays = (ArrayList<String>) documentSnapshot.getData()
+                                        .get(KEY_HABIT_WEEKDAYS);
 
-                        Habit habit = new Habit(title, reason, hid, startDate, publicVisibility, weekdays);
-                        Log.d(TAG, habit.toString());
-                        fillParameters(habit); //Fill in the parameters using the habit
+                                Habit habit = new Habit(title, reason, hid, startDate, publicVisibility, weekdays);
+                                Log.d(TAG, habit.toString());
+                                fillParameters(habit); // Fill in the parameters using the habit
 
-                        //For Calendar Fragment to show proper date when pulled up
-                        dateToStart = (String) documentSnapshot.getData().get("dateToStart");
-                    }
-                    else {
-                        Toast.makeText(AddHabitActivity.this, "Database Error, try again", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d(TAG, e.toString());
-                    Toast.makeText(AddHabitActivity.this, "Database Error, try again", Toast.LENGTH_LONG).show();
-                }
-            });
+                                // For Calendar Fragment to show proper date when pulled up
+                                dateToStart = (String) documentSnapshot.getData().get("dateToStart");
+                            } else {
+                                Toast.makeText(AddHabitActivity.this, "Database Error, try again", Toast.LENGTH_LONG)
+                                        .show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, e.toString());
+                            Toast.makeText(AddHabitActivity.this, "Database Error, try again", Toast.LENGTH_LONG)
+                                    .show();
+                        }
+                    });
         }
 
-        //Finish button listener
+        // Finish button listener
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if(isEmptyParameters()){
+                if (isEmptyParameters()) {
                     Toast.makeText(AddHabitActivity.this, "Fill all parameters", Toast.LENGTH_LONG).show();
-                }
-                else if( !editing ) { //Not editing, adding a new habit
+                } else if (!editing) { // Not editing, adding a new habit
                     Habit habit = new Habit();
 
                     habit.setTitle(titleEditText.getText().toString());
@@ -258,7 +259,6 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
                     habit.setDateToStart(dateToStart);
                     habit.setPublicVisibility(publicVisibility);
                     habit.setWeeklySchedule(schedule);
-
 
                     Map<String, Object> habitMap = new HashMap<>();
                     habitMap.put(KEY_HABIT_TITLE, habit.getTitle());
@@ -269,27 +269,25 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
                     habitMap.put(KEY_HABIT_WEEKDAYS, habit.weeklySchedule.getSchedule());
 
                     db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
-                            .document(habit.getHid()).set(habitMap)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            .document(habit.getHid()).set(habitMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Log.d(TAG, "The data was submitted");
                                     finish();
                                 }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
+                            }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
                                     Log.d(TAG, e.toString());
-                                    Toast.makeText(AddHabitActivity.this, "Database Error, try again", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(AddHabitActivity.this, "Database Error, try again",
+                                            Toast.LENGTH_LONG).show();
                                 }
                             });
-                }
-                else { //Editing a habit
-                    //Grab hid from intent only when editing
+                } else { // Editing a habit
+                         // Grab hid from intent only when editing
                     providedHID = intent.getStringExtra("habitHID");
 
-                    //habitMap used to update the contents of a habit document in the database
+                    // habitMap used to update the contents of a habit document in the database
                     Map<String, Object> habitMap = new HashMap<>();
                     habitMap.put(KEY_HABIT_TITLE, titleEditText.getText().toString());
                     habitMap.put(KEY_HABIT_REASON, reasonEditText.getText().toString());
@@ -298,22 +296,21 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
                     habitMap.put(KEY_HABIT_DATE_TO_START, dateToStart);
                     habitMap.put(KEY_HABIT_WEEKDAYS, schedule.getSchedule());
 
-
                     db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
-                            .document(providedHID).update(habitMap)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            .document(providedHID).update(habitMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Log.d(TAG, "The data was updated");
                                     finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d(TAG, e.toString());
-                            Toast.makeText(AddHabitActivity.this, "Database Error, try again", Toast.LENGTH_LONG).show();
-                        }
-                    });
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    Log.d(TAG, e.toString());
+                                    Toast.makeText(AddHabitActivity.this, "Database Error, try again",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
 
                 }
 
@@ -331,7 +328,9 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
 
     /**
      * Grabs the selected date from the AddHabitCalendarFragment
-     * @param dateToStart The date provided in yyyy-MM-dd format from the calendar fragment
+     * 
+     * @param dateToStart The date provided in yyyy-MM-dd format from the calendar
+     *                    fragment
      */
     @Override
     public void onConfirmPressed(String dateToStart) {
@@ -340,8 +339,9 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
     }
 
     /**
-     * Inserts the proper dateToStart in the bundle of the fragment returned
-     * in order for the calendar widget to display the properly selected date
+     * Inserts the proper dateToStart in the bundle of the fragment returned in
+     * order for the calendar widget to display the properly selected date
+     * 
      * @return fragment with arguments in the bundle
      */
     public AddHabitCalendarFragment calendarFragment() {
@@ -357,6 +357,7 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
     /**
      * Call when editing a habit, grabs the data from the database on that specific
      * habit and fills in the parameters (views) on the activity
+     * 
      * @param habit The
      */
     public void fillParameters(Habit habit) {
@@ -366,44 +367,46 @@ public class AddHabitActivity extends AppCompatActivity implements AddHabitCalen
         dateToStartEditText.setText(habit.getDateToStart());
         publicVisibilitySwitch.setChecked(habit.getPublicVisibility());
 
-        //Set chips
+        // Set chips
         ArrayList<String> weekdays = habit.weeklySchedule.getSchedule();
-        for (String day: weekdays) {
-            switch (day){
-                case "Sunday":
-                    sundayChip.setChecked(true);
-                    schedule.addSunday();
-                    break;
-                case "Monday":
-                    mondayChip.setChecked(true);
-                    schedule.addMonday();
-                    break;
-                case "Tuesday":
-                    tuesdayChip.setChecked(true);
-                    schedule.addTuesday();
-                    break;
-                case "Wednesday":
-                    wednesdayChip.setChecked(true);
-                    schedule.addWednesday();
-                    break;
-                case "Thursday":
-                    thursdayChip.setChecked(true);
-                    schedule.addThursday();
-                    break;
-                case "Friday":
-                    fridayChip.setChecked(true);
-                    schedule.addFriday();
-                    break;
-                case "Saturday":
-                    saturdayChip.setChecked(true);
-                    schedule.addSaturday();
-                    break;
+        for (String day : weekdays) {
+            switch (day) {
+            case "Sunday":
+                sundayChip.setChecked(true);
+                schedule.addSunday();
+                break;
+            case "Monday":
+                mondayChip.setChecked(true);
+                schedule.addMonday();
+                break;
+            case "Tuesday":
+                tuesdayChip.setChecked(true);
+                schedule.addTuesday();
+                break;
+            case "Wednesday":
+                wednesdayChip.setChecked(true);
+                schedule.addWednesday();
+                break;
+            case "Thursday":
+                thursdayChip.setChecked(true);
+                schedule.addThursday();
+                break;
+            case "Friday":
+                fridayChip.setChecked(true);
+                schedule.addFriday();
+                break;
+            case "Saturday":
+                saturdayChip.setChecked(true);
+                schedule.addSaturday();
+                break;
             }
         }
     }
 
     /**
-     * Checks if one of the parameters that don't have a default value is not filled in
+     * Checks if one of the parameters that don't have a default value is not filled
+     * in
+     * 
      * @return true if there is an empty parameter, false otherwise
      */
     public boolean isEmptyParameters() {

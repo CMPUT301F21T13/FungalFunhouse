@@ -42,7 +42,8 @@ public class HabitsFragment extends Fragment {
     public HabitsFragment() {
         super(R.layout.habit_fragment);
     }
-    // TODO(GLENN): Add visual indicator of how well the user is following the habits
+    // TODO(GLENN): Add visual indicator of how well the user is following the
+    // habits
 
     // Declare variables
     private HabitListAdapter habitListAdapter;
@@ -82,6 +83,16 @@ public class HabitsFragment extends Fragment {
             Log.e(TAG, "Could not get 'user' from bundle" + e);
         }
 
+        /*
+         * //Hardcoded data for testing habit tab currentUser = new
+         * UserProfile("user1"); Habit testHabit = new Habit();
+         * testHabit.setTitle("Water Plants"); testHabit.setReason("So they don't die");
+         * testHabit.weeklySchedule.addMonday();
+         * testHabit.weeklySchedule.addWednesday();
+         * testHabit.weeklySchedule.addFriday(); currentUser.addHabit(testHabit);
+         */
+        currentUser = bundle.getParcelable("user");
+
         try {
             following = bundle.getBoolean("following");
         } catch (NullPointerException e) {
@@ -91,17 +102,16 @@ public class HabitsFragment extends Fragment {
         currentUser = bundle.getParcelable("user");
         usernameStr = currentUser.getUsername();
 
-
         habitArrayList = new ArrayList<>();
 
-        //Grab all of the habits from the database and fill the ListView
-        //Use a snapshot listener so whenever the database is updated so is the app
+        // Grab all of the habits from the database and fill the ListView
+        // Use a snapshot listener so whenever the database is updated so is the app
         db.collection("users").document(usernameStr).collection("habits")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         habitArrayList.clear();
-                        for(QueryDocumentSnapshot doc: value) {
+                        for (QueryDocumentSnapshot doc : value) {
                             Log.d(TAG, doc.getId());
                             String title = (String) doc.getData().get("title");
                             String reason = (String) doc.getData().get("reason");
@@ -121,7 +131,6 @@ public class HabitsFragment extends Fragment {
                     }
                 });
 
-
         // Sets the buttons to not display if the Fragment is currently in following
         // view
         if (following) {
@@ -129,20 +138,23 @@ public class HabitsFragment extends Fragment {
             editHabit.setVisibility(View.INVISIBLE);
             deleteHabit.setVisibility(View.INVISIBLE);
 
-            //If the habit is private then remove it from the habitlist and notify adapter of change
-            for(Habit habit: habitArrayList) {
-                if(!habit.getPublicVisibility()) {
+            // If the habit is private then remove it from the habitlist and notify adapter
+            // of change
+            for (Habit habit : habitArrayList) {
+                if (!habit.getPublicVisibility()) {
                     habitArrayList.remove(habit);
                 }
             }
 
             habitListAdapter.notifyDataSetChanged();
         }
+
         // habitListView listener
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 // TODO(GLENN): Add highlight functionality to the selected item
+
                 if (!following) {
                     editHabit.setVisibility(View.VISIBLE);
                     deleteHabit.setVisibility(View.VISIBLE);
@@ -181,8 +193,7 @@ public class HabitsFragment extends Fragment {
                 // TODO(GLENN): when highlight functionality is added, will need to remove ghost
 
                 db.collection("users").document(usernameStr).collection("habits")
-                        .document(habitListAdapter.getItem(selectedHabit).getHid())
-                        .delete()
+                        .document(habitListAdapter.getItem(selectedHabit).getHid()).delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
@@ -190,12 +201,12 @@ public class HabitsFragment extends Fragment {
                                 Toast.makeText(getContext(), "Habit Deleted", Toast.LENGTH_LONG).show();
                             }
                         }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, e.toString());
-                        Toast.makeText(getContext(), "Database Error", Toast.LENGTH_LONG).show();
-                    }
-                });
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d(TAG, e.toString());
+                                Toast.makeText(getContext(), "Database Error", Toast.LENGTH_LONG).show();
+                            }
+                        });
                 habitListAdapter.notifyDataSetChanged();
             }
         });
