@@ -37,6 +37,7 @@ public class LogInActivityTest {
     public ActivityScenarioRule<LogInActivity> activityRule = new ActivityScenarioRule<>(LogInActivity.class);
 
     private String username = "mockUser";
+    private String someUsername = "wubba lubba dub dub";
     private String password = "1234";
 
     @Before
@@ -65,6 +66,17 @@ public class LogInActivityTest {
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         //check if correct error message is displayed
         Espresso.onView(withId(R.id.username)).check(matches(hasErrorText("Username required")));
+
+    }
+
+    @Test
+    public void testMissingPasswordScenario() {
+        // input some username in username field
+        Espresso.onView(withId(R.id.username)).perform(typeText(someUsername));
+        // click log in button
+        Espresso.onView(withId(R.id.loginbutton)).perform(click());
+        // check if correct error message is displayed
+        Espresso.onView(withId(R.id.password)).check(matches(hasErrorText("Password required")));
 
     }
 
