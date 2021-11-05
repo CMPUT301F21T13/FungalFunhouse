@@ -189,6 +189,43 @@ public class HabitsFragment extends Fragment {
                             public void onSuccess(Void unused) {
                                 Log.d(TAG, "Habit deleted");
                                 Toast.makeText(getContext(), "Habit Deleted", Toast.LENGTH_LONG).show();
+
+                                //Currently have to reload entire data set when deleting a habit
+                                //Possible fix would be to reload this fragment when something is deleted
+                                db.collection("users").document(usernameStr).collection("habits")
+                                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                                                habitArrayList.clear();
+                                                for (QueryDocumentSnapshot doc : value) {
+                                                    Log.d(TAG, doc.getId());
+                                                    String title = (String) doc.getData().get("title");
+                                                    String reason = (String) doc.getData().get("reason");
+                                                    String hid = (String) doc.getData().get("hid");
+                                                    String dateToStart = (String) doc.getData().get("dateToStart");
+                                                    boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
+                                                    ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
+
+                                                    Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
+                                                    Log.d(TAG, habit.toString());
+
+                                                    habitArrayList.add(habit);
+
+                                                    //For viewing following habits
+                                                    //If the habit is private remove it from the list
+                                                    if(following && !habit.getPublicVisibility()){
+                                                        habitArrayList.remove(habit);
+                                                    }
+
+                                                    Context context = getContext();
+                                                    habitListAdapter = new HabitListAdapter(context, habitArrayList);
+                                                    habitListView.setAdapter(habitListAdapter);
+                                                }
+                                                // If the habit is private then remove it from the habitlist and notify adapter
+                                                // of change
+                                            }
+                                        });
+
                             }
                         }).addOnFailureListener(new OnFailureListener() {
                             @Override
@@ -198,7 +235,7 @@ public class HabitsFragment extends Fragment {
                             }
                         });
 
-                ((HomeTabActivity) getActivity()).OpenHabitsFragment(false, currentUser);
+
 
             }
         });
