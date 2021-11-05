@@ -1,5 +1,8 @@
 package com.example.habittracker;
 
+import static androidx.test.core.app.ApplicationProvider.getApplicationContext;
+
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,10 +54,17 @@ public class FriendsFragment extends Fragment {
     UserProfile currentUser;
     String currentUsername;
     UserProfile followedUser;
+    Context context;
 
     FloatingActionButton requestButton;
     FloatingActionButton mailButton;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    @Override
+    public void onAttach(Context context) {
+        this.context = context;
+        super.onAttach(context);
+    }
 
     @Nullable
     @Override
@@ -133,14 +143,14 @@ public class FriendsFragment extends Fragment {
                             friendsAdapter = new ProfileListAdapterGrid(getActivity(), friendsDataList);
                             friendsList.setAdapter(friendsAdapter);
                         }else{
-                            Toast.makeText(getActivity(), "No followings found", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "No followings found", Toast.LENGTH_SHORT).show();
 
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "Error, query failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error, query failed", Toast.LENGTH_SHORT).show();
             }
         });
 
