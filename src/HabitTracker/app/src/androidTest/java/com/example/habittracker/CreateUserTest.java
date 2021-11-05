@@ -3,6 +3,8 @@ package com.example.habittracker;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.intent.Intents.intended;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
@@ -70,7 +72,20 @@ public class CreateUserTest {
         // check if correct error message is displayed
         Thread.sleep(4000);
         Espresso.onView(withId(R.id.setusername)).check(matches(hasErrorText("Username Taken")));
+    }
 
+    @Test
+    public void testValidUsernameScenario() throws InterruptedException {
+        // input taken username in username field
+        Espresso.onView(withId(R.id.setusername)).perform(typeText(freeUsername));
+        //close soft keyboard
+        Espresso.closeSoftKeyboard();
+        // input some password in password field
+        Espresso.onView(withId(R.id.setpassword)).perform(typeText(password));
+        // click sign up button
+        Espresso.onView(withId(R.id.signupbutton)).perform(click());
+        // checking if next activity is started due to log in
+        
     }
 
     @After
