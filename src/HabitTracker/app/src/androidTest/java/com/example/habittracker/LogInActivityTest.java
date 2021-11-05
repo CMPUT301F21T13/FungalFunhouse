@@ -1,15 +1,18 @@
 package com.example.habittracker;
 
+import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import android.content.ComponentName;
 import android.content.Intent;
 import android.util.Log;
 
@@ -58,7 +61,10 @@ public class LogInActivityTest {
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // checking if next activity is started due to log in
 //        Espresso.onView(withId(R.id.home_tab)).check(matches(isDisplayed()));
-        intended(hasComponent(HomeTabActivity.class.getName()));
+//        intended(hasComponent(HomeTabActivity.class.getName()));
+        intended(toPackage("com.example.habittracker.HomeTabActivity"));
+        // com.example.habittracker.LogInActivity  com.example.habittracker.HomeTabActivity
+
     }
 
     @Test
@@ -88,9 +94,22 @@ public class LogInActivityTest {
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if valid error is displayed
-        Thread.sleep(900);
+        Thread.sleep(1000);
         Espresso.onView(withId(R.id.username)).check(matches(hasErrorText("Account does not exist")));
 
+    }
+
+    @Test
+    public void testValidUsernameAndInvalidPasswordScenario() throws InterruptedException {
+        // input some username in username field
+        Espresso.onView(withId(R.id.username)).perform(typeText(username));
+        // input some password in password field
+        Espresso.onView(withId(R.id.password)).perform(typeText(somePassword));
+        // click log in button
+        Espresso.onView(withId(R.id.loginbutton)).perform(click());
+        // check if valid error is displayed
+        Thread.sleep(1000);
+        Espresso.onView(withId(R.id.password)).check(matches(hasErrorText("Incorrect password")));
     }
 
     @After
