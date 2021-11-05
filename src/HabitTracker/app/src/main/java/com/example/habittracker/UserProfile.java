@@ -48,7 +48,7 @@ public class UserProfile extends Profile implements Parcelable {
             return new UserProfile[size];
         }
     };
-    
+
     /**
      * This method takes in a username and sets the current User
      * to follow the profile user

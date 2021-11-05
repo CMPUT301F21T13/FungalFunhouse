@@ -40,7 +40,7 @@ public class Serialization {
 	//profile document keys
 	private static final String KEY_FOLLOWERS = "follower";
 	private static final String KEY_FOLLOWING = "following";
-	private static final String KEY_FOLLOW_REQUESTS = "followRequests";
+	private static final String KEY_FOLLOW_REQUESTS = "followrequestinbox";
 
 
 
@@ -53,21 +53,20 @@ public class Serialization {
 	private static final String KEY_HABIT_WEEKDAYS = "weekdays";
 
 	public static void serializeUserProfile(UserProfile user) {
-		ArrayList<Profile> followers = user.getFollowers();
-		ArrayList<Profile> following = user.getFollowing();
+		ArrayList<String> followerNames = user.getFollowers();
+		ArrayList<String> followingNames = user.getFollowing();
 		ArrayList<FollowRequest> requestInbox = user.getRequests();
 		ArrayList<Habit> habits = user.getHabitList();
 
 		String username = user.getUsername();
-		ArrayList<String> followerNames = getProfileNames(followers);
-		ArrayList<String> followingNames = getProfileNames(following);
+
 		ArrayList<String> followRequestSenders = getRequestSenders(requestInbox);
 
 		Map<String, Object> profile = new HashMap<>();
 		profile.put("username", username);
 
 
-		db.collection(COLLECTION_USERS).document(username)
+		db.collection("users").document(username)
 				.set(profile)
 				.addOnSuccessListener(new OnSuccessListener<Void>() {
 					@Override
@@ -125,17 +124,11 @@ public class Serialization {
 
 
 		for (String follower : followerNames) {
-			FollowedProfile f = new FollowedProfile();
-			f.setUsername(follower);
-			f.setFollower(username);
-			profile.addFollower(f);
+			profile.addFollower(follower);
 		}
 
 		for (String following : followingNames) {
-			FollowedProfile f = new FollowedProfile();
-			f.setUsername(following);
-			f.setFollower(username);
-			profile.followUser(f);
+			profile.followUser(following);
 		}
 		for (String sender : followRequestSenders) {
 			FollowRequest f = new FollowRequest(sender, username);
