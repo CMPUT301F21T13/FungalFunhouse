@@ -19,9 +19,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
- * This is an Activity for the Home Tab of the Habit Tracker
- * It contains four separate tabs (HABITS, DAIlY, EVENTS, and FRIENDS)
- * And manages/switches between the fragments for each tab
+ * This is an Activity for the Home Tab of the Habit Tracker It contains four
+ * separate tabs (HABITS, DAIlY, EVENTS, and FRIENDS) And manages/switches
+ * between the fragments for each tab
  */
 public class HomeTabActivity extends AppCompatActivity {
 
@@ -40,8 +40,7 @@ public class HomeTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_tab);
 
-
-        //Initialize Variables
+        // Initialize Variables
         try {
             currentUsername = getIntent().getStringExtra("user");
             currentUser = new UserProfile(currentUsername);
@@ -100,14 +99,17 @@ public class HomeTabActivity extends AppCompatActivity {
     }
 
     /**
-     * This method opens a Habit Tab within the home page
-     * It displays and handles all habits for a user
-     * Including their addition, editing, and deletion of a habit
-     * @param following boolean: A flag for if this is a User's habits or FollowedUser's habits
-     * @param userToPrint UserProfile: the current User who's habits we are displaying
+     * This method opens a Habit Tab within the home page It displays and handles
+     * all habits for a user Including their addition, editing, and deletion of a
+     * habit
+     * 
+     * @param following   boolean: A flag for if this is a User's habits or
+     *                    FollowedUser's habits
+     * @param userToPrint UserProfile: the current User who's habits we are
+     *                    displaying
      */
-    public void OpenHabitsFragment(boolean following, UserProfile userToPrint){
-        if(following) {
+    public void OpenHabitsFragment(boolean following, UserProfile userToPrint) {
+        if (following) {
             buttonPanel.setVisibility(View.INVISIBLE);
             backButton.setVisibility(View.VISIBLE);
         }
@@ -124,10 +126,10 @@ public class HomeTabActivity extends AppCompatActivity {
     }
 
     /**
-     * This method opens a Daily tab within the home page
-     * It will display all of a User's daily habits to complete
+     * This method opens a Daily tab within the home page It will display all of a
+     * User's daily habits to complete
      */
-    public void OpenDailyFragment(){
+    public void OpenDailyFragment() {
         DailyFragment fragment = new DailyFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment);
@@ -135,11 +137,11 @@ public class HomeTabActivity extends AppCompatActivity {
     }
 
     /**
-     * This method opens an Event tab within the home page
-     * It will display all of a User's habit events to complete
-     * And will allow for the creation, edition, and deletion of said events
+     * This method opens an Event tab within the home page It will display all of a
+     * User's habit events to complete And will allow for the creation, edition, and
+     * deletion of said events
      */
-    public void OpenEventsFragment(){
+    public void OpenEventsFragment() {
         EventsFragment fragment = new EventsFragment();
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment);
@@ -147,11 +149,12 @@ public class HomeTabActivity extends AppCompatActivity {
     }
 
     /**
-     * This method opens a Friends Tab within the home page
-     * It will display all users the currentUser is following
+     * This method opens a Friends Tab within the home page It will display all
+     * users the currentUser is following
+     * 
      * @param userToPrint UserProfile: the current User we are reading
      */
-    public void OpenFriendsFragment(UserProfile userToPrint){
+    public void OpenFriendsFragment(UserProfile userToPrint) {
         FriendsFragment fragment = new FriendsFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelable("user", userToPrint);

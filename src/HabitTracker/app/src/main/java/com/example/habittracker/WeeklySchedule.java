@@ -59,6 +59,7 @@ public class WeeklySchedule {
         schedule.put(THURSDAY, false);
         schedule.put(FRIDAY, false);
         schedule.put(SATURDAY, false);
+        fillWithArray(weekdays);
 
     }
 

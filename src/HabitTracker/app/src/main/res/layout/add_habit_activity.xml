@@ -5,14 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/habit_header_textview"
+    <EditText
+        android:id="@+id/habit_header_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:inputType="none"
         android:text="Add New Habit:"
         android:textAlignment="center"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,7 +27,7 @@
         android:text="Title:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
     <EditText
         android:id="@+id/habit_title_edittext"
@@ -39,7 +41,7 @@
         android:maxLength="20"
         android:textAlignment="center"
         app:layout_constraintStart_toEndOf="@+id/habit_title_textview"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
     <TextView
         android:id="@+id/habit_reason_textview"
@@ -50,7 +52,7 @@
         android:text="Reason:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
     <EditText
         android:id="@+id/habit_reason_edittext"
@@ -64,7 +66,7 @@
         android:maxLength="30"
         android:textAlignment="center"
         app:layout_constraintStart_toEndOf="@+id/habit_reason_textview"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
     <TextView
         android:id="@+id/habit_startdate_textview"
@@ -75,7 +77,7 @@
         android:text="Start Date:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
     <EditText
         android:id="@+id/habit_datetostart_editText"
@@ -88,7 +90,7 @@
         android:textSize="18sp"
         android:inputType="none"
         app:layout_constraintStart_toEndOf="@+id/habit_startdate_textview"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
     <Button
         android:id="@+id/habit_addstartdate_button"
@@ -109,7 +111,7 @@
         android:text="Weekdays:"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/habit_back_floatingbutton"
@@ -128,7 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="420dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_textview">
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_sunday_chip"

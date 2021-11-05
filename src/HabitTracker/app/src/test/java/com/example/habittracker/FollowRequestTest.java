@@ -3,6 +3,9 @@ package com.example.habittracker;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This is a test method for FollowRequest
+ */
 public class FollowRequestTest {
 
     private FollowRequest mockFollowRequest(){
@@ -10,6 +13,9 @@ public class FollowRequestTest {
         return mockRequest;
     }
 
+    /**
+     * Tests if the sender is in the correct position
+     */
     @Test
     public void testGetSender(){
         FollowRequest mockRequest = mockFollowRequest();
@@ -17,6 +23,9 @@ public class FollowRequestTest {
         assertEquals("User1", sender);
     }
 
+    /**
+     * Tests if the target is in the correct position
+     */
     @Test
     public void testGetTarget(){
         FollowRequest mockRequest = mockFollowRequest();
