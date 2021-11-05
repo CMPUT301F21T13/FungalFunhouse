@@ -38,9 +38,9 @@ public class Serialization {
 	private static final String COLLECTION_SOCIAL = "social";
 
 	//profile document keys
-	private static final String KEY_FOLLOWERS = "follower";
+	private static final String KEY_FOLLOWERS = "followers";
 	private static final String KEY_FOLLOWING = "following";
-	private static final String KEY_FOLLOW_REQUESTS = "followrequestinbox";
+	private static final String KEY_INBOX = "followrequestinbox";
 
 
 
@@ -52,6 +52,10 @@ public class Serialization {
 	private static final String KEY_HABIT_DATE_TO_START = "dateToStart";
 	private static final String KEY_HABIT_WEEKDAYS = "weekdays";
 
+	/**
+	 * This method saves an entire User to the database
+	 * @param user		UserProfile: The User to be saved to the database
+	 */
 	public static void serializeUserProfile(UserProfile user) {
 		ArrayList<String> followerNames = user.getFollowers();
 		ArrayList<String> followingNames = user.getFollowing();
@@ -59,8 +63,6 @@ public class Serialization {
 		ArrayList<Habit> habits = user.getHabitList();
 
 		String username = user.getUsername();
-
-		ArrayList<String> followRequestSenders = getRequestSenders(requestInbox);
 
 		Map<String, Object> profile = new HashMap<>();
 		profile.put("username", username);
@@ -81,110 +83,132 @@ public class Serialization {
 					}
 				});
 
-		serializeSocials(followerNames, username, KEY_FOLLOWERS);
-		serializeSocials(followingNames, username, KEY_FOLLOWING);
-		serializeSocials(followRequestSenders, username, KEY_FOLLOW_REQUESTS);
-
-
-		for (Habit habit : habits){
-			addHabit(username, habit);
+		//Saves all 'Social' elements of a user (following, followers, and inbox)
+		for (String follower : followerNames){
+			addFollow(follower, username, KEY_FOLLOWERS);
+		}
+		for(String following : followingNames){
+			addFollow(following, username, KEY_FOLLOWING);
+		}
+		for(FollowRequest request : requestInbox){
+			addRequest(request);
 		}
 
 	}
 
-	private static void serializeSocials(ArrayList<String> names, String username, String mode) {
-		Map<String, Object> map = new HashMap<>();
-		map.put("usernames", names);
-		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_SOCIAL).document(mode)
-				.set(map)
+
+
+	/**
+	 * A method for serializing a follower or following into the database
+	 * @param followname	String: The username of the follower/following to be placed
+	 * @param username		String: The username of the current User
+	 * @param mode			String: The name of the current collection to be added to
+	 */
+	private static void addFollow(String followname, String username, String mode) {
+		Map<String, Object> data = new HashMap<>();
+		data.put("username", followname);
+		db.collection(COLLECTION_USERS).document(username).collection(mode)
+				.document(followname)
+				.set(data)
 				.addOnSuccessListener(new OnSuccessListener<Void>() {
 					@Override
-					public void onSuccess(Void aVoid) {
-						Log.d(TAG, "Profile successfully written!");
+					public void onSuccess(Void unused) {
+						Log.d("Followings", mode + " sucessfully added");
 					}
 				})
 				.addOnFailureListener(new OnFailureListener() {
 					@Override
 					public void onFailure(@NonNull Exception e) {
-						Log.w(TAG, "Profile writing document", e);
+						Log.d("Following", mode + " request failed" + e.toString());
 					}
 				});
 
-	}
+	}//end addFollow
 
-	public static UserProfile deserializeUserProfile(String username){
-		UserProfile profile = new UserProfile(username);
-		ArrayList<String> followerNames;
-		ArrayList<String> followingNames;
-		ArrayList<String> followRequestSenders;
-
-		followerNames = deserializeSocials(username, KEY_FOLLOWERS);
-		followingNames = deserializeSocials(username, KEY_FOLLOWING);
-		followRequestSenders = deserializeSocials(username, KEY_FOLLOW_REQUESTS);
-
-
-		for (String follower : followerNames) {
-			profile.addFollower(follower);
-		}
-
-		for (String following : followingNames) {
-			profile.followUser(following);
-		}
-		for (String sender : followRequestSenders) {
-			FollowRequest f = new FollowRequest(sender, username);
-			profile.getInbox().addRequest(f);
-		}
-
-
-		return profile;
-	}
-	private static ArrayList<String> deserializeSocials(String username, String mode) {
-
-		final ArrayList<String>[] names = new ArrayList[]{new ArrayList<>()};
-		DocumentReference docRef = db.collection(COLLECTION_USERS).document(username)
-				.collection(COLLECTION_SOCIAL).document(mode);
-
-		// Source can be CACHE, SERVER, or DEFAULT.
-		Source source = Source.DEFAULT;
-
-		// Get the document, forcing the SDK to use the offline cache
-		docRef.get(source).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-			@Override
-			public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-				if (task.isSuccessful()) {
-
-					DocumentSnapshot document = task.getResult();
-					Map<String, Object> data = document.getData();
-					names[0] = (ArrayList<String>) data.get("usernames");
-
-					Log.d(TAG, "Cached document data: " + document.getData());
-				} else {
-					Log.d(TAG, "Cached get failed: ", task.getException());
-				}
-			}
-		});
-
-		return names[0];
-	}
+	/**
+	 * A method for serializing a follower or following into the database
+	 * @param followname	String: The username of the follower/following to be deleted
+	 * @param username		String: The username of the current User
+	 * @param mode			String: The name of the current collection to be deleted from
+	 */
+	private static void deleteFollow(String followname, String username, String mode){
+		db.collection(COLLECTION_USERS).document(username).collection("followers")
+				.document(followname)
+				.delete()
+				.addOnSuccessListener(new OnSuccessListener<Void>() {
+					@Override
+					public void onSuccess(Void unused) {
+						Log.d("Followers", mode+ "sucessfully deleted");
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e) {
+						Log.d("Following", mode + " deletion failed" + e.toString());
+					}
+				});
+	}//end deleteFollow
 
 
-	private static ArrayList<String> getRequestSenders(ArrayList<FollowRequest> requests) {
-		ArrayList<String> senders = new ArrayList<>();
-		for (FollowRequest request : requests) {
-			senders.add(request.getTarget());
+	/**
+	 * This methods adds an inputted request to a User's inbox
+	 * @param fRequest		FollowRequest: The request to be added
+	 * @return
+	 */
+	public static void addRequest(FollowRequest fRequest) {
+		HashMap<String, String> data = new HashMap<>();
+		data.put("sender", fRequest.getSender());
+		data.put("target", fRequest.getTarget());
+		db.collection(COLLECTION_USERS)
+				.document(fRequest.getTarget()).collection(KEY_INBOX)
+				.document(fRequest.getSender())
+				.set(data)
+				.addOnSuccessListener(new OnSuccessListener<Void>() {
+					@Override
+					public void onSuccess(Void unused) {
+						Log.d("Follow Request Inbox", "Follow Request successfully added ");
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e) {
+						Log.d("Follow Request Inbox", "Follow request failed to add " + e.toString());
+					}
+				});
+	}//end addRequest
 
-		}
-		return senders;
-	}
+	/**
+	 * This methods deletes the inputted request from a User's inbox
+	 * @param fRequest		FollowRequest: The request to be deleted
+	 */
+	public static void removeRequest(FollowRequest fRequest){
+		db.collection(COLLECTION_USERS).document(fRequest.getTarget()).collection(KEY_INBOX)
+				.document(fRequest.getSender())
+				.delete()
+				.addOnSuccessListener(new OnSuccessListener<Void>() {
+					@Override
+					public void onSuccess(Void unused) {
+						Log.d("Follow Request Inbox", "Follow Request successfully deleted");
+					}
+				})
+				.addOnFailureListener(new OnFailureListener() {
+					@Override
+					public void onFailure(@NonNull Exception e) {
+						Log.d("Follow Request Inbox", "Follow request failed to delete" + e.toString());
+					}
+				});
+	}//end deleteRequest
 
-	private static ArrayList<String> getProfileNames(ArrayList<Profile> users) {
-		ArrayList<String> names = new ArrayList<>();
+	/**
+	 * This method takes in a Follow Request and deals with
+	 * The addition of followers and followings
+	 * @param fRequest		FollowRequest: The accepted request to be dealt with
+	 */
+	public static void acceptRequest(FollowRequest fRequest){
+		addFollow(fRequest.getSender(), fRequest.getTarget(), KEY_FOLLOWERS);
+		addFollow(fRequest.getTarget(), fRequest.getSender(), KEY_FOLLOWING);
+		removeRequest(fRequest);
 
-		for (Profile user : users) {
-			names.add(user.getUsername());
-		}
-
-		return names;
 	}
 
 	/**

@@ -56,23 +56,6 @@ public class UserProfile extends Profile implements Parcelable {
      */
     public void followUser(String profile) {
         following.add(profile);
-        HashMap<String, String> data = new HashMap<>();
-        data.put("username", profile);
-        db.collection("users").document(username).collection("following")
-                .document(profile)
-                .set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("Followings", "Following sucessfully added");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Following", "Following request failed" + e.toString());
-                    }
-                });
     }
 
     /**
@@ -90,24 +73,6 @@ public class UserProfile extends Profile implements Parcelable {
      */
     public void addFollower(String profile) {
         followers.add(profile);
-        HashMap<String, String> data = new HashMap<>();
-        data.put("username", profile);
-        db.collection("users").document(username).collection("followers")
-                .document(profile)
-                .set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("Followers", "Follower sucessfully added");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Following", "Follower request failed" + e.toString());
-                    }
-                });
-
     }
 
     /**

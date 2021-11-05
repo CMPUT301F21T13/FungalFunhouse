@@ -77,6 +77,7 @@ public class InboxActivity extends AppCompatActivity {
         acceptButton.setOnClickListener(view -> {
             if(selectedRequest != null) {
                 currentUser.getInbox().acceptRequest(selectedRequest);
+                Serialization.acceptRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
                 Toast.makeText(InboxActivity.this, "Request accepted", Toast.LENGTH_SHORT).show();
                 requestList.clearChoices();
@@ -86,6 +87,7 @@ public class InboxActivity extends AppCompatActivity {
         denyButton.setOnClickListener(view -> {
             if(selectedRequest != null) {
                 currentUser.getInbox().denyRequest(selectedRequest);
+                Serialization.removeRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
                 Toast.makeText(InboxActivity.this, "Request Denied", Toast.LENGTH_SHORT).show();
                 requestList.clearChoices(); 

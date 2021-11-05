@@ -22,7 +22,6 @@ public class FollowRequestInbox {
 
     private ArrayList<FollowRequest> requests;
     private UserProfile owner;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     /**
      * The constructor method for FollowRequestInbox
@@ -40,25 +39,6 @@ public class FollowRequestInbox {
      */
     public void addRequest(FollowRequest request) {
         requests.add(request);
-        HashMap<String, String> data = new HashMap<>();
-        data.put("sender", request.getSender());
-        data.put("target", request.getTarget());
-        db.collection("users")
-                .document(owner.getUsername()).collection("followrequestinbox")
-                .document(request.getSender())
-                .set(data)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("Follow Request Inbox", "Follow Request successfully sent");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Follow Request Inbox", "Follow request failed to send" + e.toString());
-                    }
-                });
     }
 
     /**
@@ -67,21 +47,6 @@ public class FollowRequestInbox {
      */
     public void removeRequest(FollowRequest request) {
         requests.remove(request);
-        db.collection("users").document(owner.getUsername()).collection("followrequestinbox")
-                .document(request.getSender())
-                .delete()
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        Log.d("Follow Request Inbox", "Follow Request successfully deleted");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d("Follow Request Inbox", "Follow request failed to delete" + e.toString());
-                    }
-                });
     }
 
     /**

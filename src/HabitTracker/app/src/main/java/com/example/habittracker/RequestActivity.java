@@ -82,7 +82,9 @@ public class RequestActivity extends AppCompatActivity {
         // sends a follow request from currentUser to selectedUser (from Listview)
         enterButton.setOnClickListener(view -> {
             //TODO: implement an addFollowRequest from currentUser to selectedUser
-            selectedUser.getInbox().addRequest(new FollowRequest(currentUser.getUsername(), selectedUser.getUsername()));
+            FollowRequest request = new FollowRequest(currentUser.getUsername(), selectedUser.getUsername());
+            selectedUser.getInbox().addRequest(request);
+            Serialization.addRequest(request);
             Toast.makeText(RequestActivity.this, "Request sent", Toast.LENGTH_SHORT).show();
         });
 

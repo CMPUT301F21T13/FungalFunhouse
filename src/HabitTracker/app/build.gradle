@@ -25,12 +25,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-
-    testOptions {
-        execution 'ANDROIDX_TEST_ORCHESTRATOR'
-
-        unitTests.all {
-            useJUnitPlatform() // <--- this is the important part
+    testOptions{
+        unitTests.all{
+            useJUnitPlatform()
         }
     }
 }
@@ -70,9 +67,6 @@ dependencies {
     //adding dependencies for Junit Testing
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.0.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.0.1'
-
-    //add robotium intent testing
-    androidTestImplementation 'com.jayway.android.robotium:robotium-solo:5.3.1'
 
     // https://firebase.google.com/docs/android/setup#available-libraries
 }
