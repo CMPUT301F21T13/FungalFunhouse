@@ -47,9 +47,9 @@ public class RequestActivityTest {
      */
     @Test
     public void testUserList(){
-        Espresso.onView(withId(R.id.username_input)).perform(typeText("mockUser"));
+        Espresso.onView(withId(R.id.username_input)).perform(typeText("mockUser1"));
         Espresso.onView(withId(R.id.search_button)).perform(click());
-        Espresso.onView(withText("mockUser")).check(matches(isDisplayed()));
+        Espresso.onView(withText("mockUser1")).check(matches(isDisplayed()));
     }
 
     /**

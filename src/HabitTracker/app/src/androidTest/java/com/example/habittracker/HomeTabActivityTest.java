@@ -23,6 +23,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 import org.hamcrest.Matcher;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -128,6 +129,9 @@ public class HomeTabActivityTest {
         Espresso.onView(withId(R.id.request_title)).check(matches(isDisplayed()));
     }
 
-
+    @After
+    public void tearDown() throws Exception {
+        Intents.release();
+    }
 
 }
