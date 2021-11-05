@@ -5,6 +5,7 @@ import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
+import static androidx.test.espresso.matcher.ViewMatchers.hasErrorText;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -44,7 +45,7 @@ public class LogInActivityTest {
     }
 
     @Test
-    public void testUsernameInputScenario() {
+    public void testValidInputScenario() {
         // input a username in username field
         Espresso.onView(withId(R.id.username)).perform(typeText(username));
         // input a password in password field
@@ -56,6 +57,15 @@ public class LogInActivityTest {
         // checking if next activity is started due to log in
 //        Espresso.onView(withId(R.id.home_tab)).check(matches(isDisplayed()));
         intended(hasComponent(HomeTabActivity.class.getName()));
+    }
+
+    @Test
+    public void testMissingUsernameScenario() {
+        //click log in button
+        Espresso.onView(withId(R.id.loginbutton)).perform(click());
+        //check if correct error message is displayed
+        Espresso.onView(withId(R.id.username)).check(matches(hasErrorText("Username required")));
+
     }
 
     @After
