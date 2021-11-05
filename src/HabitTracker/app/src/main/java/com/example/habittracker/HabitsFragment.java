@@ -197,7 +197,9 @@ public class HabitsFragment extends Fragment {
                                 Toast.makeText(getContext(), "Database Error", Toast.LENGTH_LONG).show();
                             }
                         });
-                habitListAdapter.notifyDataSetChanged();
+
+                ((HomeTabActivity) getActivity()).OpenHabitsFragment(false, currentUser);
+
             }
         });
 
