@@ -70,39 +70,7 @@ public class LogInActivity extends AppCompatActivity {
                     password.setError("Password required");
                     password.requestFocus();
                 } else {
-                    db.collection("users").document(usernameStr).get()
-                            .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                @Override
-                                public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                    if (documentSnapshot.exists()) {
-                                        //user account exists
-                                        String username_db = documentSnapshot.getString(KEY_USERNAME);
-                                        String password_db = documentSnapshot.getString(KEY_PASSWORD);
-                                        if (username_db.equals(usernameStr) && password_db.equals(passwordStr)) {
-                                            // user exists and password is correct for username
-                                            Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
-                                            Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
-                                            intent.putExtra("user", usernameStr);
-                                            startActivity(intent);
-                                        } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
-                                            //user exists but password is incorrect
-                                            password.setError("Incorrect password");
-                                            password.requestFocus();
-                                        }
-                                    } else {
-                                        //username cannot be found and so user account does no exist
-                                        username.setError("Account does not exist");
-                                        username.requestFocus();
-                                    }
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(LogInActivity.this, "Error!", Toast.LENGTH_SHORT).show();
-                                    Log.d(TAG, e.toString()); //will pass exception so we can see error
-                                }
-                            });
+                    logInUser(usernameStr, passwordStr);
                 }
             }
         });
@@ -115,5 +83,41 @@ public class LogInActivity extends AppCompatActivity {
             }
         });;
 
+    }
+
+    public void logInUser(String usernameStr, String passwordStr) {
+        db.collection("users").document(usernameStr).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            //user account exists
+                            String username_db = documentSnapshot.getString(KEY_USERNAME);
+                            String password_db = documentSnapshot.getString(KEY_PASSWORD);
+                            if (username_db.equals(usernameStr) && password_db.equals(passwordStr)) {
+                                // user exists and password is correct for username
+                                Toast.makeText(LogInActivity.this, "login successful", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(LogInActivity.this, HomeTabActivity.class);
+                                intent.putExtra("user", usernameStr);
+                                startActivity(intent);
+                            } else if (username_db.equals(usernameStr) && !password_db.equals(passwordStr)){
+                                //user exists but password is incorrect
+                                password.setError("Incorrect password");
+                                password.requestFocus();
+                            }
+                        } else {
+                            //username cannot be found and so user account does no exist
+                            username.setError("Account does not exist");
+                            username.requestFocus();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(LogInActivity.this, "Error!", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, e.toString()); //will pass exception so we can see error
+                    }
+                });
     }
 }
