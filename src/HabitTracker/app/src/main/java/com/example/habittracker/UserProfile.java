@@ -14,6 +14,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This class is for UserProfiles
+ * It handles instances of habits, followers, followinbox and usernames
+ * For this user
+ */
 public class UserProfile extends Profile implements Parcelable {
     private ArrayList<String> followers;
     private ArrayList<String>following;
@@ -70,6 +75,10 @@ public class UserProfile extends Profile implements Parcelable {
                 });
     }
 
+    /**
+     * Takes in a profile to unfollow
+     * @param profile String: the user to unfollow
+     */
     public void unfollowUser(String profile) {
         following.remove(profile);
     }
@@ -101,18 +110,34 @@ public class UserProfile extends Profile implements Parcelable {
 
     }
 
+    /**
+     * Takes in a profile to remove
+     * @param profile String: the follower to be removed
+     */
     public void removeFollower(String profile) {
         followers.remove(profile);
     }
 
+    /**
+     * Returns a list of usernames this user is following
+     * @return ArrayList<String>: The list of following usernames
+     */
     public ArrayList<String> getFollowing() {
         return this.following;
     }
 
+    /**
+     * Returns a list of usernames this user is being followed by
+     * @return ArrayList<String>: The list of followers usernames
+     */
     public ArrayList<String> getFollowers() {
         return this.followers;
     }
 
+    /**
+     * Returns an instance of this inbox
+     * @return FollowRequestInbox: The current inbox
+     */
     public FollowRequestInbox getInbox() {
         return this.inbox;
     }

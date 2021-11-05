@@ -46,8 +46,8 @@ public class FriendsFragment extends Fragment {
     }
 
     ListView friendsList;
-    ArrayAdapter<String> friendsAdapter;
-    ArrayList<String> friendsDataList;
+    ArrayAdapter<Profile> friendsAdapter;
+    ArrayList<Profile> friendsDataList;
     UserProfile currentUser;
     String currentUsername;
     UserProfile followedUser;
@@ -82,7 +82,7 @@ public class FriendsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //TODO: query the User and pass into hometab
-                followedUser = new UserProfile(friendsAdapter.getItem(i));
+                followedUser = (UserProfile) friendsAdapter.getItem(i);
                 ((HomeTabActivity) getActivity()).OpenHabitsFragment(true, followedUser);
             }
         });
@@ -127,9 +127,9 @@ public class FriendsFragment extends Fragment {
                             for (DocumentSnapshot d : list) {
                                 Toast.makeText(getActivity(), "Document retrieval successful", Toast.LENGTH_SHORT).show();
                                 String username_db = d.getString("username");
-                                friendsDataList.add(username_db);
+                                friendsDataList.add(new UserProfile(username_db));
                             }
-                            friendsAdapter = new ArrayAdapter<String>(getActivity(), R.layout.user_content, friendsDataList);
+                            friendsAdapter = new ProfileListAdapterGrid(getActivity(), friendsDataList);
                             friendsList.setAdapter(friendsAdapter);
                         }else{
                             Toast.makeText(getActivity(), "No followings found", Toast.LENGTH_SHORT).show();

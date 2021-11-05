@@ -91,6 +91,7 @@ public class RequestActivity extends AppCompatActivity {
         // Sends User back to HometabActivity
         backButton.setOnClickListener(view -> {
             Intent intent = new Intent(RequestActivity.this, HomeTabActivity.class);
+            intent.putExtra("user", currentUsername);
             startActivity(intent);
         });
     }

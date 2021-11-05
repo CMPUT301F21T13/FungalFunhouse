@@ -33,8 +33,8 @@ public class FollowRequestInbox {
     }
 
     /**
-     * Adds a request to this inbox
-     * @param request FollowRequest: the added request
+     * Adds a request to this inbox (including within the database)
+     * @param request FollowRequest: the request to be added
      */
     public void addRequest(FollowRequest request) {
         requests.add(request);
@@ -60,8 +60,8 @@ public class FollowRequestInbox {
     }
 
     /**
-     * Removes a request from this inbox
-     * @param request FollowRequest: the removed request
+     * Removes a request from this inbox (including from the database)
+     * @param request FollowRequest: the request to be removed
      */
     public void removeRequest(FollowRequest request) {
         requests.remove(request);
@@ -120,5 +120,9 @@ public class FollowRequestInbox {
         this.owner = profile;
     }
 
+    /**
+     * This methods returns the list of all FollowRequests
+     * @return ArrayList<FollowRequest>: List of all requests within this inbox
+     */
     public ArrayList<FollowRequest> getRequests(){return this.requests;}
 }

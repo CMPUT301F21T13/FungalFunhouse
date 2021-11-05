@@ -48,7 +48,6 @@ public class InboxActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.request_inbox);
 
-
         try{
             currentUsername = getIntent().getStringExtra("user");
             currentUser = new UserProfile(currentUsername);
@@ -66,6 +65,7 @@ public class InboxActivity extends AppCompatActivity {
         requestDataList = new ArrayList<>();
         loadDataInList();
 
+        //Once the list is clicked, set buttons to be visible
         requestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -79,6 +79,7 @@ public class InboxActivity extends AppCompatActivity {
             if(selectedRequest != null) {
                 currentUser.getInbox().acceptRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
+                requestList.clearChoices();
             }
         });
 
@@ -86,8 +87,10 @@ public class InboxActivity extends AppCompatActivity {
             if(selectedRequest != null) {
                 currentUser.getInbox().denyRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
+                requestList.clearChoices(); 
             }
         });
+
         //Sends the user back to HomeTabActivity
         backButton.setOnClickListener(view -> {
             Intent intent = new Intent(InboxActivity.this, HomeTabActivity.class);

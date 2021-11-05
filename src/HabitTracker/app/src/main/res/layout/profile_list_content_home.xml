@@ -8,6 +8,9 @@ android:layout_height="match_parent">
         android:text="name"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:textSize="25sp"
+        android:drawableLeft="@drawable/ic_baseline_person_outline_24"
+        android:drawablePadding="10dp"
+        android:drawableTint="#313131"
+        android:textSize="20sp"
         />
 </LinearLayout>
