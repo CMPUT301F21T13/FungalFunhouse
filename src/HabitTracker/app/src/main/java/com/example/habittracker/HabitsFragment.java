@@ -14,14 +14,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -32,8 +41,7 @@ public class HabitsFragment extends Fragment {
     public HabitsFragment() {
         super(R.layout.habit_fragment);
     }
-    // TODO(GLENN): Add visual indicator of how well the user is following the
-    // habits
+    // TODO(GLENN): Add visual indicator of how well the user is following the habits
 
     // Declare variables
     private HabitListAdapter habitListAdapter;
@@ -46,6 +54,7 @@ public class HabitsFragment extends Fragment {
     private String usernameStr;
     private ArrayList<Habit> habitArrayList;
     private boolean following;
+    private FirebaseFirestore db;
 
     // Constants
     private static final String TAG = "HabitsFragment";
@@ -53,6 +62,7 @@ public class HabitsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
+        db = FirebaseFirestore.getInstance();
         View view = inflater.inflate(R.layout.habit_fragment, container, false);
 
         // Initialize variables
@@ -83,32 +93,40 @@ public class HabitsFragment extends Fragment {
         usernameStr = "mockUser";
 
         habitArrayList = new ArrayList<>();
+
+        db.collection("users").document(usernameStr).collection("habits")
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                for(QueryDocumentSnapshot doc: queryDocumentSnapshots) {
+                    Log.d(TAG, doc.getId());
+                    String title = doc.getId();
+                    String reason = (String) doc.getData().get("reason");
+                    String dateToStart = (String) doc.getData().get("dateToStart");
+                    boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
+                    ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
+
+                    Habit habit = new Habit(title, reason, dateToStart, publicVisibility, weekdays);
+                    Log.d(TAG, habit.toString());
+                    habitArrayList.add(habit);
+
+                    Context context = getContext();
+                    habitListAdapter = new HabitListAdapter(context, habitArrayList);
+                    habitListView.setAdapter(habitListAdapter);
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, e.toString());
+            }
+        });
+
+        Log.d(TAG, String.valueOf(habitArrayList.size()));
         Context context = getContext();
         habitListAdapter = new HabitListAdapter(context, habitArrayList);
         habitListView.setAdapter(habitListAdapter);
-
-        final CollectionReference habitCollection = Serialization.getHabitCollection(usernameStr);
-        habitCollection.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
-                    @Nullable FirebaseFirestoreException error) {
-                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                    Log.d(TAG, doc.getId());
-                    /*
-                     * String title = doc.getString("title"); String reason =
-                     * doc.getString("reason"); String dateToStart = doc.getString("dateToStart");
-                     * UUID hid = (UUID) doc.getData().get("hid"); boolean publicVisibility =
-                     * doc.getBoolean("publicVisibility"); ArrayList<String> weeklySchedule =
-                     * (ArrayList<String>) doc.getData().get("weekdays");
-                     */
-
-                    Habit habit = Serialization.getHabit(usernameStr, doc.getId());
-                    Log.d(TAG, habit.toString());
-                    habitArrayList.add(habit); // Adding the habits from firestore
-                }
-                habitListAdapter.notifyDataSetChanged();// Notifying the adapter to render new data
-            }
-        });
 
         // Sets the buttons to not display if the Fragment is currently in following
         // view
