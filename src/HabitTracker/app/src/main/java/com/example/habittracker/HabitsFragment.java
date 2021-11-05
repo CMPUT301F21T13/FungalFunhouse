@@ -126,8 +126,6 @@ public class HabitsFragment extends Fragment {
                             habitListAdapter = new HabitListAdapter(context, habitArrayList);
                             habitListView.setAdapter(habitListAdapter);
                         }
-                        // If the habit is private then remove it from the habitlist and notify adapter
-                        // of change
                     }
                 });
 
