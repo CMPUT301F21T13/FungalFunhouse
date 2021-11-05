@@ -24,7 +24,6 @@ public class UserProfile extends Profile implements Parcelable {
     private ArrayList<String>following;
     private ArrayList<Habit> habitList;
     private FollowRequestInbox inbox;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public UserProfile(String username) {
         this.username = username;
