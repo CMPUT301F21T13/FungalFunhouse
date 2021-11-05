@@ -53,8 +53,7 @@ public class Serialization {
 	 * @param habit The new habit to be added to the Users firebase database
 	 * @return true if database transaction was successful, false if unsuccessful
 	 */
-	public static boolean addHabit(String username, Habit habit) {
-		final boolean[] successFlag = {false};
+	public static void addHabit(String username, Habit habit) {
 		Map<String, Object> habitMap = new HashMap<>();
 		habitMap.put(KEY_HABIT_TITLE, habit.getTitle());
 		habitMap.put(KEY_HABIT_REASON, habit.getReason());
@@ -68,20 +67,16 @@ public class Serialization {
 				.addOnSuccessListener(new OnSuccessListener<Void>() {
 			@Override
 			public void onSuccess(Void unused) {
-				successFlag[0] = true;
 				Log.d(TAG, "THE DATA WAS SUBMITTED");
 			}
 		})
 				.addOnFailureListener(new OnFailureListener() {
 					@Override
 					public void onFailure(@NonNull Exception e) {
-						successFlag[0] = false;
 						Log.d(TAG, e.toString());
 					}
 				});
 
-		//TODO(GLENN): successFlag not working as intended, need to fix later
-		return true;
 	}
 
 	/**
