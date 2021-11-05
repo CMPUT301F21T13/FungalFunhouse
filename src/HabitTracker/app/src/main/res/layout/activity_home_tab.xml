@@ -13,6 +13,14 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/button_panel"/>
 
+    <Button
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"
+        android:text="BACK"/>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/button_panel"
         android:layout_width="match_parent"
