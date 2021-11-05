@@ -78,20 +78,11 @@ public class HabitsFragment extends Fragment {
         // Grab the username of the current logged in user
         Bundle bundle = getArguments();
         try {
-            usernameStr = bundle.get("user").toString();
+            currentUser = bundle.getParcelable("user");
         } catch (NullPointerException e) {
             Log.e(TAG, "Could not get 'user' from bundle" + e);
         }
 
-        /*
-         * //Hardcoded data for testing habit tab currentUser = new
-         * UserProfile("user1"); Habit testHabit = new Habit();
-         * testHabit.setTitle("Water Plants"); testHabit.setReason("So they don't die");
-         * testHabit.weeklySchedule.addMonday();
-         * testHabit.weeklySchedule.addWednesday();
-         * testHabit.weeklySchedule.addFriday(); currentUser.addHabit(testHabit);
-         */
-        currentUser = bundle.getParcelable("user");
 
         try {
             following = bundle.getBoolean("following");
@@ -99,10 +90,10 @@ public class HabitsFragment extends Fragment {
             Log.e(TAG, "could not get 'following' from bundle" + e);
         }
 
-        currentUser = bundle.getParcelable("user");
         usernameStr = currentUser.getUsername();
-
         habitArrayList = new ArrayList<>();
+
+        Log.d(TAG, usernameStr);
 
         // Grab all of the habits from the database and fill the ListView
         // Use a snapshot listener so whenever the database is updated so is the app
@@ -128,6 +119,17 @@ public class HabitsFragment extends Fragment {
                             habitListAdapter = new HabitListAdapter(context, habitArrayList);
                             habitListView.setAdapter(habitListAdapter);
                         }
+                        // If the habit is private then remove it from the habitlist and notify adapter
+                        // of change
+                        if(following) {
+                            for (Habit habit : habitArrayList) {
+                                if (!habit.getPublicVisibility()) {
+                                    habitArrayList.remove(habit);
+                                }
+                            }
+                            habitListAdapter = new HabitListAdapter(getContext(), habitArrayList);
+                            habitListView.setAdapter(habitListAdapter);
+                        }
                     }
                 });
 
@@ -137,16 +139,6 @@ public class HabitsFragment extends Fragment {
             addHabit.setVisibility(View.INVISIBLE);
             editHabit.setVisibility(View.INVISIBLE);
             deleteHabit.setVisibility(View.INVISIBLE);
-
-            // If the habit is private then remove it from the habitlist and notify adapter
-            // of change
-            for (Habit habit : habitArrayList) {
-                if (!habit.getPublicVisibility()) {
-                    habitArrayList.remove(habit);
-                }
-            }
-
-            habitListAdapter.notifyDataSetChanged();
         }
 
         // habitListView listener
