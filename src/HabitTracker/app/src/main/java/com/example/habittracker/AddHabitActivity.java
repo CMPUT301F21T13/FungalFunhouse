@@ -275,6 +275,11 @@ public class AddHabitActivity extends AppCompatActivity
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Log.d(TAG, "The data was submitted");
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
@@ -303,6 +308,11 @@ public class AddHabitActivity extends AppCompatActivity
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Log.d(TAG, "The data was updated");
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
                                     finish();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
