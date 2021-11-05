@@ -80,7 +80,7 @@ public class LogInActivityTest {
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if valid error is displayed
-        Thread.sleep(2000);
+        Thread.sleep(4000);
         Espresso.onView(withId(R.id.username)).check(matches(hasErrorText("Account does not exist")));
 
     }
@@ -96,7 +96,7 @@ public class LogInActivityTest {
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if valid error is displayed
-        Thread.sleep(2000);
+        Thread.sleep(4000);
         Espresso.onView(withId(R.id.password)).check(matches(hasErrorText("Incorrect password")));
     }
 
