@@ -3,6 +3,9 @@ package com.example.habittracker;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * This is a test method for FollowRequestInbox
+ */
 public class FollowRequestInboxTest {
 
     private FollowRequestInbox mockFollowInbox(){
