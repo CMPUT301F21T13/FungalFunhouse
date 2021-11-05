@@ -125,7 +125,7 @@ public class FriendsFragment extends Fragment {
                         if(!queryDocumentSnapshots.isEmpty()){
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
-                                Toast.makeText(getActivity(), "Document retrieval successful", Toast.LENGTH_SHORT).show();
+                                Log.d("FriendsFragment", "Document Retrieval Successful");
                                 String username_db = d.getString("username");
                                 friendsDataList.add(new UserProfile(username_db));
                             }

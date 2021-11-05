@@ -83,12 +83,10 @@ public class RequestActivity extends AppCompatActivity {
         enterButton.setOnClickListener(view -> {
             //TODO: implement an addFollowRequest from currentUser to selectedUser
             selectedUser.getInbox().addRequest(new FollowRequest(currentUser.getUsername(), selectedUser.getUsername()));
-            sendFollowRequest(currentUser, selectedUser);
-            //set up dialog that says "request sent"
-            //also add in exceptions for if the user is already followed
+            Toast.makeText(RequestActivity.this, "Request sent", Toast.LENGTH_SHORT).show();
         });
 
-        // Sends User back to HometabActivity
+        // Sends User back to HomeTabActivity
         backButton.setOnClickListener(view -> {
             Intent intent = new Intent(RequestActivity.this, HomeTabActivity.class);
             intent.putExtra("user", currentUsername);
@@ -96,9 +94,6 @@ public class RequestActivity extends AppCompatActivity {
         });
     }
 
-    public void sendFollowRequest(UserProfile currentUser, UserProfile selectedUser){
-
-    }
     /**
      * This method creates a filtered list of usernames that contain filtered_word
      * To be used in the ListView
@@ -115,7 +110,7 @@ public class RequestActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d("Request Activity", document.getId() + " => " + document.getData());
                                 String username_db = document.getString("username");
-                                if(username_db.contains(filtered_text)){
+                                if(username_db.contains(filtered_text) && !username_db.equals(currentUsername)){
                                     userDataList.add(new UserProfile(username_db));
                                 }
                             }

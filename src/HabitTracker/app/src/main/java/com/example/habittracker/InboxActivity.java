@@ -29,7 +29,6 @@ import java.util.Map;
  * Grants the user the ability to accept or deny requests
  * Implements the user of FollowRequestInbox
  */
-//modify later to include accept and reject buttons on the actual listview?
 public class InboxActivity extends AppCompatActivity {
 
     Button backButton;
@@ -79,6 +78,7 @@ public class InboxActivity extends AppCompatActivity {
             if(selectedRequest != null) {
                 currentUser.getInbox().acceptRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
+                Toast.makeText(InboxActivity.this, "Request accepted", Toast.LENGTH_SHORT).show();
                 requestList.clearChoices();
             }
         });
@@ -87,6 +87,7 @@ public class InboxActivity extends AppCompatActivity {
             if(selectedRequest != null) {
                 currentUser.getInbox().denyRequest(selectedRequest);
                 requestAdapter.remove(selectedRequest);
+                Toast.makeText(InboxActivity.this, "Request Denied", Toast.LENGTH_SHORT).show();
                 requestList.clearChoices(); 
             }
         });
