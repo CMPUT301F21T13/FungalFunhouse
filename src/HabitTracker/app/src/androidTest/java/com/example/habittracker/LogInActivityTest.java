@@ -50,24 +50,6 @@ public class LogInActivityTest {
     }
 
     @Test
-    public void testValidInputScenario() {
-        // input a username in username field
-        Espresso.onView(withId(R.id.username)).perform(typeText(username));
-        // input a password in password field
-        Espresso.onView(withId(R.id.password)).perform(typeText(password));
-        //close soft keyboard
-        Espresso.closeSoftKeyboard();
-        // perform login button click
-        Espresso.onView(withId(R.id.loginbutton)).perform(click());
-        // checking if next activity is started due to log in
-//        Espresso.onView(withId(R.id.home_tab)).check(matches(isDisplayed()));
-//        intended(hasComponent(HomeTabActivity.class.getName()));
-        intended(toPackage("com.example.habittracker.HomeTabActivity"));
-        // com.example.habittracker.LogInActivity  com.example.habittracker.HomeTabActivity
-
-    }
-
-    @Test
     public void testMissingUsernameScenario() {
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
@@ -94,7 +76,7 @@ public class LogInActivityTest {
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if valid error is displayed
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         Espresso.onView(withId(R.id.username)).check(matches(hasErrorText("Account does not exist")));
 
     }
@@ -108,8 +90,25 @@ public class LogInActivityTest {
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if valid error is displayed
-        Thread.sleep(1000);
+        Thread.sleep(2000);
         Espresso.onView(withId(R.id.password)).check(matches(hasErrorText("Incorrect password")));
+    }
+
+    @Test
+    public void testValidInputScenario() {
+        // NOTE: test 'fails' sometimes for seemingly no reason. I have been able to get it to consistently pass on
+        // my machine for several test runs but it previously didn't work for a reason I am not aware of.
+
+        // input a username in username field
+        Espresso.onView(withId(R.id.username)).perform(typeText(username));
+        // input a password in password field
+        Espresso.onView(withId(R.id.password)).perform(typeText(password));
+        //close soft keyboard
+        Espresso.closeSoftKeyboard();
+        // perform login button click
+        Espresso.onView(withId(R.id.loginbutton)).perform(click());
+        // checking if next activity is started due to log in
+        intended(hasComponent(HomeTabActivity.class.getName()));
     }
 
     @After
