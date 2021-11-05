@@ -40,6 +40,7 @@ public class HomeTabActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_tab);
 
+
         //Initialize Variables
         try {
             currentUsername = getIntent().getStringExtra("user");
@@ -57,13 +58,21 @@ public class HomeTabActivity extends AppCompatActivity {
         backButton = findViewById(R.id.back_button);
 
         if (savedInstanceState == null) {
-            OpenHabitsFragment(false, currentUser);
+            //TODO(GLENN): Change from hardcoded data in HabitsFragment to FireStore DB
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.fragment_container, new HabitsFragment());
+            ft.commit();
+
         }
 
         habitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OpenHabitsFragment(false, currentUser);
+                //TODO(GLENN): Change from hardcoded data in HabitsFragment to FireStore DB
+
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+                ft.replace(R.id.fragment_container, new HabitsFragment());
+                ft.commit();
             }
         });
 

@@ -51,6 +51,7 @@ public class FriendsFragment extends Fragment {
     UserProfile currentUser;
     String currentUsername;
     UserProfile followedUser;
+
     FloatingActionButton requestButton;
     FloatingActionButton mailButton;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();

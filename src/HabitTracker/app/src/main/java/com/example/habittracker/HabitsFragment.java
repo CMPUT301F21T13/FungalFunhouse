@@ -49,14 +49,25 @@ public class HabitsFragment extends Fragment {
             Log.e("HabitsFragment: ", "Could not get 'user' from bundle" + e);
         }
 
+        /*
+        //Hardcoded data for testing habit tab
+        currentUser = new UserProfile("user1");
+        Habit testHabit = new Habit();
+        testHabit.setTitle("Water Plants");
+        testHabit.setReason("So they don't die");
+        testHabit.weeklySchedule.addMonday();
+        testHabit.weeklySchedule.addWednesday();
+        testHabit.weeklySchedule.addFriday();
+        currentUser.addHabit(testHabit);
+         */
+        currentUser = bundle.getParcelable("user");
+        View view = inflater.inflate(R.layout.habit_fragment, container, false);
+
         try {
             following = bundle.getBoolean("following");
         }catch(NullPointerException e){
             Log.e("HabitsFragment: ", "could not get 'following' from bundle" + e);
         }
-
-        currentUser = bundle.getParcelable("user");
-        View view = inflater.inflate(R.layout.habit_fragment, container, false);
 
 
         if(currentUser.getHabitList() != null){
@@ -79,11 +90,13 @@ public class HabitsFragment extends Fragment {
             editHabit.setVisibility(View.INVISIBLE);
             deleteHabit.setVisibility(View.INVISIBLE);
         }
+
         //habitListView listener
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //TODO(GLENN): Add highlight functionality to the selected item
+
                 if(!following) {
                     editHabit.setVisibility(View.VISIBLE);
                     deleteHabit.setVisibility(View.VISIBLE);

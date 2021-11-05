@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * This is a class controlling all requests sent to a particular user
- * It allows the use of adding, removing, accepting and rejecting requests
- * As well as setting or getting the owner of a particular inbox
+ * This is a class controlling all requests sent to a particular user It allows
+ * the use of adding, removing, accepting and rejecting requests As well as
+ * setting or getting the owner of a particular inbox
  */
 public class FollowRequestInbox {
 
@@ -26,9 +26,10 @@ public class FollowRequestInbox {
 
     /**
      * The constructor method for FollowRequestInbox
+     * 
      * @param owner UserProfile: the owner of the inbox
      */
-    public FollowRequestInbox(UserProfile owner){
+    public FollowRequestInbox(UserProfile owner) {
         requests = new ArrayList<>();
         this.owner = owner;
     }
@@ -85,6 +86,7 @@ public class FollowRequestInbox {
 
     /**
      * Accepts a request from this inbox
+     * 
      * @param request FollowRequest: the accepted request (leads to addRequest)
      */
     public void acceptRequest(FollowRequest request) {
@@ -99,6 +101,7 @@ public class FollowRequestInbox {
 
     /**
      * Denies a request from this inbox
+     * 
      * @param request FollowRequest: the denied request (leads to RemoveRequest)
      */
     public void denyRequest(FollowRequest request) {
@@ -107,6 +110,7 @@ public class FollowRequestInbox {
 
     /**
      * Returns the owner of this inbox
+     * 
      * @return UserProfile: owner of the inbox
      */
     public UserProfile getOwner() {
@@ -115,6 +119,7 @@ public class FollowRequestInbox {
 
     /**
      * Sets the owner of this inbox
+     * 
      * @param profile UserProfile: new to be set owner of the inbox
      */
     public void setOwner(UserProfile profile) {
@@ -127,3 +132,4 @@ public class FollowRequestInbox {
      */
     public ArrayList<FollowRequest> getRequests(){return this.requests;}
 }
+

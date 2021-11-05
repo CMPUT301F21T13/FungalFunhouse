@@ -48,7 +48,7 @@ public class UserProfile extends Profile implements Parcelable {
             return new UserProfile[size];
         }
     };
-
+    
     /**
      * This method takes in a username and sets the current User
      * to follow the profile user
@@ -142,6 +142,9 @@ public class UserProfile extends Profile implements Parcelable {
         return this.inbox;
     }
 
+    public ArrayList<FollowRequest> getRequests(){
+        return inbox.getRequests();
+    }
     @Override
     public int describeContents() {
         return 0;
