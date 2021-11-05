@@ -97,7 +97,7 @@ public class LogInActivityTest {
     @Test
     public void testValidInputScenario() {
         // NOTE: test 'fails' sometimes for seemingly no reason. I have been able to get it to consistently pass on
-        // my machine for several test runs but it previously didn't work for a reason I am not aware of.
+        // my machine for several test runs but it previously didn't work for a reason I am not aware of. (-jmacdona)
 
         // input a username in username field
         Espresso.onView(withId(R.id.username)).perform(typeText(username));
