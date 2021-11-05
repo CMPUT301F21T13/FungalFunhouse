@@ -13,32 +13,58 @@ public class Habit {
     //private variables
     private String title;
     private String reason;
-    private UUID hid;
+    private String hid;
     private String dateToStart;
     private Boolean publicVisibility;
 
     //public variables
     public WeeklySchedule weeklySchedule;
-    public CompletionSchedule completionSchedule; // This may or may not be redundant when habit events are created
 
-    public Habit(String title, String reason, String dateToStart, ArrayList<String> weekdays) {
+    /**
+     * Constructor used for creating a habit as you do not need to supply the hid
+     * @param title Habits title
+     * @param reason Habits reason
+     * @param dateToStart format "yyyy-MM-dd"
+     * @param publicVisibility Determines whether followers see this habit, true to show, false otherwise
+     * @param weekdays ArrayList of weekdays the habit is to be performed on
+     */
+    public Habit(String title, String reason, String dateToStart, boolean publicVisibility, ArrayList<String> weekdays) {
         this.title = title;
         this.reason = reason;
-        this.hid = UUID.randomUUID();
+        this.hid = UUID.randomUUID().toString();
         this.dateToStart = dateToStart;
-        this.publicVisibility = true;
+        this.publicVisibility = publicVisibility;
         this.weeklySchedule = new WeeklySchedule(weekdays);
-        this.completionSchedule = new CompletionSchedule();
     }
 
+    /**
+     * Constructor used for editing habits as the hid needs to remain the same when editing
+     * @param title Habits title
+     * @param reason Habits reason
+     * @param hid unique Identifier pulled from the database DO NOT MANUALLY SET THIS
+     * @param dateToStart format "yyyy-MM-dd"
+     * @param publicVisibility Determines whether followers see this habit, true to show, false otherwise
+     * @param weekdays ArrayList of weekdays the habit is to be performed on
+     */
+    public Habit(String title, String reason, String hid, String dateToStart, boolean publicVisibility, ArrayList<String> weekdays) {
+        this.title = title;
+        this.reason = reason;
+        this.hid = hid;
+        this.dateToStart = dateToStart;
+        this.publicVisibility = publicVisibility;
+        this.weeklySchedule = new WeeklySchedule(weekdays);
+    }
+
+    /**
+     * Default Habit constructor
+     */
     public Habit() {
         this.title = "No title entered";
         this.reason = "No reason entered";
-        this.hid = UUID.randomUUID();
+        this.hid = UUID.randomUUID().toString();
         this.dateToStart = new SimpleDateFormat("yyyy-MM-dd").format(new Date()); //Today's date
         this.publicVisibility = true;
         this.weeklySchedule = new WeeklySchedule();
-        this.completionSchedule = new CompletionSchedule();
     }
 
     public String getTitle() {
@@ -49,7 +75,7 @@ public class Habit {
         return reason;
     }
 
-    public UUID getHid() {
+    public String getHid() {
         return hid;
     }
 
@@ -65,27 +91,19 @@ public class Habit {
         return weeklySchedule;
     }
 
-    public CompletionSchedule getCompletionSchedule() {
-        return completionSchedule;
-    }
-
-    public boolean setTitle(String title) {
-        if(titleConstraint(title)){
+    public void setTitle(String title) {
             this.title = title;
-            return true;
-        }
-        return false;
     }
 
-    public boolean setReason(String reason) {
-        if(reasonConstraint(reason)){
-            this.reason = reason;
-            return true;
-        }
-        return false;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
-    public void setHid(UUID hid) {
+    /**
+     * Only call when editing a habit so the hid is always the same
+     * @param hid The string value of the hid grabbed from the habit in the database
+     */
+    public void setHid(String hid) {
         this.hid = hid;
     }
 
@@ -108,24 +126,6 @@ public class Habit {
 
     public void setWeeklySchedule(WeeklySchedule weeklySchedule) {
         this.weeklySchedule = weeklySchedule;
-    }
-
-    /**
-     * Checks whether the given string "title" is longer than 20 characters
-     * @param title Prospective title to be checked
-     * @return true if title is less than 20 char, false otherwise
-     */
-    private boolean titleConstraint(String title) {
-        return title.length() <= 20;
-    }
-
-    /**
-     * Checks whether the given string "reason" is longer than 30 characters
-     * @param reason Prospective reason to be checked
-     * @return true if reason is less than 30 char, false otherwise
-     */
-    private boolean reasonConstraint(String reason) {
-        return reason.length() <= 30;
     }
 
 }//Habit
