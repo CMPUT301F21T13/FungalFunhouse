@@ -61,6 +61,8 @@ public class LogInActivityTest {
     public void testMissingPasswordScenario() {
         // input some username in username field
         Espresso.onView(withId(R.id.username)).perform(typeText(someUsername));
+        //close soft keyboard
+        Espresso.closeSoftKeyboard();
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if correct error message is displayed
@@ -73,6 +75,8 @@ public class LogInActivityTest {
         Espresso.onView(withId(R.id.username)).perform(typeText(someUsername));
         // input some password in password field
         Espresso.onView(withId(R.id.password)).perform(typeText(somePassword));
+        //close soft keyboard
+        Espresso.closeSoftKeyboard();
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if valid error is displayed
@@ -87,6 +91,8 @@ public class LogInActivityTest {
         Espresso.onView(withId(R.id.username)).perform(typeText(username));
         // input some password in password field
         Espresso.onView(withId(R.id.password)).perform(typeText(somePassword));
+        //close soft keyboard
+        Espresso.closeSoftKeyboard();
         // click log in button
         Espresso.onView(withId(R.id.loginbutton)).perform(click());
         // check if valid error is displayed
