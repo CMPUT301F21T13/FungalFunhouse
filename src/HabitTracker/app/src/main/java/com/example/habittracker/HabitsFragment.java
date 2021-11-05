@@ -113,7 +113,14 @@ public class HabitsFragment extends Fragment {
 
                             Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
                             Log.d(TAG, habit.toString());
+
                             habitArrayList.add(habit);
+
+                            //For viewing following habits
+                            //If the habit is private remove it from the list
+                            if(following && !habit.getPublicVisibility()){
+                                habitArrayList.remove(habit);
+                            }
 
                             Context context = getContext();
                             habitListAdapter = new HabitListAdapter(context, habitArrayList);
@@ -121,15 +128,6 @@ public class HabitsFragment extends Fragment {
                         }
                         // If the habit is private then remove it from the habitlist and notify adapter
                         // of change
-                        if(following) {
-                            for (Habit habit : habitArrayList) {
-                                if (!habit.getPublicVisibility()) {
-                                    habitArrayList.remove(habit);
-                                }
-                            }
-                            habitListAdapter = new HabitListAdapter(getContext(), habitArrayList);
-                            habitListView.setAdapter(habitListAdapter);
-                        }
                     }
                 });
 

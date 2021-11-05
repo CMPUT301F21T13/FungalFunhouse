@@ -83,7 +83,9 @@ public class AddHabitActivity extends AppCompatActivity
         db = FirebaseFirestore.getInstance();
 
         activityTitleEditText = findViewById(R.id.habit_header_edittext);
+        activityTitleEditText.setFocusable(false);
         dateToStartEditText = findViewById(R.id.habit_datetostart_editText);
+        dateToStartEditText.setFocusable(false);
         titleEditText = findViewById(R.id.habit_title_edittext);
         reasonEditText = findViewById(R.id.habit_reason_edittext);
         sundayChip = findViewById(R.id.habit_sunday_chip);
