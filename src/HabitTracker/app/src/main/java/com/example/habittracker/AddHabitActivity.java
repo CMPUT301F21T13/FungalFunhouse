@@ -270,26 +270,33 @@ public class AddHabitActivity extends AppCompatActivity
                     habitMap.put(KEY_HABIT_DATE_TO_START, habit.getDateToStart());
                     habitMap.put(KEY_HABIT_WEEKDAYS, habit.weeklySchedule.getSchedule());
 
-                    db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
-                            .document(habit.getHid()).set(habitMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    Log.d(TAG, "The data was submitted");
-                                    try {
-                                        Thread.sleep(1000);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
+                    try{
+                        db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
+                                .document(habit.getHid()).set(habitMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        Log.d(TAG, "The data was submitted");
+                                        try {
+                                            Thread.sleep(2000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                        finish();
                                     }
-                                    finish();
-                                }
-                            }).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.d(TAG, e.toString());
-                                    Toast.makeText(AddHabitActivity.this, "Database Error, try again",
-                                            Toast.LENGTH_LONG).show();
-                                }
-                            });
+                                }).addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, e.toString());
+                                        Toast.makeText(AddHabitActivity.this, "Database Error, try again",
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                        Toast.makeText(AddHabitActivity.this, "Database Error, try again",
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    }
                 } else { // Editing a habit
                          // Grab hid from intent only when editing
                     providedHID = intent.getStringExtra("habitHID");
@@ -303,13 +310,14 @@ public class AddHabitActivity extends AppCompatActivity
                     habitMap.put(KEY_HABIT_DATE_TO_START, dateToStart);
                     habitMap.put(KEY_HABIT_WEEKDAYS, schedule.getSchedule());
 
+                    try{
                     db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
                             .document(providedHID).update(habitMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
                                     Log.d(TAG, "The data was updated");
                                     try {
-                                        Thread.sleep(1000);
+                                        Thread.sleep(2000);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
@@ -323,6 +331,12 @@ public class AddHabitActivity extends AppCompatActivity
                                             Toast.LENGTH_LONG).show();
                                 }
                             });
+                    } catch (Exception e) {
+                        Log.e(TAG, e.toString());
+                        Toast.makeText(AddHabitActivity.this, "Database Error, try again",
+                                Toast.LENGTH_LONG).show();
+                        finish();
+                    }
 
                 }
 

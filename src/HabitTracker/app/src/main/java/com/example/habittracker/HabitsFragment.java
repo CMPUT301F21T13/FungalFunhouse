@@ -180,6 +180,7 @@ public class HabitsFragment extends Fragment {
             public void onClick(View view) {
                 // TODO(GLENN): when highlight functionality is added, will need to remove ghost
 
+                try{
                 db.collection("users").document(usernameStr).collection("habits")
                         .document(habitListAdapter.getItem(selectedHabit).getHid()).delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -189,7 +190,7 @@ public class HabitsFragment extends Fragment {
                                 Toast.makeText(getContext(), "Habit Deleted", Toast.LENGTH_LONG).show();
 
                                 try {
-                                    Thread.sleep(1000);
+                                    Thread.sleep(2000);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -237,7 +238,11 @@ public class HabitsFragment extends Fragment {
                                 Toast.makeText(getContext(), "Database Error", Toast.LENGTH_LONG).show();
                             }
                         });
-
+                } catch (Exception e) {
+                    Log.e(TAG, e.toString());
+                    Toast.makeText(getContext(), "Database Error, try again",
+                            Toast.LENGTH_LONG).show();
+                }
 
 
             }
