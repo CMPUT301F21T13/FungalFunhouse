@@ -141,7 +141,6 @@ public class HabitsFragment extends Fragment {
         habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // TODO(GLENN): Add highlight functionality to the selected item
 
                 if (!following) {
                     editHabit.setVisibility(View.VISIBLE);
@@ -178,8 +177,7 @@ public class HabitsFragment extends Fragment {
         deleteHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO(GLENN): when highlight functionality is added, will need to remove ghost
-
+                
                 try{
                 db.collection("users").document(usernameStr).collection("habits")
                         .document(habitListAdapter.getItem(selectedHabit).getHid()).delete()
