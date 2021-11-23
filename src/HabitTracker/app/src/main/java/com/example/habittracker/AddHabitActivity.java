@@ -78,6 +78,7 @@ public class AddHabitActivity extends AppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.HomeTheme);
         setContentView(R.layout.add_habit_activity);
 
         db = FirebaseFirestore.getInstance();
