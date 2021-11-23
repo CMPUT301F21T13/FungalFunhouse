@@ -70,6 +70,6 @@
         android:layout_marginTop="90dp"
         tools:visibility="gone"
         android:choiceMode="singleChoice"
-        android:listSelector="#999999">
+        android:listSelector="@color/light_grey">
     </ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>
