@@ -177,7 +177,7 @@ public class HabitsFragment extends Fragment {
         deleteHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
+
                 try{
                 db.collection("users").document(usernameStr).collection("habits")
                         .document(habitListAdapter.getItem(selectedHabit).getHid()).delete()
