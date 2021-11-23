@@ -16,20 +16,29 @@ public class WeeklyScheduleUnitTest {
         return weeklySchedule;
     }
 
+    /**
+     * Test all constructors for WeeklySchedule
+     */
     @Test
     public void testWeeklyScheduleConstructors() {
+        //Default constructor sets all weekdays to false
         WeeklySchedule defaultConstructor = new WeeklySchedule();
         assertTrue(defaultConstructor.checkAllFalse());
+
 
         ArrayList<String> weekdays = new ArrayList<>();
         weekdays.add("Monday");
         weekdays.add("Wednesday");
 
+        //Normal constructor takes in an arraylist and sets those weekdays to true
         WeeklySchedule normalConstructor = new WeeklySchedule(weekdays);
         assertTrue(normalConstructor.checkMonday());
         assertTrue(normalConstructor.checkWednesday());
     }
 
+    /**
+     * Test all adders for WeeklySchedule
+     */
     @Test
     public void testWeeklyScheduleAdders() {
         //create schedule and clear it
@@ -64,6 +73,9 @@ public class WeeklyScheduleUnitTest {
 
     }
 
+    /**
+     * Test all removers for WeeklySchedule
+     */
     @Test
     public void testWeeklyScheduleRemovers() {
         //create schedule and fill it
@@ -93,6 +105,7 @@ public class WeeklyScheduleUnitTest {
         weekdays.removeSaturday();
         assertFalse(weekdays.checkSaturday());
 
+        //Double check all weekdays are false
         assertTrue(weekdays.checkAllFalse());
 
     }
