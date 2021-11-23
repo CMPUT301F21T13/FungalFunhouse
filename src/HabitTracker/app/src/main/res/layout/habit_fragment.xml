@@ -5,16 +5,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/HomeTheme"
+    android:background="@drawable/app_background_6"
     android:orientation="vertical">
 
     <TextView
         android:id="@+id/habit_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Habits"
-        android:textColor="@color/black"
-        android:textSize="40sp"
-        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="HABITS"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,6 +29,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
+        app:backgroundTint="@color/baby_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@android:drawable/ic_input_add"
@@ -37,6 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
         android:clickable="true"
+        app:backgroundTint="@color/baby_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,6 +55,8 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
+        android:focusable="true"
+        app:backgroundTint="@color/baby_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@android:drawable/ic_menu_delete"
@@ -59,6 +66,10 @@
         android:id="@+id/habit_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_title"
-        tools:visibility="gone"></ListView>
+        app:layout_constraintTop_toBottomOf="@id/habit_title"
+        android:layout_marginTop="90dp"
+        tools:visibility="gone"
+        android:choiceMode="singleChoice"
+        android:listSelector="#999999">
+    </ListView>
 </androidx.constraintlayout.widget.ConstraintLayout>
