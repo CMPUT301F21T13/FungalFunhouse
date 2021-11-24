@@ -21,24 +21,28 @@
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="25dp"
         android:layout_below="@+id/request_title"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/username_input"
-            android:layout_width="200dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginTop="10dp"
             android:autofillHints="username"
+            android:background="#F8F6F6"
             android:hint="Username"
             android:inputType="text"
-            android:textColorHint="@color/text_hint"/>
+            android:textColorHint="@color/text_hint" />
 
         <Button
             android:id="@+id/search_button"
             android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10sp"
             android:text="search"
             android:textAllCaps="false"/>
@@ -51,6 +55,7 @@
         android:layout_height="480dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/search_bar"
+        android:layout_marginTop="20dp"
         android:choiceMode="singleChoice"
         android:listSelector="@color/light_grey"
         />
