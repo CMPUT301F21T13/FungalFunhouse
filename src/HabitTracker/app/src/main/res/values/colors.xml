@@ -15,4 +15,5 @@
     <color name="orange">#F58D4E</color>
     <color name="grey">#424C58</color>
     <color name="light_grey">#AfB7C2</color>
+    <color name="text_hint">#6B6B6B</color>
 </resources>
