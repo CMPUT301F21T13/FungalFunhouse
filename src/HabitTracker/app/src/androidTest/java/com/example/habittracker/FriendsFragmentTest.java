@@ -82,7 +82,7 @@ public class FriendsFragmentTest {
         onData(anything()).inAdapterView(withId(R.id.friends_fragment_list)).atPosition(0)
                 .onChildView(withId(R.id.username_text_grid)).perform(click());
 
-        //checks if that sends the user to the friend's linked habits
+        //checks if that sends the user to the friend's linked habits (Habit Fragment)
         Espresso.onView(withId(R.id.habit_fragment_title)).check(matches(isDisplayed()));
     }
 
