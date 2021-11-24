@@ -26,7 +26,7 @@
         android:id="@+id/request_list"
         android:layout_width="wrap_content"
         android:layout_height="480dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="-4dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/inbox_title"
         android:choiceMode="singleChoice"
@@ -47,13 +47,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/orange"
-            android:text="ACCEPT"/>
+            android:text="accept"
+            android:textAllCaps="false"/>
 
         <Button
             android:id="@+id/deny_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="REJECT"/>
+            android:text="reject"
+            android:textAllCaps="false"/>
 
     </LinearLayout>
 
