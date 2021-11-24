@@ -54,7 +54,7 @@
             android:hint="@string/username_hint"
             android:padding="15dp"
             android:textColor="@color/black"
-            android:textColorHint="#6B6B6B"
+            android:textColorHint="@color/text_hint"
             android:textSize="18dp" />
 
     <!--    code for password field -->
@@ -75,7 +75,7 @@
             android:inputType="textPassword"
             android:padding="15dp"
             android:textColor="@color/black"
-            android:textColorHint="#6B6B6B"
+            android:textColorHint="@color/text_hint"
             android:textSize="18dp"/>
 
 <!--        <TextView-->
