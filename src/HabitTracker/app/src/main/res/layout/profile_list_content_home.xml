@@ -11,6 +11,7 @@ android:layout_height="match_parent">
         android:drawableLeft="@drawable/ic_baseline_person_outline_24"
         android:drawablePadding="10dp"
         android:drawableTint="#313131"
-        android:textSize="30sp"
+        android:textSize="20sp"
+        android:textColor="@color/black"
         />
 </LinearLayout>
