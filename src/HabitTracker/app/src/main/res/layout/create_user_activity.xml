@@ -49,7 +49,7 @@
         android:hint="@string/username_hint"
         android:padding="15dp"
         android:textColor="@color/black"
-        android:textColorHint="#6B6B6B" />
+        android:textColorHint="@color/text_hint" />
 
     <!--    code for password field -->
     <EditText
@@ -67,7 +67,7 @@
         android:hint="@string/password"
         android:padding="15dp"
         android:textColor="@color/black"
-        android:textColorHint="#6B6B6B" />
+        android:textColorHint="@color/text_hint" />
 
     <!--    code for login button-->
     <Button
