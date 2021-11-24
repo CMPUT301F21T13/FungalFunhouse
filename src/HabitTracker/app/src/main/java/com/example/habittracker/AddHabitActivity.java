@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,7 @@ public class AddHabitActivity extends AppCompatActivity
     private Switch publicVisibilitySwitch;
     private Button finishButton;
     private FloatingActionButton backActionButton;
+    private TextView weekdaysTextView;
 
     // Variable declaration
     private String dateToStart;
@@ -99,6 +101,7 @@ public class AddHabitActivity extends AppCompatActivity
         publicVisibilitySwitch = findViewById(R.id.habit_publicVisibility_switch);
         finishButton = findViewById(R.id.habit_finish_button);
         backActionButton = findViewById(R.id.habit_back_floatingbutton);
+        weekdaysTextView = findViewById(R.id.habit_weekdays_textview);
 
         // Grab intent and all data from it
         intent = getIntent();
@@ -252,7 +255,7 @@ public class AddHabitActivity extends AppCompatActivity
             public void onClick(View view) {
 
                 if (isEmptyParameters()) {
-                    Toast.makeText(AddHabitActivity.this, "Fill all parameters", Toast.LENGTH_LONG).show();
+                    Toast.makeText(AddHabitActivity.this, R.string.fill_all_parameters_toast, Toast.LENGTH_LONG).show();
                 } else if (!editing) { // Not editing, adding a new habit
                     Habit habit = new Habit();
 
@@ -438,6 +441,17 @@ public class AddHabitActivity extends AppCompatActivity
     public boolean isEmptyParameters() {
         String title = titleEditText.getText().toString();
         String reason = reasonEditText.getText().toString();
+
+        if(title.isEmpty()){
+            titleEditText.setError("Empty Title");
+        }
+        if(reason.isEmpty()){
+            reasonEditText.setError("Empty Reason");
+        }
+        if(schedule.checkAllFalse()){
+            weekdaysTextView.setError("");
+        }
+
 
         return title.isEmpty() || reason.isEmpty() || schedule.checkAllFalse();
     }
