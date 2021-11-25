@@ -51,6 +51,9 @@ public class AddHabitActivityTest {
         Intents.init();
     }
 
+    /**
+     * Tests functionality of all the parameters needed to create a new habit
+     */
     @Test
     public void fillAllParametersTest() {
         //Fill in title of new habit
@@ -75,6 +78,9 @@ public class AddHabitActivityTest {
         //No errors popping up from these actions shows that functionality is working properly
     }
 
+    /**
+     * Tests to make sure errors pop up when leaving a parameter empty when creating a new habit
+     */
     @Test
     public void haveEmptyParametersTest() {
         //Click Finish to prompt errors
@@ -85,6 +91,9 @@ public class AddHabitActivityTest {
         Espresso.onView(withId(R.id.habit_reason_edittext)).check(matches(hasErrorText("Empty Reason")));
     }
 
+    /**
+     * Tests functionality of the calendar fragment
+     */
     @Test
     public void testCalendarFragment() {
         //Click on button to open calendar fragment
