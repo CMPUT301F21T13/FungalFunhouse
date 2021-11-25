@@ -53,6 +53,7 @@ public class HabitsFragment extends Fragment {
     private FloatingActionButton deleteHabit;
     private UserProfile currentUser;
     private int selectedHabit;
+    private View selectedView;
     private String usernameStr;
     private ArrayList<Habit> habitArrayList;
     private boolean following;
@@ -74,6 +75,7 @@ public class HabitsFragment extends Fragment {
         deleteHabit = view.findViewById(R.id.delete_habit_floating_button);
         editHabit.setVisibility(View.GONE);// Gone until an item on the list is selected
         deleteHabit.setVisibility(View.GONE);// Gone until an item on the list is selected
+        selectedHabit = -1;
 
         // Grab the username of the current logged in user
         Bundle bundle = getArguments();
@@ -142,11 +144,24 @@ public class HabitsFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+                //May need to keep track of the old view by setting it to a variable
+                if(selectedView != null) {
+                    selectedView.findViewById(R.id.habit_reason).setVisibility(View.GONE);
+                    selectedView.findViewById(R.id.habit_datetostart).setVisibility(View.GONE);
+                    selectedView.findViewById(R.id.habit_weekdays).setVisibility(View.GONE);
+                }
+
                 if (!following) {
                     editHabit.setVisibility(View.VISIBLE);
                     deleteHabit.setVisibility(View.VISIBLE);
                 }
                 selectedHabit = i;// i = position of the current habit selected
+                selectedView = view;
+                view.findViewById(R.id.habit_reason).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.habit_datetostart).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.habit_weekdays).setVisibility(View.VISIBLE);
+                //When these are expanded they cover up other habits
+                //habitListAdapter.notifyDataSetChanged();
             }
         });
 

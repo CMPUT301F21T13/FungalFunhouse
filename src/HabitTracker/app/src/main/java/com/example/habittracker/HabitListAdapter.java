@@ -52,6 +52,11 @@ public class HabitListAdapter extends ArrayAdapter<Habit> {
         String weekdays = habit.getWeeklySchedule().getSchedule().toString().replace("[", "").replace("]", "");
         habitWeekdays.setText(weekdays);
 
+        //Hide extra info until item is clicked
+        habitReason.setVisibility(View.GONE);
+        habitDateToStart.setVisibility(View.GONE);
+        habitWeekdays.setVisibility(View.GONE);
+
         return view;
     }
 
