@@ -42,7 +42,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/user_list"
+        android:id="@+id/user_search_list"
         android:layout_width="240dp"
         android:layout_height="480dp"
         android:layout_centerHorizontal="true"

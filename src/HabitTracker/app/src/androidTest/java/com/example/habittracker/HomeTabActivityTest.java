@@ -1,19 +1,12 @@
 package com.example.habittracker;
 
-import static androidx.test.InstrumentationRegistry.getTargetContext;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.intent.Intents.intended;
-import static androidx.test.espresso.intent.Intents.intending;
-import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.Espresso;
@@ -22,7 +15,6 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
-import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -62,7 +54,7 @@ public class HomeTabActivityTest {
         //click the habit button
         Espresso.onView(withId(R.id.habit_button)).perform(click());
         //check if its the habit tab
-        Espresso.onView(withId(R.id.habit_title)).check(matches(isDisplayed()));
+        Espresso.onView(withId(R.id.habit_fragment_title)).check(matches(withText("Habits")));
     }
 
     /**
@@ -95,38 +87,10 @@ public class HomeTabActivityTest {
      */
     @Test
     public void showFriendsFragment(){
-        //click the habit button
+        //click the follow button
         Espresso.onView(withId(R.id.follow_button)).perform(click());
         //check if its the habit tab
         Espresso.onView(withId(R.id.friends_title)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Tests if the Activity sends you to InboxActivity
-     * Upon clicking the Mail Button
-     */
-    @Test
-    public void testMailButton(){
-        //click the mail Button in Friends Fragment
-        Espresso.onView(withId(R.id.follow_button)).perform(click());
-        Espresso.onView(withId(R.id.mail_inbox_activity_button)).perform(click());
-
-        //check if the current activity is now InboxActivity
-        Espresso.onView(withId(R.id.inbox_title)).check(matches(isDisplayed()));
-    }
-
-    /**
-     * Tests if the Activity sends you to RequestActivity
-     * Upon clicking the Search Button
-     */
-    @Test
-    public void testSearchButton(){
-        //click the mail Button in Friends Fragment
-        Espresso.onView(withId(R.id.follow_button)).perform(click());
-        Espresso.onView(withId(R.id.send_request_activity_button)).perform(click());
-
-        //check if the current activity is now InboxActivity
-        Espresso.onView(withId(R.id.request_title)).check(matches(isDisplayed()));
     }
 
     @After
