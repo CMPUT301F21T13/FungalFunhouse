@@ -23,4 +23,4 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x src/HabitTracker/gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: ./src/HabitTracker/gradlew build
