@@ -16,6 +16,7 @@ public class Habit {
     private String hid;
     private String dateToStart;
     private Boolean publicVisibility;
+    private ArrayList<HabitEvent> habitEventList;
 
     //public variables
     public WeeklySchedule weeklySchedule;
@@ -91,6 +92,8 @@ public class Habit {
         return weeklySchedule;
     }
 
+    public ArrayList<HabitEvent> getHabitEventList(){return habitEventList; }
+
     public void setTitle(String title) {
             this.title = title;
     }
@@ -128,4 +131,5 @@ public class Habit {
         this.weeklySchedule = weeklySchedule;
     }
 
+    public void setHabitEventList(ArrayList<HabitEvent> habitEventList){this.habitEventList = habitEventList; }
 }//Habit

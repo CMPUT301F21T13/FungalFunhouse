@@ -1,17 +1,24 @@
 package com.example.habittracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -24,6 +31,7 @@ import java.util.Calendar;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * This is a Fragment for the DAILY tab
@@ -36,14 +44,24 @@ public class DailyFragment extends Fragment {
 
     //declare variables
     ListView dailyListView;
-    private HabitListAdapter dailyListAdapter;
+    private DailyHabitListAdapter dailyListAdapter;
     private ArrayList<Habit> dailyDataList;
     private UserProfile currentUser;
     private String usernameStr;
     private Calendar calendar;
     private Date dateToCheck;
+    private Habit currentHabit;
+    private Button addEventActivityButton;
     private FirebaseFirestore db;
 
+    private String COLLECTION_USERS = "users";
+    private String COLLECTION_HABITS = "habits";
+    private String COLLECTION_HABIT_EVENTS = "habitEvents";
+    private String KEY_LOCATION = "location";
+    private String KEY_IMAGE = "image";
+    private String KEY_COMMENT = "comment";
+
+    private SimpleDateFormat sdf;
     private static final String TAG = "DailyFragment";
 
     @Nullable
@@ -56,6 +74,8 @@ public class DailyFragment extends Fragment {
         dailyListView = view.findViewById(R.id.daily_listview);
         calendar = Calendar.getInstance();
         dateToCheck = calendar.getTime();
+        addEventActivityButton = view.findViewById(R.id.add_event_activity_button);
+        sdf = new SimpleDateFormat("yyyy-MM-dd");
 
         // Grab the username of the current logged in user
         Bundle bundle = getArguments();
@@ -71,7 +91,7 @@ public class DailyFragment extends Fragment {
 
         // Grab all of the habits from the database and fill the ListView
         // Use a snapshot listener so whenever the database is updated so is the app
-        db.collection("users").document(usernameStr).collection("habits")
+        db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -86,19 +106,39 @@ public class DailyFragment extends Fragment {
                             ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
                             Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
-                            Log.d(TAG, habit.toString());
+                            habit.setHabitEventList(getHabitEventList(habit));
+                            Log.d(TAG, "Daily habit " +habit.toString());
 
                             if(habitHappensToday(habit, dateToCheck)) {
                                 dailyDataList.add(habit);
                             }
 
                             Context context = getContext();
-                            dailyListAdapter = new HabitListAdapter(context, dailyDataList);
+                            dailyListAdapter = new DailyHabitListAdapter(context, dailyDataList, calendar);
                             dailyListView.setAdapter(dailyListAdapter);
                         }
                     }
                 });
 
+            dailyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    currentHabit = dailyDataList.get(i);
+                }
+            });
+            //OnClickListener for when we add a habitEvent to a Habit
+            addEventActivityButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if( currentHabit != null) {
+                        Intent intent = new Intent(getActivity(), AddEventActivity.class);
+                        intent.putExtra("habit id", currentHabit.getHid());
+                        intent.putExtra("user", usernameStr);
+                        intent.putExtra("date", sdf.format(dateToCheck));
+                        getActivity().startActivity(intent);
+                    }
+                }
+            });
 
         return view; }
 
@@ -145,4 +185,32 @@ public class DailyFragment extends Fragment {
         Log.d(TAG, "Day of the Week is not selected for this day");
         return false;
         }
+
+    public ArrayList<HabitEvent> getHabitEventList(Habit habit){
+        ArrayList<HabitEvent> habitEventList = new ArrayList<>();
+
+        db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
+                .document(habit.getHid()).collection(COLLECTION_HABIT_EVENTS).get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        if(!queryDocumentSnapshots.isEmpty()){
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot d : list) {
+                                Log.d("DailyAdapter", "Document Retrieval Successful");
+                                HabitEvent habitEvent = new HabitEvent(calendar);
+                                habitEvent.setComment((String) d.getData().get(KEY_COMMENT));
+                                habitEventList.add(habitEvent);
+                            }
+
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Document Retrieval Failed");
+            }
+        });
+        return habitEventList;
+    }
 }

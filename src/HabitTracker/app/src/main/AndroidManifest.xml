@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HabitTracker">
         <activity
+            android:name=".AddEventActivity"
+            android:exported="true" />
+        <activity
             android:name=".InboxActivity"
             android:exported="true" />
         <activity
@@ -35,7 +38,7 @@
             android:exported="true" />
         <activity
             android:name=".AddHabitActivity"
-            android:exported="true"/>
+            android:exported="true" />
     </application>
 
 </manifest>

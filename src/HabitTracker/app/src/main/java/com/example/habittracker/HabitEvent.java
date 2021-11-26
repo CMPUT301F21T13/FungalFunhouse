@@ -9,6 +9,7 @@ public class HabitEvent {
     private String comment;
     private Image photograph;
     private boolean unique;
+    private boolean done;
     private Point location;
 
     public HabitEvent(){
@@ -63,4 +64,7 @@ public class HabitEvent {
     public void setLocation(Point location) {
         this.location = location;
     }
+
+    public boolean getDone(){ return this.done; }
+    public void setDone(boolean done){this.done = done; }
 }
