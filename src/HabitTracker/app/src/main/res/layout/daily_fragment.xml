@@ -14,4 +14,13 @@
         android:textStyle="bold"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"/>
+
+    <ListView
+        android:id="@+id/daily_listview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:choiceMode="singleChoice"
+        android:layout_below="@+id/daily_title">
+
+    </ListView>
 </RelativeLayout>
