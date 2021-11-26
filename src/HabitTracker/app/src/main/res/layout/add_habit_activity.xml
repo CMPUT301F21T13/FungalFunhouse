@@ -132,6 +132,7 @@
             android:layout_marginTop="16dp"
             android:checkable="true"
             android:checked="false"
+            app:chipBackgroundColor="@color/bg_chip_state_list"
             android:text="S" />
 
         <com.google.android.material.chip.Chip
@@ -142,6 +143,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
+            app:chipBackgroundColor="@color/bg_chip_state_list"
             android:text="M" />
 
         <com.google.android.material.chip.Chip
@@ -152,6 +154,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
+            app:chipBackgroundColor="@color/bg_chip_state_list"
             android:text="T" />
 
         <com.google.android.material.chip.Chip
@@ -162,6 +165,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
+            app:chipBackgroundColor="@color/bg_chip_state_list"
             android:text="W" />
 
         <com.google.android.material.chip.Chip
@@ -172,6 +176,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
+            app:chipBackgroundColor="@color/bg_chip_state_list"
             android:text="T" />
 
         <com.google.android.material.chip.Chip
@@ -182,6 +187,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
+            app:chipBackgroundColor="@color/bg_chip_state_list"
             android:text="F" />
 
         <com.google.android.material.chip.Chip
@@ -192,6 +198,7 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
+            app:chipBackgroundColor="@color/bg_chip_state_list"
             android:text="S" />
     </com.google.android.material.chip.ChipGroup>
 
