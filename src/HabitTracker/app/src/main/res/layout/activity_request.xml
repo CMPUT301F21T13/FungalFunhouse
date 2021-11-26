@@ -75,7 +75,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="10sp"
-        android:text="BACK"
-        android:visibility="invisible"/>
+        android:text="BACK" />
 
 </RelativeLayout>
