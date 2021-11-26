@@ -133,7 +133,8 @@
             android:checkable="true"
             android:checked="false"
             app:chipBackgroundColor="@color/bg_chip_state_list"
-            android:text="S" />
+            android:text="S"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_monday_chip"
@@ -144,7 +145,8 @@
             android:layout_marginTop="16dp"
             android:checkable="true"
             app:chipBackgroundColor="@color/bg_chip_state_list"
-            android:text="M" />
+            android:text="M"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_tuesday_chip"
@@ -155,7 +157,8 @@
             android:layout_marginTop="16dp"
             android:checkable="true"
             app:chipBackgroundColor="@color/bg_chip_state_list"
-            android:text="T" />
+            android:text="T"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_wednesday_chip"
@@ -166,7 +169,8 @@
             android:layout_marginTop="16dp"
             android:checkable="true"
             app:chipBackgroundColor="@color/bg_chip_state_list"
-            android:text="W" />
+            android:text="W"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_thursday_chip"
@@ -177,7 +181,8 @@
             android:layout_marginTop="16dp"
             android:checkable="true"
             app:chipBackgroundColor="@color/bg_chip_state_list"
-            android:text="T" />
+            android:text="T"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_friday_chip"
@@ -188,7 +193,8 @@
             android:layout_marginTop="16dp"
             android:checkable="true"
             app:chipBackgroundColor="@color/bg_chip_state_list"
-            android:text="F" />
+            android:text="F"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_saturday_chip"
@@ -196,10 +202,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
             app:chipBackgroundColor="@color/bg_chip_state_list"
-            android:text="S" />
+            android:text="S"
+            android:textSize="14dp"/>
     </com.google.android.material.chip.ChipGroup>
 
     <Button
