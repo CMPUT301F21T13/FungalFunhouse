@@ -94,7 +94,7 @@
         <Button
             android:id="@+id/loginbutton"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="55dp"
             android:layout_below="@id/password"
             android:layout_centerHorizontal="true"
             android:layout_marginStart="40dp"
@@ -110,9 +110,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/loginbutton"
             android:layout_centerHorizontal="true"
-            android:layout_marginVertical="20dp"
+            android:layout_marginTop="25dp"
             android:clickable="true"
             android:text="@string/create_new_account"
+            android:textSize="18dp"
             android:textColor="#6B6B6B" />
 
 
