@@ -55,7 +55,6 @@ public class DailyFragment extends Fragment {
     private Date dateToCheck;
     private Habit currentHabit;
 
-    private Button addEventActivityButton;
     private FirebaseFirestore db;
 
     private String COLLECTION_USERS = "users";
@@ -76,7 +75,6 @@ public class DailyFragment extends Fragment {
 
         //initialize variables
         dailyListView = view.findViewById(R.id.daily_listview);
-        addEventActivityButton = view.findViewById(R.id.add_event_activity_button);
 
         calendar = Calendar.getInstance();
         dateToCheck = calendar.getTime();
@@ -102,19 +100,21 @@ public class DailyFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                     currentHabit = dailyDataList.get(i);
-                }
-            });
-            //OnClickListener for when we add a habitEvent to a Habit
-            addEventActivityButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if( currentHabit != null) {
+                    if(currentHabit.getHabitEventList()== null) {
                         Intent intent = new Intent(getActivity(), AddEventActivity.class);
                         intent.putExtra("habit id", currentHabit.getHid());
                         intent.putExtra("user", usernameStr);
                         intent.putExtra("date", sdf.format(dateToCheck));
                         getActivity().startActivity(intent);
-                    }
+                    }else if(!currentHabit.getHabitEventList().get(0).getDone()) {
+                        Log.d(TAG, "Done " + currentHabit.getHabitEventList().get(0).getDone());
+                            Intent intent = new Intent(getActivity(), AddEventActivity.class);
+                            intent.putExtra("habit id", currentHabit.getHid());
+                            intent.putExtra("user", usernameStr);
+                            intent.putExtra("date", sdf.format(dateToCheck));
+                            getActivity().startActivity(intent);
+                        }
+
                 }
             });
 
@@ -192,39 +192,6 @@ public class DailyFragment extends Fragment {
 
 
 
-    public ArrayList<HabitEvent> getHabitEventList(Habit habit){
-        ArrayList<HabitEvent> habitEventList = new ArrayList<>();
 
-        db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
-                .document(habit.getHid()).collection(COLLECTION_HABIT_EVENTS)
-                .document(sdf.format(dateToCheck)).get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
-                        if(documentSnapshot.exists()) {
-                            Log.d(TAG, "Document Retrieval (Habit Events) was successful");
-
-                            HabitEvent habitEvent = new HabitEvent(calendar);
-                            Image dailyImage = (Image) documentSnapshot.getData().get(KEY_IMAGE);
-                            String dailyComment = (String) documentSnapshot.getData().get(KEY_COMMENT);
-
-                            habitEvent.setComment(dailyComment);
-                            habitEvent.setPhotograph(dailyImage);
-                            habitEventList.add(habitEvent);
-
-                            habit.setHabitEventList(habitEventList);
-                            Log.d(TAG, "Habit Event " + habitEvent);
-                        }else{
-                            Log.d(TAG, "Document Retrieval (Habit Events) was empty");
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, "Document Retrieval (Habit Events) failed");
-            }
-        });
-        return habitEventList;
-    }
 
 }

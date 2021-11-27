@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -37,6 +38,8 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private String COLLECTION_EVENTS = "habitEvents";
+
+    private String KEY_DONE = "done";
     private String KEY_LOCATION = "location";
     private String KEY_IMAGE = "image";
     private String KEY_COMMENT = "comment";
@@ -93,14 +96,26 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
                         if (documentSnapshot.exists()) {
                             Log.d(TAG, "Document Retrieval (Habit Events) was successful");
 
+                            //grab attributes and set HabitEvent
                             HabitEvent habitEvent = new HabitEvent(calendar);
                             Image dailyImage = (Image) documentSnapshot.getData().get(KEY_IMAGE);
                             String dailyComment = (String) documentSnapshot.getData().get(KEY_COMMENT);
+                            boolean dailyDone = (boolean) documentSnapshot.getData().get(KEY_DONE);
 
+                            //add into habitevent
+                            habitEvent.setComment(dailyComment);
+                            habitEvent.setPhotograph(dailyImage);
+                            habitEvent.setDone(dailyDone);
+
+                            ArrayList<HabitEvent> events = new ArrayList<>();
+                            events.add(habitEvent);
+                            habit.setHabitEventList(events);
+
+                            //Set Listview Item
                             dailyCommentTextView.setText("'" + dailyComment+ "'");
                             commentLayout.setVisibility(View.VISIBLE);
-
                             dailyTitleTextView.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.tick_mark_checked,0);
+
                             Log.d(TAG, "Habit Event Comment" + dailyComment);
                         } else {
                             Log.d(TAG, "Document Retrieval (Habit Events) was empty");

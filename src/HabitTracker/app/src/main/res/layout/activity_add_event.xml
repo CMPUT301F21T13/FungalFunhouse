@@ -35,13 +35,6 @@
         android:orientation="vertical"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/add_event_title">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Add Comment">
-        </TextView>
 
         <EditText
             android:id="@+id/add_event_comment_edittext"
@@ -49,7 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_gravity="center_horizontal"
-            android:hint="Write a comment...">
+            android:hint="Add a closing comment...">
         </EditText>
     </LinearLayout>
 

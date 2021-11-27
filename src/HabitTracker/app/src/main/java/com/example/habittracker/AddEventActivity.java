@@ -38,6 +38,7 @@ public class AddEventActivity extends AppCompatActivity {
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private String COLLECTION_EVENTS = "habitEvents";
+    private String KEY_COMMENT = "comment";
     private String TAG = "AddEventActivity";
 
     private Button finishButton;
@@ -70,6 +71,7 @@ public class AddEventActivity extends AppCompatActivity {
         finishButton = findViewById(R.id.add_event_finish_button);
         commentEditText = findViewById(R.id.add_event_comment_edittext);
         loadHabit(habitHid);
+        loadHabitEvent();
 
         calendar = Calendar.getInstance();
         sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -80,8 +82,6 @@ public class AddEventActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-
 
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +120,24 @@ public class AddEventActivity extends AppCompatActivity {
         return habitTitle;
     }
 
+    public void loadHabitEvent(){
+        db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
+                .document(habitHid).collection(COLLECTION_EVENTS).document(currentDate).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+                            commentEditText.setText(documentSnapshot.getData().get(KEY_COMMENT).toString());
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+    }
+
     /**
      * Stores all added information to habit events
      * @param hid : The habit id to store in
@@ -128,6 +146,7 @@ public class AddEventActivity extends AppCompatActivity {
         habitTitleTextView = findViewById(R.id.add_event_title);
         if (!commentEditText.getText().equals("")){
             currentHabitEvent.setComment(commentEditText.getText().toString());
+            currentHabitEvent.setDone(true);
         }
 
         Serialization.writeHabitEvent(usernameStr, habitHid, currentHabitEvent);
