@@ -81,7 +81,7 @@ public class FriendsFragment extends Fragment {
 
         //Initialize Variables
         View view = inflater.inflate(R.layout.friends_fragment, container, false);
-        friendsList = view.findViewById(R.id.friends_list);
+        friendsList = view.findViewById(R.id.friends_fragment_list);
         requestButton = view.findViewById(R.id.send_request_activity_button);
         mailButton = view.findViewById(R.id.mail_inbox_activity_button);
         friendsDataList = new ArrayList<>();
