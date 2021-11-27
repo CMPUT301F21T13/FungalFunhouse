@@ -1,15 +1,28 @@
 package com.example.habittracker;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,10 +55,15 @@ public class AddEventActivity extends AppCompatActivity {
     private String TAG = "AddEventActivity";
 
     private Button finishButton;
+    private Button photoButton;
     private TextView habitTitleTextView;
     private EditText commentEditText;
+    private ImageView photoImageView;
     private FirebaseFirestore db;
     private SimpleDateFormat sdf;
+
+    private ActivityResultLauncher<Intent> activityLauncher;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +71,7 @@ public class AddEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_event);
         db = FirebaseFirestore.getInstance();
         currentHabitEvent = new HabitEvent();
+
 
         try{
             habitHid = getIntent().getStringExtra("habit id");
@@ -70,6 +89,8 @@ public class AddEventActivity extends AppCompatActivity {
         habitTitleTextView = findViewById(R.id.add_event_title);
         finishButton = findViewById(R.id.add_event_finish_button);
         commentEditText = findViewById(R.id.add_event_comment_edittext);
+        photoButton = findViewById(R.id.daily_listivew_photo_button);
+        photoImageView = findViewById(R.id.add_event_image_imageview);
         loadHabit(habitHid);
         loadHabitEvent();
 
@@ -83,6 +104,32 @@ public class AddEventActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == RESULT_OK && result.getData() != null){
+                    Bundle bundle = result.getData().getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                    photoImageView.setImageBitmap(bitmap);
+                    photoImageView.getLayoutParams().height = 400;
+                    photoImageView.getLayoutParams().width = 300;
+                }
+            }
+        });
+
+        photoButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    activityLauncher.launch(intent);
+                    Toast.makeText(AddEventActivity.this, "No App supports this action", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
+
+        //Finishes the Add Event Activity by sending user back to HomeTab
+        //and writing the habit event to the database;
         finishButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +143,8 @@ public class AddEventActivity extends AppCompatActivity {
 
 
     }
+
+
 
     /**
      * Loads the current Habit and details needed
@@ -120,6 +169,9 @@ public class AddEventActivity extends AppCompatActivity {
         return habitTitle;
     }
 
+    /**
+     * Loads in a specific habit event instance
+     */
     public void loadHabitEvent(){
         db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
                 .document(habitHid).collection(COLLECTION_EVENTS).document(currentDate).get()
@@ -147,6 +199,8 @@ public class AddEventActivity extends AppCompatActivity {
         if (!commentEditText.getText().equals("")){
             currentHabitEvent.setComment(commentEditText.getText().toString());
             currentHabitEvent.setDone(true);
+            Bitmap bm = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
+            currentHabitEvent.setPhotograph(bm);
         }
 
         Serialization.writeHabitEvent(usernameStr, habitHid, currentHabitEvent);

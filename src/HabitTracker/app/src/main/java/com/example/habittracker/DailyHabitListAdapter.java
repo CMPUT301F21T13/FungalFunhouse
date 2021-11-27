@@ -1,8 +1,11 @@
 package com.example.habittracker;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -98,19 +101,25 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
 
                             //grab attributes and set HabitEvent
                             HabitEvent habitEvent = new HabitEvent(calendar);
-                            Image dailyImage = (Image) documentSnapshot.getData().get(KEY_IMAGE);
+                            if (documentSnapshot.getData().get(KEY_IMAGE) != null) {
+                                Bitmap dailyImage =StringToBitMap(documentSnapshot.getData().get(KEY_IMAGE).toString());
+                                habitEvent.setPhotograph(dailyImage);
+                                dailyPhotoImageView.setImageBitmap(habitEvent.getPhotograph());
+                                imageLayout.setVisibility(View.VISIBLE);
+                            }
                             String dailyComment = (String) documentSnapshot.getData().get(KEY_COMMENT);
                             boolean dailyDone = (boolean) documentSnapshot.getData().get(KEY_DONE);
 
                             //add into habitevent
                             habitEvent.setComment(dailyComment);
-                            habitEvent.setPhotograph(dailyImage);
+
                             habitEvent.setDone(dailyDone);
 
                             ArrayList<HabitEvent> events = new ArrayList<>();
                             events.add(habitEvent);
                             habit.setHabitEventList(events);
 
+                            Log.d(TAG, "bitmap: " + habitEvent.getPhotograph());
                             //Set Listview Item
                             dailyCommentTextView.setText("'" + dailyComment+ "'");
                             commentLayout.setVisibility(View.VISIBLE);
@@ -134,6 +143,20 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
 
         return view;
 
+    }
+    /**
+     * @param encodedString
+     * @return bitmap (from given string)
+     */
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte=Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 
 }

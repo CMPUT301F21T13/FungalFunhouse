@@ -1,6 +1,8 @@
 package com.example.habittracker;
 
+import android.graphics.Bitmap;
 import android.media.Image;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.Source;
 
+import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -361,10 +364,17 @@ public class Serialization {
 
 	public static void writeHabitEvent(String username, String hid, HabitEvent habitEvent){
 		String habitEventDateName = sdf.format(habitEvent.getDate().getTime());
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		habitEvent.getPhotograph().compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+		byte[] b = baos.toByteArray();
+		String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+
+
 		Map<String, Object> habitMap = new HashMap<>();
 		habitMap.put(KEY_EVENT_DATETIME, habitEventDateName);
 		habitMap.put(KEY_EVENT_COMMENT, habitEvent.getComment());
-		habitMap.put(KEY_EVENT_IMAGE, habitEvent.getPhotograph());
+		habitMap.put(KEY_EVENT_IMAGE, encodedImage);
 		habitMap.put(KEY_EVENT_LOCATION, habitEvent.getLocation());
 		habitMap.put(KEY_EVENT_DONE, habitEvent.getDone());
 

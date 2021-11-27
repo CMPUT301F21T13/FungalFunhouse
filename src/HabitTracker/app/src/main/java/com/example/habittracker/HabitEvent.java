@@ -1,5 +1,6 @@
 package com.example.habittracker;
 
+import android.graphics.Bitmap;
 import android.media.Image;
 
 import java.util.Calendar;
@@ -8,7 +9,7 @@ public class HabitEvent {
     private Calendar dateTime;
     private String title;
     private String comment;
-    private Image photograph;
+    private Bitmap photograph;
     private boolean unique;
     private boolean done;
     private Point location;
@@ -47,11 +48,11 @@ public class HabitEvent {
         this.comment = comment;
     }
 
-    public Image getPhotograph() {
+    public Bitmap getPhotograph() {
         return photograph;
     }
 
-    public void setPhotograph(Image image) {
+    public void setPhotograph(Bitmap image) {
         this.photograph = image;
     }
 

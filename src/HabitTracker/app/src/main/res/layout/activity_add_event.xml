@@ -8,6 +8,7 @@
 
 
 
+
     <Button
         android:id="@+id/add_event_finish_button"
         android:layout_width="wrap_content"
@@ -26,68 +27,73 @@
         android:textStyle="bold">
     </TextView>
 
-    <LinearLayout
-        android:id="@+id/add_event_comment_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@drawable/border"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/add_event_title">
 
-        <EditText
-            android:id="@+id/add_event_comment_edittext"
+        <LinearLayout
+            android:id="@+id/add_event_comment_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:layout_gravity="center_horizontal"
-            android:hint="Add a closing comment...">
-        </EditText>
-    </LinearLayout>
+            android:layout_margin="20dp"
+            android:background="@drawable/border"
+            android:orientation="vertical"
+            android:layout_below="@+id/add_event_title"
+            android:layout_centerHorizontal="true">
 
-    <LinearLayout
-        android:id="@+id/add_event_image_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@drawable/border"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/add_event_comment_box">
-        <TextView
-            android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/add_event_comment_edittext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_gravity="center_horizontal"
+                android:hint="Add a closing comment...">
+            </EditText>
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/add_event_image_box"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Add Image">
-        </TextView>
+            android:layout_margin="20dp"
+            android:background="@drawable/border"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/add_event_comment_box">
+            <Button
+                android:id="@+id/daily_listivew_photo_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="20dp"
+                android:text="Add Image"></Button>
 
-        <ImageView
-            android:id="@+id/add_event_image_imageview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></ImageView>
+            <ImageView
+                android:id="@+id/add_event_image_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"></ImageView>
 
-    </LinearLayout>
+        </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/add_event_location_box"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        android:background="@drawable/border"
-        android:orientation="vertical"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@+id/add_event_image_box">
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/add_event_location_box"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_gravity="center_horizontal"
-            android:text="Add Location">
-        </TextView>
+            android:layout_margin="20dp"
+            android:background="@drawable/border"
+            android:orientation="vertical"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/add_event_image_box">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_gravity="center_horizontal"
+                android:text="Add Location">
+            </TextView>
 
 
-    </LinearLayout>
-
+        </LinearLayout>
 </RelativeLayout>
