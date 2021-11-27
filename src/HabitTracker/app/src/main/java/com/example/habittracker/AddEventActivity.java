@@ -130,7 +130,7 @@ public class AddEventActivity extends AppCompatActivity {
             currentHabitEvent.setComment(commentEditText.getText().toString());
         }
 
-        Serialization.addHabitEvent(usernameStr, habitHid, currentHabitEvent);
+        Serialization.writeHabitEvent(usernameStr, habitHid, currentHabitEvent);
     }
 
 }

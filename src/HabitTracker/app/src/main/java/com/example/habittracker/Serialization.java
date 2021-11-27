@@ -1,5 +1,6 @@
 package com.example.habittracker;
 
+import android.media.Image;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,8 +21,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.Source;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,6 +41,7 @@ import java.util.UUID;
 public class Serialization {
 	private static FirebaseFirestore db = FirebaseFirestore.getInstance();
 	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");;
+	private static Calendar calendar;
 
 	private static final String TAG = "Serialization";
 
@@ -355,7 +359,7 @@ public class Serialization {
 
 	}
 
-	public static void addHabitEvent(String username, String hid, HabitEvent habitEvent){
+	public static void writeHabitEvent(String username, String hid, HabitEvent habitEvent){
 		String habitEventDateName = sdf.format(habitEvent.getDate().getTime());
 		Map<String, Object> habitMap = new HashMap<>();
 		habitMap.put(KEY_EVENT_DATETIME, habitEventDateName);
@@ -379,6 +383,9 @@ public class Serialization {
 			}
 		});
 	}
+
+
+
 	public static CollectionReference getHabitCollection(String username) {
 		return db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS);
 	}

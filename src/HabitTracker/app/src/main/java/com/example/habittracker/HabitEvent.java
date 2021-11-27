@@ -6,6 +6,7 @@ import java.util.Calendar;
 
 public class HabitEvent {
     private Calendar dateTime;
+    private String title;
     private String comment;
     private Image photograph;
     private boolean unique;
@@ -14,12 +15,14 @@ public class HabitEvent {
 
     public HabitEvent(){
         setComment("No Comment");
+        setTitle("No Title");
         setLocation(new Point());
         setUnique(false);
         setDate(null);
     }
     public HabitEvent(Calendar date){
         setComment("No Comment");
+        setTitle("No Title");
         setLocation(new Point());
         setUnique(false);
         setDate(date);
@@ -33,6 +36,9 @@ public class HabitEvent {
         this.dateTime = date;
     }
 
+    public String getTitle(){ return this.title; }
+
+    public void setTitle(String title){ this.title = title;}
     public String getComment() {
         return comment;
     }
