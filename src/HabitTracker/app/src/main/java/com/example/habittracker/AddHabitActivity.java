@@ -50,7 +50,6 @@ public class AddHabitActivity extends AppCompatActivity
     private Button addStartDateButton;
     private Switch publicVisibilitySwitch;
     private Button finishButton;
-    private FloatingActionButton backActionButton;
     private TextView weekdaysTextView;
 
     // Variable declaration
@@ -100,7 +99,6 @@ public class AddHabitActivity extends AppCompatActivity
         addStartDateButton = findViewById(R.id.habit_addstartdate_button);
         publicVisibilitySwitch = findViewById(R.id.habit_publicVisibility_switch);
         finishButton = findViewById(R.id.habit_finish_button);
-        backActionButton = findViewById(R.id.habit_back_floatingbutton);
         weekdaysTextView = findViewById(R.id.habit_weekdays_textview);
 
         // Grab intent and all data from it
@@ -346,12 +344,6 @@ public class AddHabitActivity extends AppCompatActivity
             }
         });
 
-        backActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
 
     }
 
