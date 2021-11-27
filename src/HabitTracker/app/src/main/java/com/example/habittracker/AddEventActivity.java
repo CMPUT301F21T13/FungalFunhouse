@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
@@ -121,10 +122,10 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if(getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
                     activityLauncher.launch(intent);
-                    Toast.makeText(AddEventActivity.this, "No App supports this action", Toast.LENGTH_SHORT).show();
-
-            }
+                }else{ Toast.makeText(AddEventActivity.this, "No Camera App Found", Toast.LENGTH_SHORT).show();}
+                }
         });
 
 
