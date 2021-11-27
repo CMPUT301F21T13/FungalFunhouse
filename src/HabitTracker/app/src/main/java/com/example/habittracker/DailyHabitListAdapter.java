@@ -77,14 +77,12 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
         TextView dailyCommentTextView = (TextView) view.findViewById(R.id.daily_listview_comment);
 
         //set up Layouts
-        LinearLayout commentLayout = view.findViewById(R.id.daily_listview_comment_box);
-        LinearLayout imageLayout = view.findViewById(R.id.daily_listview_photo_box);
         LinearLayout locationLayout = view.findViewById(R.id.daily_listview_location_box);
         LinearLayout contentLayout = view.findViewById(R.id.daily_listview_layout);
 
         //Deal with any Done or not Done Habits
-        commentLayout.setVisibility(View.GONE);
-        imageLayout.setVisibility(View.GONE);
+        dailyCommentTextView.setVisibility(View.GONE);
+        dailyPhotoImageView.setVisibility(View.GONE);
         locationLayout.setVisibility(View.GONE);
 
         Log.d(TAG, "Habit: " + habit.getHid());
@@ -105,7 +103,7 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
                                 Bitmap dailyImage =StringToBitMap(documentSnapshot.getData().get(KEY_IMAGE).toString());
                                 habitEvent.setPhotograph(dailyImage);
                                 dailyPhotoImageView.setImageBitmap(habitEvent.getPhotograph());
-                                imageLayout.setVisibility(View.VISIBLE);
+                                dailyPhotoImageView.setVisibility(View.VISIBLE);
                             }
                             String dailyComment = (String) documentSnapshot.getData().get(KEY_COMMENT);
                             boolean dailyDone = (boolean) documentSnapshot.getData().get(KEY_DONE);
@@ -122,7 +120,7 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
                             Log.d(TAG, "bitmap: " + habitEvent.getPhotograph());
                             //Set Listview Item
                             dailyCommentTextView.setText("'" + dailyComment+ "'");
-                            commentLayout.setVisibility(View.VISIBLE);
+                            dailyCommentTextView.setVisibility(View.VISIBLE);
                             dailyTitleTextView.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.tick_mark_checked,0);
 
                             Log.d(TAG, "Habit Event Comment" + dailyComment);
