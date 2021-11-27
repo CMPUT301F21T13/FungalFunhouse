@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/HomeTheme"
     tools:context=".HomeTabActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/button_panel"/>
+        android:layout_above="@+id/button_panel" />
 
     <Button
         android:id="@+id/back_button"
@@ -33,16 +34,26 @@
             android:id="@+id/habit_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/orange"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:shape="rectangle"
             android:text="Habits"
-            app:layout_constraintStart_toStartOf="parent"
+            app:cornerRadius="0dp"
             app:layout_constraintEnd_toStartOf="@+id/daily_button"
+            app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="0dp" />
 
         <Button
             android:id="@+id/daily_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/orange"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:shape="rectangle"
             android:text="Daily"
+            app:cornerRadius="0dp"
             app:layout_constraintEnd_toStartOf="@+id/event_button"
             app:layout_constraintStart_toEndOf="@+id/habit_button"
             tools:layout_editor_absoluteY="0dp" />
@@ -51,7 +62,11 @@
             android:id="@+id/event_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/orange"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:text="Events"
+            app:cornerRadius="0dp"
             app:layout_constraintEnd_toStartOf="@+id/follow_button"
             app:layout_constraintStart_toEndOf="@+id/daily_button"
             tools:layout_editor_absoluteY="0dp" />
@@ -60,9 +75,13 @@
             android:id="@+id/follow_button"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:backgroundTint="@color/orange"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
             android:text="Friends"
-            app:layout_constraintStart_toEndOf="@id/event_button"
+            app:cornerRadius="0dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/event_button"
             tools:layout_editor_absoluteY="0dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

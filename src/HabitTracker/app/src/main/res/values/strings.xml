@@ -1,11 +1,10 @@
 <resources>
-    <string name="app_name">Habit Tracker</string>
+    <string name="app_name">HABIT TRACKER</string>
     <string name="username_hint">Username</string>
     <string name="login_hint">Login into your Account</string>
-    <string name="create_new_account">Create new Account</string>
-    <string name="log_in_button">Log In</string>
+    <string name="create_new_account">create new account</string>
+    <string name="log_in_button">login</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="password">Password</string>
-    <string name="edit_habit_title">Edit Habit</string>
-    <string name="fill_all_parameters_toast">Fill All Parameters</string>
+    <string name="edit_habit_title">EDIT HABIT</string>
 </resources>

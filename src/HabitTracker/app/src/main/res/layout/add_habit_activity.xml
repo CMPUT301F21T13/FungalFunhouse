@@ -3,113 +3,103 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/HomeTheme"
+    android:background="@drawable/app_background_6">
 
     <EditText
         android:id="@+id/habit_header_edittext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-condensed"
         android:inputType="none"
-        android:text="Add New Habit:"
+        android:background="@color/grey"
+        android:text="ADD NEW HABBIT"
         android:textAlignment="center"
-        android:textSize="40sp"
+        android:textColor="@color/white"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/habit_title_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
-        android:text="Title:"
-        android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
     <EditText
         android:id="@+id/habit_title_edittext"
-        android:layout_width="wrap_content"
+        android:layout_width="300dp"
         android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="26dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="30dp"
+        android:background="#30BCBCBC"
         android:ems="10"
-        android:hint="20 character limit"
+        android:gravity="left|center"
+        android:hint="  Habit Title"
         android:inputType="textPersonName"
         android:maxLength="20"
-        android:textAlignment="center"
-        app:layout_constraintStart_toEndOf="@+id/habit_title_textview"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
-
-    <TextView
-        android:id="@+id/habit_reason_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="128dp"
-        android:text="Reason:"
-        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
+        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext"
+        tools:ignoreMissingConstraints="true" />
+
 
     <EditText
         android:id="@+id/habit_reason_edittext"
-        android:layout_width="240dp"
+        android:layout_width="300dp"
         android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:background="#30BCBCBC"
         android:ems="10"
-        android:hint="30 character limit"
+        android:hint="  Reason"
+        android:gravity="left"
         android:inputType="textPersonName"
         android:maxLength="30"
-        android:textAlignment="center"
-        app:layout_constraintStart_toEndOf="@+id/habit_reason_textview"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
-
-    <TextView
-        android:id="@+id/habit_startdate_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="242dp"
-        android:text="Start Date:"
-        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/habit_title_edittext" />
+
 
     <EditText
         android:id="@+id/habit_datetostart_editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="246dp"
-        android:hint='Press "Add Start Date"'
-        android:textAlignment="center"
+        android:layout_width="300dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:background="#30BCBCBC"
+        android:hint='  Press "Add Start Date"'
+        android:gravity="left|center"
         android:textSize="18sp"
         android:inputType="none"
-        app:layout_constraintStart_toEndOf="@+id/habit_startdate_textview"
-        app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/habit_reason_edittext" />
 
     <Button
         android:id="@+id/habit_addstartdate_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="168dp"
+        android:layout_marginStart="180dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginTop="16dp"
-        android:text="Add Start Date"
+        android:text="add start date"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/orange"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/habit_datetostart_editText" />
 
     <TextView
         android:id="@+id/habit_weekdays_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="364dp"
-        android:text="Weekdays:"
-        android:textSize="24sp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="385dp"
+        android:text="Choose days of the week:"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/habit_header_edittext" />
 
@@ -120,6 +110,7 @@
         android:layout_marginStart="32dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
+        app:backgroundTint="@color/baby_blue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable"
@@ -141,7 +132,9 @@
             android:layout_marginTop="16dp"
             android:checkable="true"
             android:checked="false"
-            android:text="S" />
+            app:chipBackgroundColor="@color/bg_chip_state_list"
+            android:text="S"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_monday_chip"
@@ -151,7 +144,9 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
-            android:text="M" />
+            app:chipBackgroundColor="@color/bg_chip_state_list"
+            android:text="M"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_tuesday_chip"
@@ -161,7 +156,9 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
-            android:text="T" />
+            app:chipBackgroundColor="@color/bg_chip_state_list"
+            android:text="T"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_wednesday_chip"
@@ -171,7 +168,9 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
-            android:text="W" />
+            app:chipBackgroundColor="@color/bg_chip_state_list"
+            android:text="W"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_thursday_chip"
@@ -181,7 +180,9 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
-            android:text="T" />
+            app:chipBackgroundColor="@color/bg_chip_state_list"
+            android:text="T"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_friday_chip"
@@ -191,7 +192,9 @@
             android:layout_marginLeft="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
-            android:text="F" />
+            app:chipBackgroundColor="@color/bg_chip_state_list"
+            android:text="F"
+            android:textSize="14dp"/>
 
         <com.google.android.material.chip.Chip
             android:id="@+id/habit_saturday_chip"
@@ -199,18 +202,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:layout_marginTop="16dp"
             android:checkable="true"
-            android:text="S" />
+            app:chipBackgroundColor="@color/bg_chip_state_list"
+            android:text="S"
+            android:textSize="14dp"/>
     </com.google.android.material.chip.ChipGroup>
 
     <Button
         android:id="@+id/habit_finish_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="64dp"
+        android:layout_width="130dp"
+        android:layout_height="45dp"
+        android:layout_marginEnd="50dp"
         android:layout_marginBottom="136dp"
-        android:text="Finish"
+        android:text="finish"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/orange"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -220,6 +228,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:layout_marginBottom="136dp"
+        android:theme="@style/SwitchTheme"
         android:minHeight="48dp"
         android:text="Show Followers"
         app:layout_constraintBottom_toBottomOf="parent"

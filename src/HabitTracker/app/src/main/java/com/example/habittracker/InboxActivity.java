@@ -45,6 +45,7 @@ public class InboxActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.HomeTheme);
         setContentView(R.layout.request_inbox);
 
         try{
