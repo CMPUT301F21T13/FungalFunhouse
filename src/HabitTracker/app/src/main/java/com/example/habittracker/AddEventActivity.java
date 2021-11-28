@@ -181,7 +181,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 finishAddEvent(habitHid);
-                Intent intent = new Intent(AddEventActivity.this, HomeTabActivity.class);
+                Intent intent = new Intent();
                 intent.putExtra("user", usernameStr);
                 setResult(0, intent);
                 finish();
