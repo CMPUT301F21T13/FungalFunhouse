@@ -77,10 +77,7 @@ public class EventsFragment extends Fragment {
             }
         });
 
-        //TODO: Implement a Habit Listview
-        //TODO: Implement a HabitEvent Listview based on results of clicked Habit Listview
-        //TODO: Implement Add, Edit and delete a habitEvent FROM the habit Listview
-        //TODO: Just make a new activity that shows all the habitEvents and lets you do shit with them im tired
+        //TODO: Make this look prettier
         return view;
     }
 

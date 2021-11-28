@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -87,6 +88,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
 
         loadHabitEventList();
 
+
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -96,7 +98,8 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
                 }
             }
         });
-            //ListView gives selected habitEvent
+
+        //ListView gives selected habitEvent
         showEventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -107,6 +110,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
         showEventsAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent intent = new Intent(ShowEventsForHabitActivity.this, AddEventActivity.class);
                 intent.putExtra("habit id", habitHid);
                 intent.putExtra("user", usernameStr);
@@ -119,7 +123,8 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(currentEvent != null){
-                    //TODO Remove habitEvent from Database
+                    Intent intent = new Intent();
+                    activityLauncher.launch(intent);
                 }
             }
         });
@@ -129,8 +134,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(currentEvent != null){
                     //TODO Send HabitEvent to "AddEventActivity" with activity Launcher for result
-                    //and set flags to ask for the date too
-                    //also modify the addevent activity to show incoming elements (only does comments for now) 
+                    //TODO Set "Edit" Flag on Intent when sending to AddEventActivity
                 }
             }
         });

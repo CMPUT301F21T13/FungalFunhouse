@@ -1,11 +1,14 @@
 package com.example.habittracker;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.habittracker.databinding.ActivityEventMapsBinding;
@@ -24,19 +27,20 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
     private ActivityEventMapsBinding binding;
     private Button enterMapsButton;
 
-    private LatLng userPosition = new LatLng( 53.5461, -113.4938);
+    private LatLng userPosition = new LatLng(53.5461, -113.4938);
     private Marker userLocation;
     private static String TAG = "EventMapsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //TODO: Add in using the current User's Position as starting spot
         super.onCreate(savedInstanceState);
 
         binding = ActivityEventMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         enterMapsButton = findViewById(R.id.maps_enter_button);
 
-        if(getIntent().getFlags() == Intent.FLAG_ACTIVITY_NO_USER_ACTION){
+        if (getIntent().getFlags() == Intent.FLAG_ACTIVITY_NO_USER_ACTION) {
             enterMapsButton.setVisibility(View.GONE);
             Bundle bundle = getIntent().getExtras();
             double latitude = bundle.getDouble("latitude");
@@ -80,6 +84,12 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
         //settings
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //https://stackoverflow.com/questions/22471100/how-to-show-current-position-marker-on-map-in-android
+            //TODO: Check out this link for setting current position markers
+            return;
+        }
+        googleMap.setMyLocationEnabled(true);
 
         // Add a marker in Edmonton and move the camera
         userLocation = mMap.addMarker(new MarkerOptions().position(userPosition).title("You").draggable(true));

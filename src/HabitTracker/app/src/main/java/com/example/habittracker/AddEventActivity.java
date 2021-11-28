@@ -96,7 +96,8 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         db = FirebaseFirestore.getInstance();
         currentHabitEvent = new HabitEvent();
 
-
+        //TODO Register Flags for "Edit" or "Incoming Data"
+        //TODO Edit from ShowEvents must include a date feature
         try{
             habitHid = getIntent().getStringExtra("habit id");
             usernameStr = getIntent().getStringExtra("user");
@@ -230,6 +231,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                         if(documentSnapshot.exists()){
                             commentEditText.setText(documentSnapshot.getData().get(KEY_COMMENT).toString());
                             //TODO Set Location and Photo if not null
+
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
