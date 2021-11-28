@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@drawable/app_background_1"
     tools:context=".CreateUser">
 
     <TextView
@@ -11,9 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="50dp"
-        android:alpha=".75"
+        android:gravity="center"
         android:text="Create Account"
         android:textColor="@color/white"
         android:textSize="40sp" />
@@ -28,7 +28,6 @@
         android:layout_marginEnd="5dp"
         android:layout_marginBottom="5dp"
         android:gravity="center"
-        android:alpha=".65"
         android:text="Enter your account credentials below"
         android:textColor="@color/white"
         android:textSize="13sp" />
@@ -40,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/setcredentials"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="100dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
         android:background="#30ffffff"
@@ -49,8 +48,8 @@
         android:drawableTint="#313131"
         android:hint="@string/username_hint"
         android:padding="15dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:textColor="@color/black"
+        android:textColorHint="@color/text_hint" />
 
     <!--    code for password field -->
     <EditText
@@ -59,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/setusername"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="10dp"
         android:background="#30ffffff"
         android:drawableLeft="@drawable/ic_baseline_https_24"
@@ -67,20 +66,22 @@
         android:drawableTint="#313131"
         android:hint="@string/password"
         android:padding="15dp"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:textColor="@color/black"
+        android:textColorHint="@color/text_hint" />
 
     <!--    code for login button-->
     <Button
         android:id="@+id/signupbutton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="55dp"
         android:layout_below="@id/setpassword"
-        android:backgroundTint="#D76340"
-        android:text="Sign Up"
+        android:backgroundTint="@color/orange"
+        android:text="sign up"
+        android:textAllCaps="false"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
-        android:layout_marginStart="60dp"/>
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"/>
 
 
 </RelativeLayout>
