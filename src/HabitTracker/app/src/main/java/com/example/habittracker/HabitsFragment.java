@@ -93,41 +93,46 @@ public class HabitsFragment extends Fragment {
         usernameStr = currentUser.getUsername();
         habitArrayList = new ArrayList<>();
 
-        Log.d(TAG, usernameStr);
 
         // Grab all of the habits from the database and fill the ListView
         // Use a snapshot listener so whenever the database is updated so is the app
-        db.collection("users").document(usernameStr).collection("habits")
-                .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        habitArrayList.clear();
-                        for (QueryDocumentSnapshot doc : value) {
-                            Log.d(TAG, doc.getId());
-                            String title = (String) doc.getData().get("title");
-                            String reason = (String) doc.getData().get("reason");
-                            String hid = (String) doc.getData().get("hid");
-                            String dateToStart = (String) doc.getData().get("dateToStart");
-                            boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
-                            ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
+        try{
+            db.collection("users").document(usernameStr).collection("habits")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                            habitArrayList.clear();
+                            for (QueryDocumentSnapshot doc : value) {
+                                Log.d(TAG, doc.getId() + "Loading Habits Into Listview");
 
-                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
-                            Log.d(TAG, habit.toString());
+                                //Grab all parameters for the habit
+                                String title = (String) doc.getData().get("title");
+                                String reason = (String) doc.getData().get("reason");
+                                String hid = (String) doc.getData().get("hid");
+                                String dateToStart = (String) doc.getData().get("dateToStart");
+                                boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
+                                ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                            habitArrayList.add(habit);
+                                Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
+                                Log.d(TAG, habit.getTitle());
 
-                            //For viewing following habits
-                            //If the habit is private remove it from the list
-                            if(following && !habit.getPublicVisibility()){
-                                habitArrayList.remove(habit);
+                                habitArrayList.add(habit);
+
+                                //For viewing following habits
+                                //If the habit is private remove it from the list
+                                if(following && !habit.getPublicVisibility()){
+                                    habitArrayList.remove(habit);
+                                }
+
+                                Context context = getContext();
+                                habitListAdapter = new HabitListAdapter(context, habitArrayList);
+                                habitListView.setAdapter(habitListAdapter);
                             }
-
-                            Context context = getContext();
-                            habitListAdapter = new HabitListAdapter(context, habitArrayList);
-                            habitListView.setAdapter(habitListAdapter);
                         }
-                    }
-                });
+                    });
+        } catch (Exception e) {
+            Log.e(TAG, e.toString());
+        }
 
         // Sets the buttons to not display if the Fragment is currently in following
         // view
@@ -178,6 +183,28 @@ public class HabitsFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                //This commented chunk deletes the habitEvent collection from a Habit document
+                //Causes the app to crash from a bug in AddEventActivity somehow
+
+//                //Delete the habitEvents first then the Habit itself
+//                try{
+//                    //Grab all the habitEvent documents
+//                    db.collection("users").document(usernameStr).collection("habits")
+//                            .document(habitListAdapter.getItem(selectedHabit).getHid()).collection("habitEvents")
+//                            .addSnapshotListener(new EventListener<QuerySnapshot>() {
+//                                @Override
+//                                public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+//                                    for (QueryDocumentSnapshot doc : value) {
+//                                        //For each habitEvent document, delete it
+//                                        db.collection("users").document(usernameStr).collection("habits")
+//                                                .document(doc.getData().get("dateTime").toString()).delete();
+//                                    }
+//                                }
+//                            });
+//                }catch (Exception e) {
+//                    Log.e(TAG, e.toString());
+//                }
+
                 try{
                 db.collection("users").document(usernameStr).collection("habits")
                         .document(habitListAdapter.getItem(selectedHabit).getHid()).delete()
@@ -192,41 +219,6 @@ public class HabitsFragment extends Fragment {
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                                //Currently have to reload entire data set when deleting a habit
-                                //Possible fix would be to reload this fragment when something is deleted
-                                db.collection("users").document(usernameStr).collection("habits")
-                                        .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                                            @Override
-                                            public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                                                habitArrayList.clear();
-                                                for (QueryDocumentSnapshot doc : value) {
-                                                    Log.d(TAG, doc.getId());
-                                                    String title = (String) doc.getData().get("title");
-                                                    String reason = (String) doc.getData().get("reason");
-                                                    String hid = (String) doc.getData().get("hid");
-                                                    String dateToStart = (String) doc.getData().get("dateToStart");
-                                                    boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
-                                                    ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
-
-                                                    Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
-                                                    Log.d(TAG, habit.toString());
-
-                                                    habitArrayList.add(habit);
-
-                                                    //For viewing following habits
-                                                    //If the habit is private remove it from the list
-                                                    if(following && !habit.getPublicVisibility()){
-                                                        habitArrayList.remove(habit);
-                                                    }
-
-                                                    Context context = getContext();
-                                                    habitListAdapter = new HabitListAdapter(context, habitArrayList);
-                                                    habitListView.setAdapter(habitListAdapter);
-                                                }
-                                                // If the habit is private then remove it from the habitlist and notify adapter
-                                                // of change
-                                            }
-                                        });
 
                             }
                         }).addOnFailureListener(new OnFailureListener() {

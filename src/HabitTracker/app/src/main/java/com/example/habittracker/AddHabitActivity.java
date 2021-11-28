@@ -284,7 +284,7 @@ public class AddHabitActivity extends AppCompatActivity
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
-                                        finish();
+                                        startActivity(homeTabIntent());
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -298,7 +298,7 @@ public class AddHabitActivity extends AppCompatActivity
                         Log.e(TAG, e.toString());
                         Toast.makeText(AddHabitActivity.this, "Database Error, try again",
                                 Toast.LENGTH_LONG).show();
-                        finish();
+                        startActivity(homeTabIntent());
                     }
                 } else { // Editing a habit
                          // Grab hid from intent only when editing
@@ -324,7 +324,7 @@ public class AddHabitActivity extends AppCompatActivity
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    finish();
+                                    startActivity(homeTabIntent());
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
@@ -338,7 +338,7 @@ public class AddHabitActivity extends AppCompatActivity
                         Log.e(TAG, e.toString());
                         Toast.makeText(AddHabitActivity.this, "Database Error, try again",
                                 Toast.LENGTH_LONG).show();
-                        finish();
+                        startActivity(homeTabIntent());
                     }
 
                 }
@@ -454,6 +454,16 @@ public class AddHabitActivity extends AppCompatActivity
 
 
         return title.isEmpty() || reason.isEmpty() || schedule.checkAllFalse();
+    }
+
+    /**
+     * Generate the intent needed to return to HomeTabActivity
+     * @return Intent for HomeTabActivity
+     */
+    public Intent homeTabIntent() {
+        Intent intent = new Intent(AddHabitActivity.this, HomeTabActivity.class);
+        intent.putExtra("user", usernameStr);
+        return intent;
     }
 
 }
