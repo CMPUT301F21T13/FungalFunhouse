@@ -6,6 +6,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentContainerView;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
@@ -57,6 +59,7 @@ public class AddEventActivity extends AppCompatActivity {
 
     private Button finishButton;
     private Button photoButton;
+    private Button mapsButton;
     private TextView habitTitleTextView;
     private EditText commentEditText;
     private ImageView photoImageView;
@@ -92,6 +95,10 @@ public class AddEventActivity extends AppCompatActivity {
         commentEditText = findViewById(R.id.add_event_comment_edittext);
         photoButton = findViewById(R.id.daily_listivew_photo_button);
         photoImageView = findViewById(R.id.add_event_image_imageview);
+        mapsButton = findViewById(R.id.add_event_maps_button);
+
+
+        //Load Variables
         loadHabit(habitHid);
         loadHabitEvent();
 
@@ -126,6 +133,15 @@ public class AddEventActivity extends AppCompatActivity {
                     activityLauncher.launch(intent);
                 }else{ Toast.makeText(AddEventActivity.this, "No Camera App Found", Toast.LENGTH_SHORT).show();}
                 }
+        });
+
+
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddEventActivity.this, EventMapsActivity.class);
+                startActivity(intent);
+            }
         });
 
 

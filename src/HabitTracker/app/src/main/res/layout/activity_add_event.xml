@@ -79,7 +79,7 @@
         </RelativeLayout>
 
         <LinearLayout
-            android:id="@+id/add_event_location_box"
+            android:id="@+id/add_event_maps_box"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
@@ -87,14 +87,13 @@
             android:orientation="vertical"
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/add_event_image_box">
-            <TextView
-                android:layout_width="match_parent"
+            <Button
+                android:id="@+id/add_event_maps_button"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
                 android:layout_gravity="center_horizontal"
-                android:text="Add Location">
-            </TextView>
-
+                android:layout_margin="20dp"
+                android:text="Add Location"></Button>
 
         </LinearLayout>
 </RelativeLayout>

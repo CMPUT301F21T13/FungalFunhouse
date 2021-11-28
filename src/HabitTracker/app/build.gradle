@@ -30,6 +30,9 @@ android {
             useJUnitPlatform()
         }
     }
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {

@@ -8,4 +8,5 @@
     <string name="password">Password</string>
     <string name="edit_habit_title">Edit Habit</string>
     <string name="fill_all_parameters_toast">Fill All Parameters</string>
+    <string name="title_activity_event_maps">EventMapsActivity</string>
 </resources>
