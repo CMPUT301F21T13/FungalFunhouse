@@ -183,7 +183,8 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                 finishAddEvent(habitHid);
                 Intent intent = new Intent(AddEventActivity.this, HomeTabActivity.class);
                 intent.putExtra("user", usernameStr);
-                startActivity(intent);
+                setResult(0, intent);
+                finish();
             }
         });
 

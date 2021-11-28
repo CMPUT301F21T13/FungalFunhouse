@@ -1,7 +1,10 @@
 package com.example.habittracker;
 
+import static android.app.Activity.RESULT_OK;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,10 +18,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -66,6 +74,7 @@ public class DailyFragment extends Fragment {
 
     private SimpleDateFormat sdf;
     private static final String TAG = "DailyFragment";
+    private ActivityResultLauncher<Intent> activityLauncher;
 
     @Nullable
     @Override
@@ -96,6 +105,15 @@ public class DailyFragment extends Fragment {
         // Grab all of the habits from the database and fill the ListView
         loadHabitList();
 
+        activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    loadHabitList();
+
+                }
+            }
+        });
             dailyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -112,7 +130,7 @@ public class DailyFragment extends Fragment {
                             intent.putExtra("habit id", currentHabit.getHid());
                             intent.putExtra("user", usernameStr);
                             intent.putExtra("date", sdf.format(dateToCheck));
-                            getActivity().startActivity(intent);
+                        activityLauncher.launch(intent);
                         }
 
                 }
