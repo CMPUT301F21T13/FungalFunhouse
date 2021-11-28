@@ -31,6 +31,8 @@
         android:layout_below="@+id/inbox_title"
         android:choiceMode="singleChoice"
         android:listSelector="@color/light_grey"
+        android:paddingVertical="5dp"
+        android:paddingHorizontal="5dp"
         android:divider="@null"
         android:dividerHeight="10dp"
         />
