@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:padding="0dp">
+    android:padding="5dp">
 
     <ImageView
         android:id="@+id/profile_pic"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:contentDescription="desc"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:background="@drawable/ic_baseline_person_outline_24"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@drawable/empty_profile_pic"
         />
 
     <TextView
@@ -23,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_toRightOf="@id/profile_pic"
         android:layout_marginTop="10dp"
-        android:drawablePadding="10dp"
+        android:layout_marginLeft="10dp"
         android:drawableTint="#313131"
         android:layout_centerVertical="true"
         android:textSize="20sp"
-        android:textColor="#202020"
-        />
+        android:textColor="#202020" />
+
 </RelativeLayout>
