@@ -78,7 +78,7 @@ public class HomeTabActivity extends AppCompatActivity {
         eventsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OpenEventsFragment();
+                OpenEventsFragment(currentUser);
             }
         });
 
@@ -146,8 +146,12 @@ public class HomeTabActivity extends AppCompatActivity {
      * User's habit events to complete And will allow for the creation, edition, and
      * deletion of said events
      */
-    public void OpenEventsFragment() {
+    public void OpenEventsFragment(UserProfile userToPrint) {
         EventsFragment fragment = new EventsFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user", userToPrint);
+        fragment.setArguments(bundle);
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment);
         ft.commit();
