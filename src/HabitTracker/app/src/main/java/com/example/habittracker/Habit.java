@@ -16,6 +16,7 @@ public class Habit {
     private String hid;
     private String dateToStart;
     private Boolean publicVisibility;
+    private long listPosition;
 
     //public variables
     public WeeklySchedule weeklySchedule;
@@ -38,7 +39,7 @@ public class Habit {
     }
 
     /**
-     * Constructor used for editing habits as the hid needs to remain the same when editing
+     * Constructor used for editing habits as the hid and listPosition needs to remain the same when editing
      * @param title Habits title
      * @param reason Habits reason
      * @param hid unique Identifier pulled from the database DO NOT MANUALLY SET THIS
@@ -46,12 +47,13 @@ public class Habit {
      * @param publicVisibility Determines whether followers see this habit, true to show, false otherwise
      * @param weekdays ArrayList of weekdays the habit is to be performed on
      */
-    public Habit(String title, String reason, String hid, String dateToStart, boolean publicVisibility, ArrayList<String> weekdays) {
+    public Habit(String title, String reason, String hid, String dateToStart, boolean publicVisibility, long listPosition, ArrayList<String> weekdays) {
         this.title = title;
         this.reason = reason;
         this.hid = hid;
         this.dateToStart = dateToStart;
         this.publicVisibility = publicVisibility;
+        this.listPosition = listPosition;
         this.weeklySchedule = new WeeklySchedule(weekdays);
     }
 
@@ -85,6 +87,10 @@ public class Habit {
 
     public Boolean getPublicVisibility() {
         return publicVisibility;
+    }
+
+    public long getListPosition() {
+        return listPosition;
     }
 
     public WeeklySchedule getWeeklySchedule() {
@@ -122,6 +128,10 @@ public class Habit {
      */
     public void setPublicVisibility(Boolean visibility) {
         this.publicVisibility = visibility;
+    }
+
+    public void setListPosition(int position){
+        this.listPosition = position;
     }
 
     public void setWeeklySchedule(WeeklySchedule weeklySchedule) {

@@ -13,7 +13,7 @@ public class HabitUnitTest {
         weekDays.addMonday();
         weekDays.addFriday();
         Habit habit = new Habit("Feed Fish", "They don't die", "404",
-                "2021-11-22", true, weekDays.getSchedule());
+                "2021-11-22", true, 0, weekDays.getSchedule());
         return habit;
     }
 
@@ -34,7 +34,7 @@ public class HabitUnitTest {
 
         //Editing constructor is primarily used to edit habits, takes in a hid
         Habit editingConstructor = new Habit("Gym", "Get gains", "404",
-                "2021-11-22", true, weekDays.getSchedule());
+                "2021-11-22", true, 0, weekDays.getSchedule());
         assertEquals("Gym", editingConstructor.getTitle());
         assertEquals(Habit.class, editingConstructor.getClass());
 

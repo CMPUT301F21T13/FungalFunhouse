@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * NOTE: In the storyboard we show that the items in the list will expand when you click
  *      on them, for now they do not expand. Instead they just show all the content.
  */
-public class HabitListAdapter extends ArrayAdapter<Habit> {
+public class HabitListAdapter extends ArrayAdapter<Habit>{
 
     private ArrayList<Habit> habits;
     private Context context;

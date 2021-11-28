@@ -14,6 +14,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,6 +29,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
@@ -38,7 +42,7 @@ import java.util.UUID;
  * This is a Fragment for the HABITS tab that uses the xml file
  * habit_fragment.xml
  */
-public class HabitsFragment extends Fragment {
+public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.OnHabitListener {
     public HabitsFragment() {
         super(R.layout.habit_fragment);
     }
@@ -46,8 +50,6 @@ public class HabitsFragment extends Fragment {
     // habits
 
     // Declare variables
-    private HabitListAdapter habitListAdapter;
-    private ListView habitListView;
     private FloatingActionButton addHabit;
     private FloatingActionButton editHabit;
     private FloatingActionButton deleteHabit;
@@ -59,6 +61,10 @@ public class HabitsFragment extends Fragment {
     private boolean following;
     private FirebaseFirestore db;
 
+    //Testing recyclerview
+    private RecyclerView habitRecyclerView;
+    private HabitRecyclerAdapter habitRecyclerAdapter;
+
     // Constants
     private static final String TAG = "HabitsFragment";
 
@@ -69,13 +75,16 @@ public class HabitsFragment extends Fragment {
         View view = inflater.inflate(R.layout.habit_fragment, container, false);
 
         // Initialize variables
-        habitListView = view.findViewById(R.id.habit_listview);
+        //habitListView = view.findViewById(R.id.habit_listview);
         addHabit = view.findViewById(R.id.add_habbit_floating_button);
         editHabit = view.findViewById(R.id.edit_habit_floating_button);
         deleteHabit = view.findViewById(R.id.delete_habit_floating_button);
         editHabit.setVisibility(View.GONE);// Gone until an item on the list is selected
         deleteHabit.setVisibility(View.GONE);// Gone until an item on the list is selected
         selectedHabit = -1;
+
+        //Testing recyclerView
+        habitRecyclerView = view.findViewById(R.id.habit_listview);
 
         // Grab the username of the current logged in user
         Bundle bundle = getArguments();
@@ -100,6 +109,7 @@ public class HabitsFragment extends Fragment {
         // Grab all of the habits from the database and fill the ListView
         // Use a snapshot listener so whenever the database is updated so is the app
         db.collection("users").document(usernameStr).collection("habits")
+                .orderBy("listPosition", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -110,10 +120,11 @@ public class HabitsFragment extends Fragment {
                             String reason = (String) doc.getData().get("reason");
                             String hid = (String) doc.getData().get("hid");
                             String dateToStart = (String) doc.getData().get("dateToStart");
+                            long listPosition = (long) doc.getData().get("listPosition");
                             boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
                             ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
+                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, listPosition, weekdays);
                             Log.d(TAG, habit.toString());
 
                             habitArrayList.add(habit);
@@ -124,10 +135,17 @@ public class HabitsFragment extends Fragment {
                                 habitArrayList.remove(habit);
                             }
 
-                            Context context = getContext();
-                            habitListAdapter = new HabitListAdapter(context, habitArrayList);
-                            habitListView.setAdapter(habitListAdapter);
                         }
+                        Context context = getContext();
+
+                        habitRecyclerAdapter = new HabitRecyclerAdapter(habitArrayList, HabitsFragment.this);
+                        habitRecyclerView.setAdapter(habitRecyclerAdapter);
+                        habitRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+                        ItemTouchHelper.Callback callback = new HabitItemTouchHelper(habitRecyclerAdapter);
+                        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                        itemTouchHelper.attachToRecyclerView(habitRecyclerView);
+                        habitRecyclerAdapter.setTouchHelper(itemTouchHelper);
                     }
                 });
 
@@ -139,38 +157,13 @@ public class HabitsFragment extends Fragment {
             deleteHabit.setVisibility(View.INVISIBLE);
         }
 
-        // habitListView listener
-        habitListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                //May need to keep track of the old view by setting it to a variable
-                if(selectedView != null) {
-                    selectedView.findViewById(R.id.habit_reason).setVisibility(View.GONE);
-                    selectedView.findViewById(R.id.habit_datetostart).setVisibility(View.GONE);
-                    selectedView.findViewById(R.id.habit_weekdays).setVisibility(View.GONE);
-                }
-
-                if (!following) {
-                    editHabit.setVisibility(View.VISIBLE);
-                    deleteHabit.setVisibility(View.VISIBLE);
-                }
-                selectedHabit = i;// i = position of the current habit selected
-                selectedView = view;
-                view.findViewById(R.id.habit_reason).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.habit_datetostart).setVisibility(View.VISIBLE);
-                view.findViewById(R.id.habit_weekdays).setVisibility(View.VISIBLE);
-                //When these are expanded they cover up other habits
-                //habitListAdapter.notifyDataSetChanged();
-            }
-        });
-
         // Add habit button listener
         addHabit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(), AddHabitActivity.class);
                 intent.putExtra("user", usernameStr);
+                intent.putExtra("list_size", habitArrayList.size());
                 startActivity(intent);
             }
         });
@@ -183,7 +176,7 @@ public class HabitsFragment extends Fragment {
                 // Need to send editing boolean and habit title to the activity
                 intent.putExtra("user", usernameStr);
                 intent.putExtra("editing", true);
-                intent.putExtra("habitHID", habitListAdapter.getItem(selectedHabit).getHid());
+                intent.putExtra("habitHID", habitArrayList.get(selectedHabit).getHid());
                 startActivity(intent);
             }
         });
@@ -195,7 +188,7 @@ public class HabitsFragment extends Fragment {
 
                 try{
                 db.collection("users").document(usernameStr).collection("habits")
-                        .document(habitListAdapter.getItem(selectedHabit).getHid()).delete()
+                        .document(habitArrayList.get(selectedHabit).getHid()).delete()
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
@@ -210,6 +203,7 @@ public class HabitsFragment extends Fragment {
                                 //Currently have to reload entire data set when deleting a habit
                                 //Possible fix would be to reload this fragment when something is deleted
                                 db.collection("users").document(usernameStr).collection("habits")
+                                        .orderBy("listPosition", Query.Direction.ASCENDING)
                                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                             @Override
                                             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -221,9 +215,10 @@ public class HabitsFragment extends Fragment {
                                                     String hid = (String) doc.getData().get("hid");
                                                     String dateToStart = (String) doc.getData().get("dateToStart");
                                                     boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
+                                                    long listPosition = (long) doc.getData().get("listPosition");
                                                     ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                                                    Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
+                                                    Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, listPosition, weekdays);
                                                     Log.d(TAG, habit.toString());
 
                                                     habitArrayList.add(habit);
@@ -235,11 +230,14 @@ public class HabitsFragment extends Fragment {
                                                     }
 
                                                     Context context = getContext();
-                                                    habitListAdapter = new HabitListAdapter(context, habitArrayList);
-                                                    habitListView.setAdapter(habitListAdapter);
+                                                    habitRecyclerAdapter = new HabitRecyclerAdapter(habitArrayList, HabitsFragment.this);
+                                                    habitRecyclerView.setAdapter(habitRecyclerAdapter);
+                                                    habitRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                                                 }
-                                                // If the habit is private then remove it from the habitlist and notify adapter
-                                                // of change
+                                                ItemTouchHelper.Callback callback = new HabitItemTouchHelper(habitRecyclerAdapter);
+                                                ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                                                itemTouchHelper.attachToRecyclerView(habitRecyclerView);
+                                                habitRecyclerAdapter.setTouchHelper(itemTouchHelper);
                                             }
                                         });
 
@@ -265,4 +263,23 @@ public class HabitsFragment extends Fragment {
 
     }
 
+    @Override
+    public void onHabitClick(int position, View view) {
+        //May need to keep track of the old view by setting it to a variable
+            if(selectedView != null) {
+                selectedView.findViewById(R.id.habit_reason).setVisibility(View.GONE);
+                selectedView.findViewById(R.id.habit_datetostart).setVisibility(View.GONE);
+                selectedView.findViewById(R.id.habit_weekdays).setVisibility(View.GONE);
+            }
+
+            if (!following) {
+                editHabit.setVisibility(View.VISIBLE);
+                deleteHabit.setVisibility(View.VISIBLE);
+            }
+            selectedHabit = position;
+            selectedView = view;
+            view.findViewById(R.id.habit_reason).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.habit_datetostart).setVisibility(View.VISIBLE);
+            view.findViewById(R.id.habit_weekdays).setVisibility(View.VISIBLE);
+        }
 }
