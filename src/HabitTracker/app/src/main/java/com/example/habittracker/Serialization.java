@@ -364,17 +364,21 @@ public class Serialization {
 
 	public static void writeHabitEvent(String username, String hid, HabitEvent habitEvent){
 		String habitEventDateName = sdf.format(habitEvent.getDate().getTime());
+		Map<String, Object> habitMap = new HashMap<>();
 
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		habitEvent.getPhotograph().compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
-		byte[] b = baos.toByteArray();
-		String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+		if(habitEvent.getPhotograph() != null) {
+			habitEvent.getPhotograph().compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+			byte[] b = baos.toByteArray();
+			String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+			habitMap.put(KEY_EVENT_IMAGE, encodedImage);
+		}else{
+			habitMap.put(KEY_EVENT_IMAGE, null);
+		}
 
 
-		Map<String, Object> habitMap = new HashMap<>();
 		habitMap.put(KEY_EVENT_DATETIME, habitEventDateName);
 		habitMap.put(KEY_EVENT_COMMENT, habitEvent.getComment());
-		habitMap.put(KEY_EVENT_IMAGE, encodedImage);
 		habitMap.put(KEY_EVENT_LOCATION, habitEvent.getLocation());
 		habitMap.put(KEY_EVENT_DONE, habitEvent.getDone());
 

@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.os.Bundle;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.ClientProtocolException;
@@ -97,8 +99,13 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, EventMapsActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
-                intent.putExtra("latitude", habit.getHabitEventList().get(0).getLocation().latitude);
-                intent.putExtra("longitude", habit.getHabitEventList().get(0).getLocation().longitude);
+                Bundle bundle = new Bundle();
+                double latitude = habit.getHabitEventList().get(0).getLocation().latitude;
+                double longitude = habit.getHabitEventList().get(0).getLocation().longitude;
+                bundle.putDouble("latitude", latitude);
+                bundle.putDouble("longitude", longitude);
+                intent.putExtras(bundle);
+                Log.d(TAG, "lat: " + latitude + " lon: " + longitude);
                 context.startActivity(intent);
             }
         });
@@ -126,12 +133,15 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
                             Map<String, Double> position = (Map<String, Double>) documentSnapshot.getData().get(KEY_LOCATION);
                             if(position.get("latitude") != 0 && position.get("longitude") != 0){
                                 mapsButton.setVisibility(View.VISIBLE);
+                                habitEvent.setLocation(new LatLng(position.get("latitude"), position.get("longitude")));
                             }
                             String dailyComment = (String) documentSnapshot.getData().get(KEY_COMMENT);
                             boolean dailyDone = (boolean) documentSnapshot.getData().get(KEY_DONE);
 
                             //add into habitevent
-                            habitEvent.setComment(dailyComment);
+                            if(dailyComment.equals("") && dailyComment.equals('"')) {
+                                habitEvent.setComment(dailyComment);
+                            }
 
                             habitEvent.setDone(dailyDone);
 

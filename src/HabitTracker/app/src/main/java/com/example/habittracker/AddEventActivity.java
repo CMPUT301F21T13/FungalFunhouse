@@ -148,9 +148,10 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                     Double latitude = Double.parseDouble(bundle.get("latitude").toString());
                     Double longitude = Double.parseDouble(bundle.get("longitude").toString());
                     userPosition = new LatLng(latitude, longitude);
-
+                    Log.d(TAG, "lat: " + latitude + " lon: " + longitude);
                     currentHabitEvent.setLocation(userPosition);
                     mapsLayout.setVisibility(View.VISIBLE);
+                    userMarker.setPosition(userPosition);
                 }
             }
         });
@@ -185,8 +186,6 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                 startActivity(intent);
             }
         });
-
-
 
     }
 
@@ -253,12 +252,9 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(GoogleMap googleMap) {
 
         // Add a marker in Edmonton and move the camera
-        userMarker = googleMap.addMarker(new MarkerOptions().position(userPosition).title("Edmonton").draggable(true));
+        userMarker = googleMap.addMarker(new MarkerOptions().position(userPosition).title("You").draggable(true));
         userMarker.setTag(0);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
-        googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(0, 0))
-                .title("You"));
 
     }
 }

@@ -2,6 +2,7 @@ package com.example.habittracker;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,6 +26,7 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
 
     private LatLng userPosition = new LatLng( 53.5461, -113.4938);
     private Marker userLocation;
+    private static String TAG = "EventMapsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,11 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
 
         if(getIntent().getFlags() == Intent.FLAG_ACTIVITY_NO_USER_ACTION){
             enterMapsButton.setVisibility(View.GONE);
-
+            Bundle bundle = getIntent().getExtras();
+            double latitude = bundle.getDouble("latitude");
+            double longitude = bundle.getDouble("longitude");
+            userPosition = new LatLng(latitude, longitude);
+            Log.d(TAG, "latitude: " + latitude + " longitude: " + longitude);
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -48,8 +54,9 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();
-                intent.putExtra("latitude", userLocation.getPosition().latitude);
-                intent.putExtra("longitude", userLocation.getPosition().longitude);
+                intent.putExtra("latitude", userPosition.latitude);
+                intent.putExtra("longitude", userPosition.longitude);
+                Log.d(TAG, "Position: " + userLocation.getPosition());
                 setResult(56, intent);
                 finish();
             }
@@ -78,5 +85,21 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
         userLocation = mMap.addMarker(new MarkerOptions().position(userPosition).title("Edmonton").draggable(true));
         userLocation.setTag(0);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
+        mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+            @Override
+            public void onMarkerDragStart(Marker arg0) {
+            }
+
+            @SuppressWarnings("unchecked")
+            @Override
+            public void onMarkerDragEnd(Marker arg0) {
+                userPosition = arg0.getPosition();
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(arg0.getPosition()));
+            }
+
+            @Override
+            public void onMarkerDrag(Marker arg0) {
+            }
+        });
     }
 }
