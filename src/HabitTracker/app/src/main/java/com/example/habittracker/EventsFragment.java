@@ -71,6 +71,7 @@ public class EventsFragment extends Fragment {
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(getActivity(), ShowEventsForHabitActivity.class);
                 intent.putExtra("habit id", eventsHabitDataList.get(i).getHid());
+                intent.putExtra("habit title", eventsHabitDataList.get(i).getTitle());
                 intent.putExtra("user", usernameStr);
                 getActivity().startActivity(intent);
             }

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -30,6 +31,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
     private ArrayList<HabitEvent> showEventsDataList;
     private String usernameStr;
     private String habitHid;
+    private String habitTitle;
     private HabitEvent currentEvent;
 
     private FirebaseFirestore db;
@@ -39,6 +41,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
     private FloatingActionButton showEventsAddButton;
     private FloatingActionButton showEventsEditButton;
     private FloatingActionButton showEventsDeleteButton;
+    private TextView showEventsLogView;
 
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
@@ -55,6 +58,8 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
         showEventsAddButton = findViewById(R.id.show_events_add_floating_button);
         showEventsEditButton = findViewById(R.id.show_events_edit_floating_button);
         showEventsDeleteButton = findViewById(R.id.show_events_delete_floating_button);
+        showEventsLogView = findViewById(R.id.show_events_log_id);
+
 
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
@@ -64,6 +69,8 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
         try{
             habitHid = getIntent().getStringExtra("habit id");
             usernameStr = getIntent().getStringExtra("user");
+            habitTitle = getIntent().getStringExtra("habit title");
+            showEventsLogView.setText(habitTitle);
 
         } catch (NullPointerException e){
             Log.e("AddEventActivity: ", "Could not get 'habit id', 'user' or 'date' from bundle" + e);

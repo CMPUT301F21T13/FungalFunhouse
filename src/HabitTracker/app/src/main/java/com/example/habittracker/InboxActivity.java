@@ -30,7 +30,7 @@ import java.util.Map;
  * Implements the user of FollowRequestInbox
  */
 public class InboxActivity extends AppCompatActivity {
-    
+
     Button acceptButton;
     Button denyButton;
     ListView requestList;
