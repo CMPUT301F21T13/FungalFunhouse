@@ -52,7 +52,7 @@
     </LinearLayout>
 
     <ListView
-        android:id="@+id/user_list"
+        android:id="@+id/user_search_list"
         android:layout_width="wrap_content"
         android:layout_height="480dp"
         android:layout_centerHorizontal="true"
@@ -62,6 +62,7 @@
         android:listSelector="@color/light_grey"
         android:divider="@null"
         android:dividerHeight="10dp"
+        android:padding="5dp"
 
         />
 
