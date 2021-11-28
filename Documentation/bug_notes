@@ -1,0 +1,7 @@
+Bugs/Issues:
+
+-in user search page in the friend tab: if you press the select button without first selecting a user, the app crashes 
+
+-you looking at a friends habits, if you use built back button on phone, it takes you to log in screen. So user has to use the back button in the app. (possible fix is making the page into an activity instead of a fragment)
+
+-when selecting the search edit text in the user search page, the grey bar at the top of the page gets cut off by white background (minor issue, can be left if no time)
