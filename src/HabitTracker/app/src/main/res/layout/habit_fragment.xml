@@ -62,7 +62,7 @@
         app:srcCompat="@android:drawable/ic_menu_delete"
         tools:ignore="SpeakableTextPresentCheck" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/habit_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -71,6 +71,6 @@
         tools:visibility="gone"
         android:choiceMode="singleChoice"
         android:listSelector="@color/light_grey">
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
