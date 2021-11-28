@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/app_background_6">
+    android:background="@drawable/app_background_6"
+    android:theme="@style/HomeTheme">
 
     <TextView
         android:id="@+id/request_title"
@@ -27,25 +28,26 @@
 
         <EditText
             android:id="@+id/username_input"
-            android:layout_width="150dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:layout_marginTop="10dp"
             android:autofillHints="username"
             android:background="#F8F6F6"
-            android:hint="Username"
+            android:hint="Search"
             android:inputType="text"
             android:textColorHint="@color/text_hint" />
 
         <Button
             android:id="@+id/search_button"
-            android:layout_width="180dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:layout_marginRight="10sp"
-            android:text="search"
-            android:textAllCaps="false"/>
+            android:text="go"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/orange"/>
 
     </LinearLayout>
 
@@ -58,16 +60,21 @@
         android:layout_marginTop="20dp"
         android:choiceMode="singleChoice"
         android:listSelector="@color/light_grey"
+        android:divider="@null"
+        android:dividerHeight="10dp"
+
         />
 
     <Button
         android:id="@+id/enter_button"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:text="enter"
-        android:textAllCaps="false"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="20dp"
+        android:text="select"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/orange"/>
 
     <Button
         android:id="@+id/back_button"
