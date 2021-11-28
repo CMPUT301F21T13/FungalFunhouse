@@ -6,7 +6,7 @@
     <string name="log_in_button">login</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="password">Password</string>
-    <string name="fill_all_parameters_toast">Fill All Parameters</string>
+    <string name="fill_all_parameters_toast">fill all parameters</string>
     <string name="title_activity_event_maps">EventMapsActivity</string>
     <string name="edit_habit_title">EDIT HABIT</string>
 
