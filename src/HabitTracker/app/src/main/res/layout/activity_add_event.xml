@@ -94,6 +94,10 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="20dp"
                 android:text="Add Location"></Button>
+            <TextView
+                android:id="@+id/add_event_maps_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"></TextView>
 
         </LinearLayout>
 </RelativeLayout>

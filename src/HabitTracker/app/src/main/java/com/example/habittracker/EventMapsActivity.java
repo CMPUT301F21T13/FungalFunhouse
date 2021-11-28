@@ -2,7 +2,10 @@ package com.example.habittracker;
 
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -18,6 +21,7 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
 
     private GoogleMap mMap;
     private ActivityEventMapsBinding binding;
+    private Button enterMapsButton;
 
     private final LatLng EDMONTON = new LatLng( 53.5461, -113.4938);
     private Marker userLocation;
@@ -28,11 +32,24 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
 
         binding = ActivityEventMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+        enterMapsButton = findViewById(R.id.maps_enter_button);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        enterMapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.putExtra("latitude", userLocation.getPosition().latitude);
+                intent.putExtra("longitude", userLocation.getPosition().longitude);
+                setResult(56, intent);
+                finish();
+            }
+        });
+
     }
 
     /**

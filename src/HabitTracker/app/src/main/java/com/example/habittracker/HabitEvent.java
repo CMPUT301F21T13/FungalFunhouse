@@ -3,6 +3,8 @@ package com.example.habittracker;
 import android.graphics.Bitmap;
 import android.media.Image;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.Calendar;
 
 public class HabitEvent {
@@ -12,19 +14,19 @@ public class HabitEvent {
     private Bitmap photograph;
     private boolean unique;
     private boolean done;
-    private Point location;
+    private LatLng location;
 
     public HabitEvent(){
         setComment("No Comment");
         setTitle("No Title");
-        setLocation(new Point());
+        setLocation(new LatLng(0,0));
         setUnique(false);
         setDate(null);
     }
     public HabitEvent(Calendar date){
         setComment("No Comment");
         setTitle("No Title");
-        setLocation(new Point());
+        setLocation(new LatLng(0,0));
         setUnique(false);
         setDate(date);
     }
@@ -64,11 +66,11 @@ public class HabitEvent {
         this.unique = unique;
     }
 
-    public Point getLocation() {
+    public LatLng getLocation() {
         return location;
     }
 
-    public void setLocation(Point location) {
+    public void setLocation(LatLng location) {
         this.location = location;
     }
 

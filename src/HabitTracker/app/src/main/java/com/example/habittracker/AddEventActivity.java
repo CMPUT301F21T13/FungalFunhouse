@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -63,6 +64,7 @@ public class AddEventActivity extends AppCompatActivity {
     private TextView habitTitleTextView;
     private EditText commentEditText;
     private ImageView photoImageView;
+    private TextView mapsTextView;
     private FirebaseFirestore db;
     private SimpleDateFormat sdf;
 
@@ -96,6 +98,7 @@ public class AddEventActivity extends AppCompatActivity {
         photoButton = findViewById(R.id.daily_listivew_photo_button);
         photoImageView = findViewById(R.id.add_event_image_imageview);
         mapsButton = findViewById(R.id.add_event_maps_button);
+        mapsTextView = findViewById(R.id.add_event_maps_view);
 
 
         //Load Variables
@@ -121,6 +124,16 @@ public class AddEventActivity extends AppCompatActivity {
                     photoImageView.setImageBitmap(bitmap);
                     photoImageView.getLayoutParams().height = 400;
                     photoImageView.getLayoutParams().width = 300;
+
+                    currentHabitEvent.setPhotograph(bitmap);
+                } else if (result.getResultCode() == 56 && result.getData() != null){
+                    Log.d(TAG, "LOCATION FOUND");
+                    Bundle bundle = result.getData().getExtras();
+                    LatLng userLocation = new LatLng(Double.parseDouble(bundle.get("latitude").toString()),
+                            Double.parseDouble(bundle.get("longitude").toString()));
+                    mapsTextView.setText(userLocation.toString());
+
+                    currentHabitEvent.setLocation(userLocation);
                 }
             }
         });
@@ -140,10 +153,9 @@ public class AddEventActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AddEventActivity.this, EventMapsActivity.class);
-                startActivity(intent);
+                activityLauncher.launch(intent);
             }
         });
-
 
         //Finishes the Add Event Activity by sending user back to HomeTab
         //and writing the habit event to the database;
@@ -216,8 +228,8 @@ public class AddEventActivity extends AppCompatActivity {
         if (!commentEditText.getText().equals("")){
             currentHabitEvent.setComment(commentEditText.getText().toString());
             currentHabitEvent.setDone(true);
-            Bitmap bm = ((BitmapDrawable) photoImageView.getDrawable()).getBitmap();
-            currentHabitEvent.setPhotograph(bm);
+
+
         }
 
         Serialization.writeHabitEvent(usernameStr, habitHid, currentHabitEvent);
