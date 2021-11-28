@@ -59,7 +59,7 @@ public class AddHabitActivity extends AppCompatActivity
     private boolean editing;
     private String providedHID;
     private WeeklySchedule schedule;
-    private int arraySize;
+    //private int arraySize;
     private Intent intent;
 
     // Firebase collection constants
@@ -72,7 +72,7 @@ public class AddHabitActivity extends AppCompatActivity
     private static final String KEY_HABIT_PUBLIC_VISIBILITY = "publicVisibility";
     private static final String KEY_HABIT_HID = "hid";
     private static final String KEY_HABIT_DATE_TO_START = "dateToStart";
-    private static final String KEY_HABIT_LIST_POSITION = "listPosition";
+    //private static final String KEY_HABIT_LIST_POSITION = "listPosition";
     private static final String KEY_HABIT_WEEKDAYS = "weekdays";
 
     // Database declaration
@@ -107,7 +107,7 @@ public class AddHabitActivity extends AppCompatActivity
         intent = getIntent();
         usernameStr = intent.getStringExtra("user"); // grabs the current user
         editing = intent.getBooleanExtra("editing", false); //default is false for not editing
-        arraySize = intent.getIntExtra("list_size", -1); //list_size only passed when adding a new habit
+        //arraySize = intent.getIntExtra("list_size", -1); //list_size only passed when adding a new habit
 
         dateToStart = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
         schedule = new WeeklySchedule();
@@ -225,11 +225,12 @@ public class AddHabitActivity extends AppCompatActivity
                                 String startDate = (String) documentSnapshot.getData().get(KEY_HABIT_DATE_TO_START);
                                 boolean publicVisibility = (boolean) documentSnapshot.getData()
                                         .get(KEY_HABIT_PUBLIC_VISIBILITY);
-                                long listPosition = (long) documentSnapshot.getData().get(KEY_HABIT_LIST_POSITION);
+                                //long listPosition = (long) documentSnapshot.getData().get(KEY_HABIT_LIST_POSITION);
                                 ArrayList<String> weekdays = (ArrayList<String>) documentSnapshot.getData()
                                         .get(KEY_HABIT_WEEKDAYS);
 
-                                Habit habit = new Habit(title, reason, hid, startDate, publicVisibility, listPosition, weekdays);
+                                //Habit habit = new Habit(title, reason, hid, startDate, publicVisibility, listPosition, weekdays);
+                                Habit habit = new Habit(title, reason, hid, startDate, publicVisibility, weekdays);
                                 Log.d(TAG, habit.toString());
                                 fillParameters(habit); // Fill in the parameters using the habit
 
@@ -264,7 +265,7 @@ public class AddHabitActivity extends AppCompatActivity
                     habit.setReason(reasonEditText.getText().toString());
                     habit.setDateToStart(dateToStart);
                     habit.setPublicVisibility(publicVisibility);
-                    habit.setListPosition(arraySize);
+                    //habit.setListPosition(arraySize);
                     habit.setWeeklySchedule(schedule);
 
                     Map<String, Object> habitMap = new HashMap<>();
@@ -273,7 +274,7 @@ public class AddHabitActivity extends AppCompatActivity
                     habitMap.put(KEY_HABIT_PUBLIC_VISIBILITY, habit.getPublicVisibility());
                     habitMap.put(KEY_HABIT_HID, habit.getHid());
                     habitMap.put(KEY_HABIT_DATE_TO_START, habit.getDateToStart());
-                    habitMap.put(KEY_HABIT_LIST_POSITION, habit.getListPosition());
+                    //habitMap.put(KEY_HABIT_LIST_POSITION, habit.getListPosition());
                     habitMap.put(KEY_HABIT_WEEKDAYS, habit.weeklySchedule.getSchedule());
 
                     try{

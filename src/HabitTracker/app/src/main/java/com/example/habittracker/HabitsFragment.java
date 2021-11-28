@@ -106,10 +106,10 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
 
         Log.d(TAG, usernameStr);
 
-        // Grab all of the habits from the database and fill the ListView
+        // Grab all of the habits from the database and fill the Recyclerview
         // Use a snapshot listener so whenever the database is updated so is the app
+        //If implementing listPositions use .orderBy("listPosition", Query.Direction.ASCENDING)
         db.collection("users").document(usernameStr).collection("habits")
-                .orderBy("listPosition", Query.Direction.ASCENDING)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -120,11 +120,12 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
                             String reason = (String) doc.getData().get("reason");
                             String hid = (String) doc.getData().get("hid");
                             String dateToStart = (String) doc.getData().get("dateToStart");
-                            long listPosition = (long) doc.getData().get("listPosition");
+                            //long listPosition = (long) doc.getData().get("listPosition");
                             boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
                             ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, listPosition, weekdays);
+                            //Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, listPosition, weekdays);
+                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
                             Log.d(TAG, habit.toString());
 
                             habitArrayList.add(habit);
@@ -135,17 +136,19 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
                                 habitArrayList.remove(habit);
                             }
 
+                            Context context = getContext();
+
+                            habitRecyclerAdapter = new HabitRecyclerAdapter(habitArrayList, HabitsFragment.this, usernameStr);
+                            habitRecyclerView.setAdapter(habitRecyclerAdapter);
+                            habitRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
+                            ItemTouchHelper.Callback callback = new HabitItemTouchHelper(habitRecyclerAdapter);
+                            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
+                            itemTouchHelper.attachToRecyclerView(habitRecyclerView);
+                            habitRecyclerAdapter.setTouchHelper(itemTouchHelper);
+
                         }
-                        Context context = getContext();
 
-                        habitRecyclerAdapter = new HabitRecyclerAdapter(habitArrayList, HabitsFragment.this);
-                        habitRecyclerView.setAdapter(habitRecyclerAdapter);
-                        habitRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-
-                        ItemTouchHelper.Callback callback = new HabitItemTouchHelper(habitRecyclerAdapter);
-                        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
-                        itemTouchHelper.attachToRecyclerView(habitRecyclerView);
-                        habitRecyclerAdapter.setTouchHelper(itemTouchHelper);
                     }
                 });
 
@@ -203,7 +206,6 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
                                 //Currently have to reload entire data set when deleting a habit
                                 //Possible fix would be to reload this fragment when something is deleted
                                 db.collection("users").document(usernameStr).collection("habits")
-                                        .orderBy("listPosition", Query.Direction.ASCENDING)
                                         .addSnapshotListener(new EventListener<QuerySnapshot>() {
                                             @Override
                                             public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
@@ -215,10 +217,11 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
                                                     String hid = (String) doc.getData().get("hid");
                                                     String dateToStart = (String) doc.getData().get("dateToStart");
                                                     boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
-                                                    long listPosition = (long) doc.getData().get("listPosition");
+                                                    //long listPosition = (long) doc.getData().get("listPosition");
                                                     ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                                                    Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, listPosition, weekdays);
+                                                    //Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, listPosition, weekdays);
+                                                    Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
                                                     Log.d(TAG, habit.toString());
 
                                                     habitArrayList.add(habit);
@@ -229,11 +232,13 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
                                                         habitArrayList.remove(habit);
                                                     }
 
-                                                    Context context = getContext();
-                                                    habitRecyclerAdapter = new HabitRecyclerAdapter(habitArrayList, HabitsFragment.this);
-                                                    habitRecyclerView.setAdapter(habitRecyclerAdapter);
-                                                    habitRecyclerView.setLayoutManager(new LinearLayoutManager(context));
                                                 }
+                                                Context context = getContext();
+
+                                                habitRecyclerAdapter = new HabitRecyclerAdapter(habitArrayList, HabitsFragment.this, usernameStr);
+                                                habitRecyclerView.setAdapter(habitRecyclerAdapter);
+                                                habitRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+
                                                 ItemTouchHelper.Callback callback = new HabitItemTouchHelper(habitRecyclerAdapter);
                                                 ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callback);
                                                 itemTouchHelper.attachToRecyclerView(habitRecyclerView);
