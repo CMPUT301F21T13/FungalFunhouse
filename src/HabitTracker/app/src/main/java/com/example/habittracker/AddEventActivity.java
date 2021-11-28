@@ -87,6 +87,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.HomeTheme);
         setContentView(R.layout.activity_add_event);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
