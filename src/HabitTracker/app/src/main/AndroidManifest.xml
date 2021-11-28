@@ -33,7 +33,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <meta-data android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyAZt_v7Ys4Jp_o8IkrBrfx9x_YUQRGY_7g" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version"/>
+
         <activity
             android:name=".EventMapsActivity"
             android:exported="true"
