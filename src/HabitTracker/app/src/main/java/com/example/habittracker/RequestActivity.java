@@ -35,7 +35,6 @@ import java.util.Objects;
  */
 public class RequestActivity extends AppCompatActivity {
 
-    Button backButton;
     Button searchButton;
     Button enterButton;
     EditText usernameText;
@@ -65,7 +64,6 @@ public class RequestActivity extends AppCompatActivity {
         usernameText = findViewById(R.id.username_input);
         searchButton = findViewById(R.id.search_button);
         enterButton = findViewById(R.id.enter_button);
-        backButton = findViewById(R.id.back_button);
         userList = findViewById(R.id.user_search_list);
         userDataList = new ArrayList<>();
         filterDataInList("");
@@ -89,12 +87,6 @@ public class RequestActivity extends AppCompatActivity {
             Toast.makeText(RequestActivity.this, "Request sent", Toast.LENGTH_SHORT).show();
         });
 
-        // Sends User back to HomeTabActivity
-        backButton.setOnClickListener(view -> {
-            Intent intent = new Intent(RequestActivity.this, HomeTabActivity.class);
-            intent.putExtra("user", currentUsername);
-            startActivity(intent);
-        });
     }
 
     /**

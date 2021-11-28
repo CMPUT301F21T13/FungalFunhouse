@@ -30,8 +30,7 @@ import java.util.Map;
  * Implements the user of FollowRequestInbox
  */
 public class InboxActivity extends AppCompatActivity {
-
-    Button backButton;
+    
     Button acceptButton;
     Button denyButton;
     ListView requestList;
@@ -59,7 +58,6 @@ public class InboxActivity extends AppCompatActivity {
         requestList = findViewById(R.id.inbox_request_list);
         acceptButton = findViewById(R.id.accept_button);
         denyButton = findViewById(R.id.deny_button);
-        backButton = findViewById(R.id.back_button);
         acceptButton.setVisibility(View.GONE);
         denyButton.setVisibility(View.GONE);
         requestDataList = new ArrayList<>();
@@ -93,13 +91,6 @@ public class InboxActivity extends AppCompatActivity {
                 Toast.makeText(InboxActivity.this, "Request Denied", Toast.LENGTH_SHORT).show();
                 requestList.clearChoices(); 
             }
-        });
-
-        //Sends the user back to HomeTabActivity
-        backButton.setOnClickListener(view -> {
-            Intent intent = new Intent(InboxActivity.this, HomeTabActivity.class);
-            intent.putExtra("user", currentUsername);
-            startActivity(intent);
         });
 
     }

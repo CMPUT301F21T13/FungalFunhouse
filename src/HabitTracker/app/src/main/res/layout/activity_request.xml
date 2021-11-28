@@ -77,12 +77,5 @@
         android:textAllCaps="false"
         android:backgroundTint="@color/orange"/>
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="10sp"
-        android:text="BACK" />
 
 </RelativeLayout>

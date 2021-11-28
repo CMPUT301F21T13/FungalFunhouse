@@ -66,12 +66,5 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:text="BACK" />
 
 </RelativeLayout>
