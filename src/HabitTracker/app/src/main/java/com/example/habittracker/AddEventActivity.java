@@ -6,10 +6,12 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,10 +26,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -43,7 +54,7 @@ import java.util.Date;
  * An Activity for adding attributes to a Habit Event
  * For comments, photographs and location
  */
-public class AddEventActivity extends AppCompatActivity {
+public class AddEventActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private String habitTitle;
     private String habitHid;
@@ -64,17 +75,24 @@ public class AddEventActivity extends AppCompatActivity {
     private TextView habitTitleTextView;
     private EditText commentEditText;
     private ImageView photoImageView;
-    private TextView mapsTextView;
+    private LinearLayout mapsLayout;
     private FirebaseFirestore db;
     private SimpleDateFormat sdf;
 
     private ActivityResultLauncher<Intent> activityLauncher;
+    private Marker userMarker;
+    private LatLng userPosition = new LatLng( 53.5461, -113.4938);
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_event);
+
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.add_event_map);
+        mapFragment.getMapAsync(this);
+
         db = FirebaseFirestore.getInstance();
         currentHabitEvent = new HabitEvent();
 
@@ -83,9 +101,6 @@ public class AddEventActivity extends AppCompatActivity {
             habitHid = getIntent().getStringExtra("habit id");
             usernameStr = getIntent().getStringExtra("user");
             currentDate = getIntent().getStringExtra("date");
-            Log.d(TAG, "The hid is " + habitHid);
-            Log.d(TAG, "The username is " + usernameStr);
-            Log.d(TAG, "The date is " + currentDate);
 
         } catch (NullPointerException e){
             Log.e("AddEventActivity: ", "Could not get 'habit id', 'user' or 'date' from bundle" + e);
@@ -95,15 +110,16 @@ public class AddEventActivity extends AppCompatActivity {
         habitTitleTextView = findViewById(R.id.add_event_title);
         finishButton = findViewById(R.id.add_event_finish_button);
         commentEditText = findViewById(R.id.add_event_comment_edittext);
-        photoButton = findViewById(R.id.daily_listivew_photo_button);
+        photoButton = findViewById(R.id.daily_listview_photo_button);
         photoImageView = findViewById(R.id.add_event_image_imageview);
         mapsButton = findViewById(R.id.add_event_maps_button);
-        mapsTextView = findViewById(R.id.add_event_maps_view);
+        mapsLayout = findViewById(R.id.add_event_placeholder_for_maps);
 
 
         //Load Variables
         loadHabit(habitHid);
         loadHabitEvent();
+        mapsLayout.setVisibility(View.GONE);
 
         calendar = Calendar.getInstance();
         sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -118,7 +134,7 @@ public class AddEventActivity extends AppCompatActivity {
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
-                if(result.getResultCode() == RESULT_OK && result.getData() != null){
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     Bundle bundle = result.getData().getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");
                     photoImageView.setImageBitmap(bitmap);
@@ -126,14 +142,15 @@ public class AddEventActivity extends AppCompatActivity {
                     photoImageView.getLayoutParams().width = 300;
 
                     currentHabitEvent.setPhotograph(bitmap);
-                } else if (result.getResultCode() == 56 && result.getData() != null){
+                } else if (result.getResultCode() == 56 && result.getData() != null) {
                     Log.d(TAG, "LOCATION FOUND");
                     Bundle bundle = result.getData().getExtras();
-                    LatLng userLocation = new LatLng(Double.parseDouble(bundle.get("latitude").toString()),
-                            Double.parseDouble(bundle.get("longitude").toString()));
-                    mapsTextView.setText(userLocation.toString());
+                    Double latitude = Double.parseDouble(bundle.get("latitude").toString());
+                    Double longitude = Double.parseDouble(bundle.get("longitude").toString());
+                    userPosition = new LatLng(latitude, longitude);
 
-                    currentHabitEvent.setLocation(userLocation);
+                    currentHabitEvent.setLocation(userPosition);
+                    mapsLayout.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -172,8 +189,6 @@ public class AddEventActivity extends AppCompatActivity {
 
 
     }
-
-
 
     /**
      * Loads the current Habit and details needed
@@ -228,11 +243,22 @@ public class AddEventActivity extends AppCompatActivity {
         if (!commentEditText.getText().equals("")){
             currentHabitEvent.setComment(commentEditText.getText().toString());
             currentHabitEvent.setDone(true);
-
-
         }
 
         Serialization.writeHabitEvent(usernameStr, habitHid, currentHabitEvent);
     }
 
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        // Add a marker in Edmonton and move the camera
+        userMarker = googleMap.addMarker(new MarkerOptions().position(userPosition).title("Edmonton").draggable(true));
+        userMarker.setTag(0);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
+        googleMap.addMarker(new MarkerOptions()
+                .position(new LatLng(0, 0))
+                .title("You"));
+
+    }
 }

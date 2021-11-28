@@ -1,12 +1,13 @@
 package com.example.habittracker;
 
-import androidx.fragment.app.FragmentActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.fragment.app.FragmentActivity;
+
+import com.example.habittracker.databinding.ActivityEventMapsBinding;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -15,7 +16,6 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.example.habittracker.databinding.ActivityEventMapsBinding;
 
 public class EventMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -23,7 +23,7 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
     private ActivityEventMapsBinding binding;
     private Button enterMapsButton;
 
-    private final LatLng EDMONTON = new LatLng( 53.5461, -113.4938);
+    private LatLng userPosition = new LatLng( 53.5461, -113.4938);
     private Marker userLocation;
 
     @Override
@@ -33,6 +33,11 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
         binding = ActivityEventMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         enterMapsButton = findViewById(R.id.maps_enter_button);
+
+        if(getIntent().getFlags() == Intent.FLAG_ACTIVITY_NO_USER_ACTION){
+            enterMapsButton.setVisibility(View.GONE);
+
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -70,8 +75,8 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
         settings.setZoomControlsEnabled(true);
 
         // Add a marker in Edmonton and move the camera
-        userLocation = mMap.addMarker(new MarkerOptions().position(EDMONTON).title("Edmonton").draggable(true));
+        userLocation = mMap.addMarker(new MarkerOptions().position(userPosition).title("Edmonton").draggable(true));
         userLocation.setTag(0);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(EDMONTON));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
     }
 }

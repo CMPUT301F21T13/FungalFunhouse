@@ -1,6 +1,7 @@
 package com.example.habittracker;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -21,13 +22,20 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.ClientProtocolException;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.HttpClient;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.client.methods.HttpGet;
+import com.google.firebase.crashlytics.buildtools.reloc.org.apache.http.impl.client.DefaultHttpClient;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
 
@@ -70,21 +78,30 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
 
         Habit habit = habits.get(position);
 
+
+
         //Setup required Views (placeholders for photo and location)
         TextView dailyTitleTextView = (TextView) view.findViewById(R.id.daily_listview_title);
         ImageView dailyPhotoImageView = (ImageView) view.findViewById(R.id.daily_listview_photograph);
-        TextView dailyLocationTextView = (TextView) view.findViewById(R.id.daily_listview_location);
         TextView dailyCommentTextView = (TextView) view.findViewById(R.id.daily_listview_comment);
+        Button mapsButton = (Button) view.findViewById(R.id.daily_listview_maps_button);
 
-        //set up Layouts
-        LinearLayout locationLayout = view.findViewById(R.id.daily_listview_location_box);
-        LinearLayout contentLayout = view.findViewById(R.id.daily_listview_layout);
 
         //Deal with any Done or not Done Habits
         dailyCommentTextView.setVisibility(View.GONE);
         dailyPhotoImageView.setVisibility(View.GONE);
-        locationLayout.setVisibility(View.GONE);
+        mapsButton.setVisibility(View.GONE);
 
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, EventMapsActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_USER_ACTION);
+                intent.putExtra("latitude", habit.getHabitEventList().get(0).getLocation().latitude);
+                intent.putExtra("longitude", habit.getHabitEventList().get(0).getLocation().longitude);
+                context.startActivity(intent);
+            }
+        });
         Log.d(TAG, "Habit: " + habit.getHid());
         Log.d(TAG, "Habit Events " + habit.getHabitEventList());
 
@@ -100,10 +117,15 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
                             //grab attributes and set HabitEvent
                             HabitEvent habitEvent = new HabitEvent(calendar);
                             if (documentSnapshot.getData().get(KEY_IMAGE) != null) {
-                                Bitmap dailyImage =StringToBitMap(documentSnapshot.getData().get(KEY_IMAGE).toString());
+                                Bitmap dailyImage = StringToBitMap(documentSnapshot.getData().get(KEY_IMAGE).toString());
                                 habitEvent.setPhotograph(dailyImage);
                                 dailyPhotoImageView.setImageBitmap(habitEvent.getPhotograph());
                                 dailyPhotoImageView.setVisibility(View.VISIBLE);
+                            }
+
+                            Map<String, Double> position = (Map<String, Double>) documentSnapshot.getData().get(KEY_LOCATION);
+                            if(position.get("latitude") != 0 && position.get("longitude") != 0){
+                                mapsButton.setVisibility(View.VISIBLE);
                             }
                             String dailyComment = (String) documentSnapshot.getData().get(KEY_COMMENT);
                             boolean dailyDone = (boolean) documentSnapshot.getData().get(KEY_DONE);
