@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:background="@color/cardview_light_background">
+    android:background="@drawable/app_background_6"
+    android:theme="@style/HomeTheme"
+    android:orientation="horizontal">
 
 
     <TextView
@@ -13,20 +14,28 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:text="Follow Request Inbox" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="FOLLOW REQUEST INBOX"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
+
     <ListView
         android:id="@+id/inbox_request_list"
-        android:layout_width="320dp"
-        android:layout_height="480dp"
-        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
         android:layout_below="@+id/inbox_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:choiceMode="singleChoice"
-        android:listSelector="#999999"
-        />
+        android:divider="@null"
+        android:dividerHeight="10dp"
+        android:listSelector="@color/light_grey"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp" />
 
     <LinearLayout
         android:id="@+id/request_handler"
@@ -35,19 +44,25 @@
         android:orientation="vertical"
         android:layout_below="@+id/inbox_request_list"
         android:layout_margin="10dp"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp">
+
 
         <Button
             android:id="@+id/accept_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ACCEPT"/>
+            android:backgroundTint="@color/orange"
+            android:text="accept"
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/deny_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="REJECT"/>
+            android:text="reject"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 
@@ -57,6 +72,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="10dp"
-        android:text="BACK"/>
+        android:text="BACK" />
 
 </RelativeLayout>

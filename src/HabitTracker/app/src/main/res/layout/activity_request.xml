@@ -2,62 +2,80 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/app_background_6"
+    android:theme="@style/HomeTheme">
 
     <TextView
         android:id="@+id/request_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="10sp"
-        android:text="User Search"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="USER SEARCH"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
 
     <LinearLayout
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/request_title"
+        android:layout_marginTop="25dp"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/username_input"
-            android:layout_width="200dp"
+            android:layout_width="230dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10sp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="20dp"
             android:autofillHints="username"
-            android:hint="username..."
-            android:inputType="text"/>
+            android:background="#F8F6F6"
+            android:hint="Search"
+            android:inputType="text"
+            android:textColorHint="@color/text_hint" />
 
         <Button
             android:id="@+id/search_button"
-            android:layout_width="180dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="10sp"
-            android:text="SEARCH"/>
+            android:backgroundTint="@color/orange"
+            android:text="go"
+            android:textAllCaps="false" />
 
     </LinearLayout>
 
     <ListView
         android:id="@+id/user_search_list"
-        android:layout_width="240dp"
-        android:layout_height="480dp"
+        android:layout_width="wrap_content"
+        android:layout_height="530dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/search_bar"
+        android:layout_marginTop="20dp"
         android:choiceMode="singleChoice"
-        android:listSelector="#999999"
+        android:listSelector="@color/light_grey"
+        android:divider="@null"
+        android:dividerHeight="10dp"
+        android:padding="5dp"
+
         />
 
     <Button
         android:id="@+id/enter_button"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:text="ENTER"/>
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="20dp"
+        android:text="select"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/orange"/>
 
     <Button
         android:id="@+id/back_button"
@@ -65,6 +83,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_marginLeft="10sp"
-        android:text="BACK"/>
+        android:text="BACK" />
 
 </RelativeLayout>

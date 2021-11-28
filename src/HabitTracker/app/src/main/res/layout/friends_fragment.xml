@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/HomeTheme"
+    android:background="@drawable/app_background_6"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -10,13 +12,14 @@
         android:id="@+id/friends_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="10sp"
-        android:text="Friends"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:textColor="@color/black"/>
+        android:fontFamily="sans-serif-condensed"
+        android:text="FRIENDS"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
 
     <LinearLayout
         android:orientation="vertical"
@@ -24,13 +27,17 @@
         android:layout_height="match_parent"
         android:layout_above="@id/mail_inbox_activity_button"
         android:layout_below="@id/friends_title"
-        android:padding="30dp">
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="15dp">
         <ListView
             android:id="@+id/friends_fragment_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
-            android:listSelector="#999999"
+            android:listSelector="@color/light_grey"
+            android:divider="@null"
+            android:dividerHeight="10dp"
+            android:padding="0dp"
         />
     </LinearLayout>
 
@@ -38,26 +45,28 @@
         android:id="@+id/mail_inbox_activity_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="32dp"
+        android:layout_marginBottom="32dp"
         android:clickable="true"
         android:focusable="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
+        app:backgroundTint="@color/baby_blue"
         app:srcCompat="@android:drawable/ic_dialog_email"
         tools:ignore="SpeakableTextPresentCheck" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/send_request_activity_button"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
         android:clickable="true"
         android:focusable="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
+        app:backgroundTint="@color/baby_blue"
         app:srcCompat="@android:drawable/ic_menu_search"
         tools:ignore="SpeakableTextPresentCheck" />
 

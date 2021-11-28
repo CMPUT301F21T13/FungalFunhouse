@@ -2,16 +2,19 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/HomeTheme"
+    android:background="@drawable/app_background_6">
 
     <TextView
         android:id="@+id/event_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Events"
-        android:textColor="@color/black"
-        android:textSize="40sp"
-        android:textStyle="bold"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"/>
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-condensed"
+        android:text="EVENTS"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
 </RelativeLayout>
