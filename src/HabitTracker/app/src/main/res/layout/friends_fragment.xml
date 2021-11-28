@@ -27,13 +27,17 @@
         android:layout_height="match_parent"
         android:layout_above="@id/mail_inbox_activity_button"
         android:layout_below="@id/friends_title"
-        android:padding="30dp">
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="15dp">
         <ListView
             android:id="@+id/friends_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
             android:listSelector="@color/light_grey"
+            android:divider="@null"
+            android:dividerHeight="10dp"
+            android:padding="0dp"
         />
     </LinearLayout>
 
