@@ -1,9 +1,15 @@
 package com.example.habittracker;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +18,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,6 +44,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private SimpleDateFormat sdf;
     private Calendar calendar;
+    private ActivityResultLauncher<Intent> activityLauncher;
 
     private FloatingActionButton showEventsAddButton;
     private FloatingActionButton showEventsEditButton;
@@ -61,6 +69,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
         showEventsLogView = findViewById(R.id.show_events_log_id);
 
 
+
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
         sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -78,7 +87,16 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
 
         loadHabitEventList();
 
-        //ListView gives selected habitEvent
+        activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    Bundle bundle = result.getData().getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                }
+            }
+        });
+            //ListView gives selected habitEvent
         showEventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -89,7 +107,11 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
         showEventsAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(ShowEventsForHabitActivity.this, AddEventActivity.class);
+                intent.putExtra("habit id", habitHid);
+                intent.putExtra("user", usernameStr);
+                intent.putExtra("Flag", "DateNeeded");
+                //activityLauncher.launch(intent);
             }
         });
 

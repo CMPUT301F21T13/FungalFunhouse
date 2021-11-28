@@ -100,12 +100,17 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         try{
             habitHid = getIntent().getStringExtra("habit id");
             usernameStr = getIntent().getStringExtra("user");
-            currentDate = getIntent().getStringExtra("date");
+
 
         } catch (NullPointerException e){
             Log.e("AddEventActivity: ", "Could not get 'habit id', 'user' or 'date' from bundle" + e);
         }
 
+        if(getIntent().getStringExtra("Flag") != null){
+            //TODO: Implement DatePicker Fragment
+        }else{
+            currentDate = getIntent().getStringExtra("date");
+        }
         //initialize variables
         habitTitleTextView = findViewById(R.id.add_event_title);
         finishButton = findViewById(R.id.add_event_finish_button);
@@ -224,6 +229,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                     public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
                             commentEditText.setText(documentSnapshot.getData().get(KEY_COMMENT).toString());
+                            //TODO Set Location and Photo if not null
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
