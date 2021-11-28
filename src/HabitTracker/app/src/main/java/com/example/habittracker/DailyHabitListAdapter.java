@@ -135,25 +135,25 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
                                 mapsButton.setVisibility(View.VISIBLE);
                                 habitEvent.setLocation(new LatLng(position.get("latitude"), position.get("longitude")));
                             }
-                            String dailyComment = (String) documentSnapshot.getData().get(KEY_COMMENT);
-                            boolean dailyDone = (boolean) documentSnapshot.getData().get(KEY_DONE);
 
                             //add into habitevent
-                            if(dailyComment.equals("") && dailyComment.equals('"')) {
-                                habitEvent.setComment(dailyComment);
+                            String dailyComment = (String) documentSnapshot.getData().get(KEY_COMMENT);
+                            habitEvent.setComment(dailyComment);
+                            if (!dailyComment.equals("")) {
+                                dailyCommentTextView.setText("'" + dailyComment+ "'");
+                                dailyCommentTextView.setVisibility(View.VISIBLE);
                             }
 
+                            boolean dailyDone = (boolean) documentSnapshot.getData().get(KEY_DONE);
                             habitEvent.setDone(dailyDone);
+                            if(dailyDone){
+                                dailyTitleTextView.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.tick_mark_checked,0);
+
+                            }
 
                             ArrayList<HabitEvent> events = new ArrayList<>();
                             events.add(habitEvent);
                             habit.setHabitEventList(events);
-
-                            Log.d(TAG, "bitmap: " + habitEvent.getPhotograph());
-                            //Set Listview Item
-                            dailyCommentTextView.setText("'" + dailyComment+ "'");
-                            dailyCommentTextView.setVisibility(View.VISIBLE);
-                            dailyTitleTextView.setCompoundDrawablesWithIntrinsicBounds(0,0, R.drawable.tick_mark_checked,0);
 
                             Log.d(TAG, "Habit Event Comment" + dailyComment);
                         } else {

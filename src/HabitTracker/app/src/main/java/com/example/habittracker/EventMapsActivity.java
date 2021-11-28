@@ -82,7 +82,7 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
         settings.setZoomControlsEnabled(true);
 
         // Add a marker in Edmonton and move the camera
-        userLocation = mMap.addMarker(new MarkerOptions().position(userPosition).title("Edmonton").draggable(true));
+        userLocation = mMap.addMarker(new MarkerOptions().position(userPosition).title("You").draggable(true));
         userLocation.setTag(0);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
