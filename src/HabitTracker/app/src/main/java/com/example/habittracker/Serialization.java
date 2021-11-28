@@ -1,5 +1,8 @@
 package com.example.habittracker;
 
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.util.Base64;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -20,7 +23,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.Source;
 
+import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -35,13 +43,15 @@ import java.util.UUID;
  */
 public class Serialization {
 	private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+	private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");;
+	private static Calendar calendar;
 
 	private static final String TAG = "Serialization";
 
 	// Firebase collection constants
 	private static final String COLLECTION_USERS = "users";
 	private static final String COLLECTION_HABITS = "habits";
-	private static final String COLLECTION_SOCIAL = "social";
+	private static final String COLLECTION_HABIT_EVENTS = "habitEvents";
 
 	// profile document keys
 	private static final String KEY_FOLLOWERS = "followers";
@@ -55,6 +65,13 @@ public class Serialization {
 	private static final String KEY_HABIT_HID = "hid";
 	private static final String KEY_HABIT_DATE_TO_START = "dateToStart";
 	private static final String KEY_HABIT_WEEKDAYS = "weekdays";
+
+	//habitEvents document keys
+	private static final String KEY_EVENT_DATETIME = "dateTime";
+	private static final String KEY_EVENT_COMMENT = "comment";
+	private static final String KEY_EVENT_IMAGE = "image";
+	private static final String KEY_EVENT_LOCATION = "location";
+	private static final String KEY_EVENT_DONE = "done";
 
 	/**
 	 * This method saves an entire User to the database
@@ -344,6 +361,44 @@ public class Serialization {
 				});
 
 	}
+
+	public static void writeHabitEvent(String username, String hid, HabitEvent habitEvent){
+		String habitEventDateName = sdf.format(habitEvent.getDate().getTime());
+		Map<String, Object> habitMap = new HashMap<>();
+
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		if(habitEvent.getPhotograph() != null) {
+			habitEvent.getPhotograph().compress(Bitmap.CompressFormat.PNG, 100, baos); //bm is the bitmap object
+			byte[] b = baos.toByteArray();
+			String encodedImage = Base64.encodeToString(b, Base64.DEFAULT);
+			habitMap.put(KEY_EVENT_IMAGE, encodedImage);
+		}else{
+			habitMap.put(KEY_EVENT_IMAGE, null);
+		}
+
+
+		habitMap.put(KEY_EVENT_DATETIME, habitEventDateName);
+		habitMap.put(KEY_EVENT_COMMENT, habitEvent.getComment());
+		habitMap.put(KEY_EVENT_LOCATION, habitEvent.getLocation());
+		habitMap.put(KEY_EVENT_DONE, habitEvent.getDone());
+
+
+		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS)
+				.document(hid).collection(COLLECTION_HABIT_EVENTS).document(habitEventDateName)
+				.set(habitMap).addOnSuccessListener(new OnSuccessListener<Void>() {
+			@Override
+			public void onSuccess(Void unused) {
+				Log.d(TAG, "THE HABIT EVENT DATA WAS SUBMITTED");
+			}
+		}).addOnFailureListener(new OnFailureListener() {
+			@Override
+			public void onFailure(@NonNull Exception e) {
+				Log.d(TAG, e.toString());
+			}
+		});
+	}
+
+
 
 	public static CollectionReference getHabitCollection(String username) {
 		return db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS);

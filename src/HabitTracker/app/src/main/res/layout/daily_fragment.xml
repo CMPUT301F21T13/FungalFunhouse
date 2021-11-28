@@ -17,4 +17,17 @@
         android:textColor="@color/white"
         android:fontFamily="sans-serif-condensed"
         android:textSize="30sp" />
+
+    <ListView
+        android:id="@+id/daily_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="20dp"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="10.0sp"
+        android:layout_below="@+id/daily_title"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true">
+
+    </ListView>
 </RelativeLayout>

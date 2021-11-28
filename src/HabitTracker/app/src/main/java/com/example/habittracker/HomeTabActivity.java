@@ -71,7 +71,7 @@ public class HomeTabActivity extends AppCompatActivity {
         dailyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OpenDailyFragment();
+                OpenDailyFragment(currentUser);
             }
         });
 
@@ -130,8 +130,12 @@ public class HomeTabActivity extends AppCompatActivity {
      * This method opens a Daily tab within the home page It will display all of a
      * User's daily habits to complete
      */
-    public void OpenDailyFragment() {
+    public void OpenDailyFragment(UserProfile userToPrint) {
         DailyFragment fragment = new DailyFragment();
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("user", userToPrint);
+        fragment.setArguments(bundle);
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.fragment_container, fragment);
         ft.commit();
