@@ -66,7 +66,7 @@ public class RequestActivity extends AppCompatActivity {
         searchButton = findViewById(R.id.search_button);
         enterButton = findViewById(R.id.enter_button);
         backButton = findViewById(R.id.back_button);
-        userList = findViewById(R.id.user_list);
+        userList = findViewById(R.id.user_search_list);
         userDataList = new ArrayList<>();
         filterDataInList("");
 

@@ -56,7 +56,7 @@ public class InboxActivity extends AppCompatActivity {
         }
 
         //initialize variables
-        requestList = findViewById(R.id.request_list);
+        requestList = findViewById(R.id.inbox_request_list);
         acceptButton = findViewById(R.id.accept_button);
         denyButton = findViewById(R.id.deny_button);
         backButton = findViewById(R.id.back_button);
