@@ -16,6 +16,7 @@ public class Habit {
     private String hid;
     private String dateToStart;
     private Boolean publicVisibility;
+    //private long listPosition;
 
     //public variables
     public WeeklySchedule weeklySchedule;
@@ -38,7 +39,7 @@ public class Habit {
     }
 
     /**
-     * Constructor used for editing habits as the hid needs to remain the same when editing
+     * Constructor used for editing habits as the hid and listPosition needs to remain the same when editing
      * @param title Habits title
      * @param reason Habits reason
      * @param hid unique Identifier pulled from the database DO NOT MANUALLY SET THIS
@@ -87,6 +88,10 @@ public class Habit {
         return publicVisibility;
     }
 
+//    public long getListPosition() {
+//        return listPosition;
+//    }
+
     public WeeklySchedule getWeeklySchedule() {
         return weeklySchedule;
     }
@@ -123,6 +128,10 @@ public class Habit {
     public void setPublicVisibility(Boolean visibility) {
         this.publicVisibility = visibility;
     }
+
+//    public void setListPosition(int position){
+//        this.listPosition = position;
+//    }
 
     public void setWeeklySchedule(WeeklySchedule weeklySchedule) {
         this.weeklySchedule = weeklySchedule;
