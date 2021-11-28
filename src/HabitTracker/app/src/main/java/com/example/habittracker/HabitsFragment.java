@@ -104,6 +104,11 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
         usernameStr = currentUser.getUsername();
         habitArrayList = new ArrayList<>();
 
+        try{
+            Log.d(TAG, usernameStr);
+        } catch (Exception e) {
+            Log.e(TAG, "onCreateView: usernameStr is null", e);
+        }
 
         // Grab all of the habits from the database and fill the Recyclerview
         // Use a snapshot listener so whenever the database is updated so is the app
