@@ -22,16 +22,20 @@
         android:text="FOLLOW REQUEST INBOX"
         android:textColor="@color/white"
         android:textSize="30sp" />
+
     <ListView
         android:id="@+id/inbox_request_list"
         android:layout_width="wrap_content"
-        android:layout_height="480dp"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
+        android:layout_height="500dp"
         android:layout_below="@+id/inbox_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:choiceMode="singleChoice"
+        android:divider="@null"
+        android:dividerHeight="10dp"
         android:listSelector="@color/light_grey"
-        />
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp" />
 
     <LinearLayout
         android:id="@+id/request_handler"
@@ -40,7 +44,10 @@
         android:orientation="vertical"
         android:layout_below="@+id/inbox_request_list"
         android:layout_margin="10dp"
-        android:layout_alignParentEnd="true">
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp">
+
 
         <Button
             android:id="@+id/accept_button"
@@ -48,14 +55,14 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/orange"
             android:text="accept"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
 
         <Button
             android:id="@+id/deny_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="reject"
-            android:textAllCaps="false"/>
+            android:textAllCaps="false" />
 
     </LinearLayout>
 

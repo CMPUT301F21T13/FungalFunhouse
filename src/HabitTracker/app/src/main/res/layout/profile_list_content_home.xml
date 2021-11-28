@@ -1,17 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
-    <TextView android:layout_gravity="center"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="5dp">
+
+    <ImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:contentDescription="desc"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:background="@drawable/empty_profile_pic"
+        />
+
+    <TextView
         android:id="@+id/username_text_grid"
         android:text="name"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:drawableLeft="@drawable/ic_baseline_person_outline_24"
-        android:drawablePadding="10dp"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/profile_pic"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:drawableTint="#313131"
+        android:layout_centerVertical="true"
         android:textSize="20sp"
-        android:textColor="@color/black"
-        />
-</LinearLayout>
+        android:textColor="#202020" />
+
+</RelativeLayout>
