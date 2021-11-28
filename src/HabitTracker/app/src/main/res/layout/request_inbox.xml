@@ -22,20 +22,20 @@
         android:text="FOLLOW REQUEST INBOX"
         android:textColor="@color/white"
         android:textSize="30sp" />
+
     <ListView
         android:id="@+id/inbox_request_list"
         android:layout_width="wrap_content"
         android:layout_height="500dp"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@+id/inbox_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
         android:choiceMode="singleChoice"
-        android:listSelector="@color/light_grey"
-        android:paddingVertical="5dp"
-        android:paddingHorizontal="5dp"
         android:divider="@null"
         android:dividerHeight="10dp"
-        />
+        android:listSelector="@color/light_grey"
+        android:paddingHorizontal="5dp"
+        android:paddingVertical="5dp" />
 
     <LinearLayout
         android:id="@+id/request_handler"
