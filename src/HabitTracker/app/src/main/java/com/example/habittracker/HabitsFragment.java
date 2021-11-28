@@ -14,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -85,6 +86,8 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
 
         //Testing recyclerView
         habitRecyclerView = view.findViewById(R.id.habit_listview);
+        // adds vertical dividers for items in recyclerview
+        habitRecyclerView.addItemDecoration(new DividerItemDecoration(habitRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
 
         // Grab the username of the current logged in user
         Bundle bundle = getArguments();
