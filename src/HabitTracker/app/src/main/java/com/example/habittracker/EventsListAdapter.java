@@ -58,7 +58,7 @@ public class EventsListAdapter extends ArrayAdapter<HabitEvent> {
         eventsTextView.setText(sdf.format(event.getDate().getTime()));
 
         //load in each habit event (all dates)
-        Log.d(TAG, "Habit: " + sdf.format(event.getDate().getTime()));
+        Log.d(TAG, "Habit Event: " + sdf.format(event.getDate().getTime()));
 
         return view;
     }

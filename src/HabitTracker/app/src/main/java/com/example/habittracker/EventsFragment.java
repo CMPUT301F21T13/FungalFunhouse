@@ -98,7 +98,8 @@ public class EventsFragment extends Fragment {
                             boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
                             ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
+                            Habit habit = new Habit(title, reason, dateToStart, publicVisibility, weekdays);
+                            habit.setHid(hid);
                             Log.d(TAG, habit.getTitle());
 
                             eventsHabitDataList.add(habit);

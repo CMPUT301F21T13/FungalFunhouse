@@ -178,6 +178,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
                     public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
                         showEventsDataList.clear();
                         if(!queryDocumentSnapshots.isEmpty()){
+                            Log.d(TAG, "Document Retrieval for Events Successful");
                             for(QueryDocumentSnapshot doc : queryDocumentSnapshots){
                                 HabitEvent event = new HabitEvent();
                                 Date date;
@@ -189,10 +190,14 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
+                                Log.d(TAG, "Event: " + event);
                                 showEventsDataList.add(event);
                             }
                             showEventsListAdaptor = new EventsListAdapter(ShowEventsForHabitActivity.this, showEventsDataList, usernameStr);
                             showEventsListView.setAdapter(showEventsListAdaptor);
+                        }else{
+                            Log.d(TAG, "Document Retrieval for Events was empty");
+                            Log.d(TAG, "user: " + usernameStr + " hid: " + habitHid);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
