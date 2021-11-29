@@ -1,7 +1,10 @@
 package com.example.habittracker;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -69,6 +72,7 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
     // Constants
     private static final String TAG = "HabitsFragment";
 
+    @SuppressLint("ResourceAsColor")
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
             @Nullable Bundle savedInstanceState) {
@@ -87,7 +91,9 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
         //Testing recyclerView
         habitRecyclerView = view.findViewById(R.id.habit_listview);
         // adds vertical dividers for items in recyclerview
-        habitRecyclerView.addItemDecoration(new DividerItemDecoration(habitRecyclerView.getContext(), DividerItemDecoration.VERTICAL));
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(habitRecyclerView.getContext(), DividerItemDecoration.VERTICAL);
+        itemDecoration.setDrawable(new ColorDrawable(Color.parseColor("#AfB7C2")));
+        habitRecyclerView.addItemDecoration(itemDecoration);
 
         // Grab the username of the current logged in user
         Bundle bundle = getArguments();
