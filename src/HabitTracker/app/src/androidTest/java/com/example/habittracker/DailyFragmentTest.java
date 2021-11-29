@@ -51,7 +51,7 @@ public class DailyFragmentTest {
      * checks to make sure clicking on a list item calls
      * AddEventActivity.java correctly
      *
-     * Must have a habit with the title 'Run'
+     * Must have a habit with the title 'Cry'
      * @throws AssertionFailedError
      */
     @Test
@@ -59,7 +59,7 @@ public class DailyFragmentTest {
         //click on daily fragment button
         Espresso.onView(withId(R.id.daily_button)).perform(click());
         //Click on habit in list of habits with title Run
-        Espresso.onView(withText("Run")).perform(click());
+        Espresso.onView(withText("Cry")).perform(click());
         //Check to make sure the addEventActivity is opened
         intended(hasComponent(AddEventActivity.class.getName()));
     }
