@@ -398,8 +398,6 @@ public class Serialization {
 		});
 	}
 
-
-
 	public static CollectionReference getHabitCollection(String username) {
 		return db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS);
 	}

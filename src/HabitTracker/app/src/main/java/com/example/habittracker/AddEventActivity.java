@@ -1,25 +1,33 @@
 package com.example.habittracker;
 
+import static android.Manifest.permission_group.CAMERA;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+
+import android.graphics.BitmapFactory;
+import android.graphics.Camera;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -49,6 +57,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * An Activity for adding attributes to a Habit Event
@@ -66,6 +75,10 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private String COLLECTION_EVENTS = "habitEvents";
+
+    private String KEY_DONE = "done";
+    private String KEY_LOCATION = "location";
+    private String KEY_IMAGE = "image";
     private String KEY_COMMENT = "comment";
     private String TAG = "AddEventActivity";
 
@@ -97,16 +110,24 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         db = FirebaseFirestore.getInstance();
         currentHabitEvent = new HabitEvent();
 
-
+        //TODO Register Flags for "Edit" or "Incoming Data"
+        //TODO Edit from ShowEvents must include a date feature
         try{
             habitHid = getIntent().getStringExtra("habit id");
             usernameStr = getIntent().getStringExtra("user");
-            currentDate = getIntent().getStringExtra("date");
 
         } catch (NullPointerException e){
             Log.e("AddEventActivity: ", "Could not get 'habit id', 'user' or 'date' from bundle" + e);
         }
 
+        if(getIntent().getStringExtra("Flag") != null){
+            //Edit Event and Add out of date Event
+            currentDate = getIntent().getStringExtra("date");
+        }else{
+            //Add today's event
+            currentDate = getIntent().getStringExtra("date");
+            currentHabitEvent.setDone(true);
+        }
         //initialize variables
         habitTitleTextView = findViewById(R.id.add_event_title);
         finishButton = findViewById(R.id.add_event_finish_button);
@@ -157,15 +178,31 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
+
+
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-                    activityLauncher.launch(intent);
-                }else{ Toast.makeText(AddEventActivity.this, "No Camera App Found", Toast.LENGTH_SHORT).show();}
+
+                if (ContextCompat.checkSelfPermission(
+                        AddEventActivity.this, Manifest.permission.CAMERA) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+                        activityLauncher.launch(intent);
+                    } else {
+                        Toast.makeText(AddEventActivity.this, "No Camera App Found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestPermissionLauncher.launch(
+                            Manifest.permission.CAMERA);
                 }
+
+            }
         });
+
 
 
         mapsButton.setOnClickListener(new View.OnClickListener() {
@@ -185,11 +222,17 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                 Intent intent = new Intent();
                 intent.putExtra("user", usernameStr);
                 setResult(0, intent);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 finish();
             }
         });
 
     }
+
 
     /**
      * Loads the current Habit and details needed
@@ -224,7 +267,33 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                     @Override
                     public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
+
+                            currentHabitEvent.setDone((boolean)documentSnapshot.getData().get(KEY_DONE));
                             commentEditText.setText(documentSnapshot.getData().get(KEY_COMMENT).toString());
+
+                            //If there is an image, show it
+                            if (documentSnapshot.getData().get(KEY_IMAGE) != null) {
+                                Bitmap bm = StringToBitMap(documentSnapshot.getData().get(KEY_IMAGE).toString());
+                                photoImageView.setImageBitmap(bm);
+                                photoImageView.setVisibility(View.VISIBLE);
+                                currentHabitEvent.setPhotograph(bm);
+                                photoImageView.getLayoutParams().height = 400;
+                                photoImageView.getLayoutParams().width = 300;
+                            }
+
+                            //If there is a location show it
+                            if(documentSnapshot.getData().get(KEY_LOCATION) != null){
+                                Map<String, Double> position = (Map<String, Double>) documentSnapshot.getData().get(KEY_LOCATION);
+                                double latitude = position.get("latitude");
+                                double longitude = position.get("longitude");
+                                if(latitude != 0 && longitude != 0) {
+                                    userPosition = new LatLng(latitude, longitude);
+                                    currentHabitEvent.setLocation(userPosition);
+                                    mapsLayout.setVisibility(View.VISIBLE);
+                                    userMarker.setPosition(userPosition);
+                                }
+                            }
+
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
@@ -243,7 +312,6 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         habitTitleTextView = findViewById(R.id.add_event_title);
         if (!commentEditText.getText().equals("")){
             currentHabitEvent.setComment(commentEditText.getText().toString());
-            currentHabitEvent.setDone(true);
         }
 
         Serialization.writeHabitEvent(usernameStr, habitHid, currentHabitEvent);
@@ -259,4 +327,35 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
 
     }
+
+
+    /**
+     * @param encodedString
+     * @return bitmap (from given string)
+     */
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
+    }
+
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // Permission is granted. Continue the action or workflow in your
+                    // app.
+                } else {
+                    // Explain to the user that the feature is unavailable because the
+                    // features requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                }
+            });
+
 }
