@@ -100,10 +100,13 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         googleApiAvailability = GoogleApiAvailability.getInstance();
         int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(this);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.add_event_map);
-        mapFragment.getMapAsync(this);
 
+        //If there is no Google play don't make the fragment
+        if(resultCode == ConnectionResult.SUCCESS) {
+            SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                    .findFragmentById(R.id.add_event_map);
+            mapFragment.getMapAsync(this);
+        }
         db = FirebaseFirestore.getInstance();
         currentHabitEvent = new HabitEvent();
 
@@ -139,8 +142,53 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
 
         //Load Variables
         loadHabit(habitHid);
-        loadHabitEvent();
         mapsLayout.setVisibility(View.GONE);
+
+        //Load in Habit Event and it's attributes 
+        db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
+                .document(habitHid).collection(COLLECTION_EVENTS).document(currentDate).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                        if(documentSnapshot.exists()){
+
+                            currentHabitEvent.setDone((boolean)documentSnapshot.getData().get(KEY_DONE));
+                            commentEditText.setText(documentSnapshot.getData().get(KEY_COMMENT).toString());
+
+                            //If there is an image, show it
+                            if (documentSnapshot.getData().get(KEY_IMAGE) != null) {
+                                Bitmap bm = StringToBitMap(documentSnapshot.getData().get(KEY_IMAGE).toString());
+                                photoImageView.setImageBitmap(bm);
+                                photoImageView.setVisibility(View.VISIBLE);
+                                currentHabitEvent.setPhotograph(bm);
+                                photoImageView.getLayoutParams().height = 400;
+                                photoImageView.getLayoutParams().width = 300;
+                            }
+
+                            //If there is a location show it
+                            if(documentSnapshot.getData().get(KEY_LOCATION) != null){
+                                Map<String, Double> position = (Map<String, Double>) documentSnapshot.getData().get(KEY_LOCATION);
+                                double latitude = position.get("latitude");
+                                double longitude = position.get("longitude");
+                                if(latitude != 0 && longitude != 0) {
+                                    userPosition = new LatLng(latitude, longitude);
+                                    currentHabitEvent.setLocation(userPosition);
+                                    if(resultCode == ConnectionResult.SUCCESS) {
+                                        userMarker.setPosition(userPosition);
+                                        mapsLayout.setVisibility(View.VISIBLE);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Habit Event failed to retrieve");
+            }
+        });
+
 
         //Set the current date to the passed in value
         calendar = Calendar.getInstance();
@@ -296,8 +344,10 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                                 if(latitude != 0 && longitude != 0) {
                                     userPosition = new LatLng(latitude, longitude);
                                     currentHabitEvent.setLocation(userPosition);
-                                    mapsLayout.setVisibility(View.VISIBLE);
-                                    userMarker.setPosition(userPosition);
+                                    if(resultCode == ConnectionResult.SUCCESS) {
+                                        userMarker.setPosition(userPosition);
+                                        mapsLayout.setVisibility(View.VISIBLE);
+                                    }
                                 }
                             }
 
