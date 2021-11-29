@@ -78,7 +78,7 @@ public class HomeTabActivityTest {
         //click the habit button
         Espresso.onView(withId(R.id.event_button)).perform(click());
         //check if its the habit tab
-        Espresso.onView(withId(R.id.event_title)).check(matches(isDisplayed()));
+        Espresso.onView(withId(R.id.events_fragment_title)).check(matches(isDisplayed()));
     }
 
     /**
