@@ -1,6 +1,9 @@
 package com.example.habittracker;
 
 import static androidx.test.espresso.action.ViewActions.click;
+import static androidx.test.espresso.action.ViewActions.longClick;
+import static androidx.test.espresso.action.ViewActions.swipeDown;
+import static androidx.test.espresso.action.ViewActions.swipeUp;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.intent.Intents.intended;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
@@ -12,6 +15,7 @@ import android.content.Intent;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.Espresso;
+import androidx.test.espresso.action.ViewActions;
 import androidx.test.espresso.intent.Intents;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
@@ -87,6 +91,31 @@ public class HabitsFragmentTest {
         //Click on add habit floating button, Opens
         Espresso.onView(withId(R.id.delete_habit_floating_button)).check(matches(isDisplayed()));
     }
+
+    /**
+     * Tests to make sure that the data's information is displayed when the habit
+     * is clicked on.
+     *
+     * When the habit is clicked on it should display:
+     * reason
+     * dateToStart
+     * weekdays
+     */
+    @Test
+    public void testExpandingView() {
+        //Click on habit with title Run
+        Espresso.onView(withText("Run")).perform(click());
+        //Check to make sure the details of the habit is shown
+        Espresso.onView(withText("get more exercise")).check(matches(isDisplayed()));
+        Espresso.onView(withText("2021-10-31")).check(matches(isDisplayed()));
+        Espresso.onView(withText("Monday, Thursday, Friday")).check(matches(isDisplayed()));
+
+        //To test the visual indicator I would have to rely on the database even more
+        //So im simply not testing that
+    }
+
+    //Espresso is unable to test manual reordering as it cannot longClick() and
+    //swipe to drop at the same time
 
     @After
     public void tearDown() throws Exception {
