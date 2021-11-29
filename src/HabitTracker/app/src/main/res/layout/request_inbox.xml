@@ -28,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="500dp"
         android:layout_below="@+id/inbox_title"
+        android:layout_above ="@+id/request_handler"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:choiceMode="singleChoice"
@@ -41,9 +42,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/inbox_request_list"
         android:layout_margin="10dp"
         android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp">
 
