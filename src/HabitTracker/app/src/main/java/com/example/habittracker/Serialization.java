@@ -362,6 +362,12 @@ public class Serialization {
 
 	}
 
+	/**
+	 * Writes a specific instance of HabitEvent to Firestore
+	 * @param username	 : User to write to
+	 * @param hid        : habit to write to
+	 * @param habitEvent : event to write
+	 */
 	public static void writeHabitEvent(String username, String hid, HabitEvent habitEvent){
 		String habitEventDateName = sdf.format(habitEvent.getDate().getTime());
 		Map<String, Object> habitMap = new HashMap<>();

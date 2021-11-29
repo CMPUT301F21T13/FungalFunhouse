@@ -15,9 +15,6 @@ import java.util.ArrayList;
 
 /**
  * Custom adapter for the listview in habit_fragment, uses habit_listview_context
- *
- * NOTE: In the storyboard we show that the items in the list will expand when you click
- *      on them, for now they do not expand. Instead they just show all the content.
  */
 public class HabitListAdapter extends ArrayAdapter<Habit>{
 

@@ -1,7 +1,5 @@
 package com.example.habittracker;
 
-import static android.Manifest.permission_group.CAMERA;
-
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -9,27 +7,17 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentContainerView;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.FragmentManager;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 
 import android.graphics.BitmapFactory;
-import android.graphics.Camera;
-import android.graphics.drawable.BitmapDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
-import android.view.Display;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,10 +28,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -54,7 +40,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -65,6 +50,7 @@ import java.util.Map;
  */
 public class AddEventActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    //initialize variables
     private String habitTitle;
     private String habitHid;
     private String usernameStr;
@@ -72,6 +58,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
     private Calendar calendar;
     private HabitEvent currentHabitEvent;
 
+    //firestore references
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private String COLLECTION_EVENTS = "habitEvents";
@@ -82,6 +69,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
     private String KEY_COMMENT = "comment";
     private String TAG = "AddEventActivity";
 
+    //xml layout variables
     private Button finishButton;
     private Button photoButton;
     private Button mapsButton;
@@ -110,8 +98,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         db = FirebaseFirestore.getInstance();
         currentHabitEvent = new HabitEvent();
 
-        //TODO Register Flags for "Edit" or "Incoming Data"
-        //TODO Edit from ShowEvents must include a date feature
+        //Grab variables from intent
         try{
             habitHid = getIntent().getStringExtra("habit id");
             usernameStr = getIntent().getStringExtra("user");
@@ -120,6 +107,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
             Log.e("AddEventActivity: ", "Could not get 'habit id', 'user' or 'date' from bundle" + e);
         }
 
+        //Deals with different activites sending to AddEventActivity
         if(getIntent().getStringExtra("Flag") != null){
             //Edit Event and Add out of date Event
             currentDate = getIntent().getStringExtra("date");
@@ -128,7 +116,9 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
             currentDate = getIntent().getStringExtra("date");
             currentHabitEvent.setDone(true);
         }
-        //initialize variables
+
+
+        //initialize xml layout variables
         habitTitleTextView = findViewById(R.id.add_event_title);
         finishButton = findViewById(R.id.add_event_finish_button);
         commentEditText = findViewById(R.id.add_event_comment_edittext);
@@ -143,6 +133,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         loadHabitEvent();
         mapsLayout.setVisibility(View.GONE);
 
+        //Set the current date to the passed in value
         calendar = Calendar.getInstance();
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -153,10 +144,12 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
             e.printStackTrace();
         }
 
+        //For startActivityOnResult of Camera and Maps Activities
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                    //Return Result of Camera
                     Bundle bundle = result.getData().getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");
                     photoImageView.setImageBitmap(bitmap);
@@ -165,6 +158,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
 
                     currentHabitEvent.setPhotograph(bitmap);
                 } else if (result.getResultCode() == 56 && result.getData() != null) {
+                    //Return Result of Maps
                     Log.d(TAG, "LOCATION FOUND");
                     Bundle bundle = result.getData().getExtras();
                     Double latitude = Double.parseDouble(bundle.get("latitude").toString());
@@ -178,8 +172,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-
-
+        //Sends user to Camera if permissions are granted
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -204,7 +197,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         });
 
 
-
+        //Sends User to MapsActivity
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -299,7 +292,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                Log.d(TAG, "Habit Event failed to retrieve");
             }
         });
     }
@@ -318,6 +311,10 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
     }
 
 
+    /**
+     * Initializes the google map inside this activity
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
@@ -330,6 +327,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
 
 
     /**
+     * Takes an inputted string and encodes it to be a base64 Bitmap
      * @param encodedString
      * @return bitmap (from given string)
      */
@@ -344,6 +342,9 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         }
     }
 
+    /**
+     * For asking a User for permission
+     */
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {

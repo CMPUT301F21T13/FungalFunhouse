@@ -7,6 +7,9 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Calendar;
 
+/**
+ * Class for Habit Events which exist for a specific day's instance of a habit
+ */
 public class HabitEvent {
     private Calendar dateTime;
     private String title;
@@ -16,6 +19,7 @@ public class HabitEvent {
     private boolean done;
     private LatLng location;
 
+    //constructor without date
     public HabitEvent(){
         setComment("No Comment");
         setTitle("No Title");
@@ -23,6 +27,8 @@ public class HabitEvent {
         setUnique(false);
         setDate(null);
     }
+
+    //constructor with date
     public HabitEvent(Calendar date){
         setComment("No Comment");
         setTitle("No Title");
@@ -31,6 +37,7 @@ public class HabitEvent {
         setDate(date);
     }
 
+    //Getter and Setter Methods
     public Calendar getDate() {
         return dateTime;
     }

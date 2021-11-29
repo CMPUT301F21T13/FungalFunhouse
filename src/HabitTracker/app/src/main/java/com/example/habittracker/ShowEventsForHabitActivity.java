@@ -7,7 +7,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 
@@ -15,11 +14,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,7 +30,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Activity for showing all habitEvent instances for a specific Habit
+ * Events exist as that day's event instance of a Habit
+ */
 public class ShowEventsForHabitActivity extends AppCompatActivity implements AddHabitCalendarFragment.OnFragmentInteractionListener{
+
+    //initialize variables
     private ListView showEventsListView;
     private EventsListAdapter showEventsListAdaptor;
     private ArrayList<HabitEvent> showEventsDataList;
@@ -52,6 +55,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
     private FloatingActionButton showEventsDeleteButton;
     private TextView showEventsLogView;
 
+    //firebase references
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private String COLLECTION_EVENTS = "habitEvents";
@@ -70,13 +74,12 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
         showEventsDeleteButton = findViewById(R.id.show_events_delete_floating_button);
         showEventsLogView = findViewById(R.id.show_events_log_id);
 
-
-
         db = FirebaseFirestore.getInstance();
         calendar = Calendar.getInstance();
         sdf = new SimpleDateFormat("yyyy-MM-dd");
         showEventsDataList = new ArrayList<>();
 
+        //grab and set data from intent
         try{
             habitHid = getIntent().getStringExtra("habit id");
             usernameStr = getIntent().getStringExtra("user");
@@ -90,6 +93,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
         loadHabitEventList();
 
 
+        //Grabs and deals with results from a launched activity for result
         activityLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
             @Override
             public void onActivityResult(ActivityResult result) {
@@ -108,6 +112,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
             }
         });
 
+        //Sends User to add habitEvent (addEventActivity) after inputting date
         showEventsAddButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -118,6 +123,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
             }
         });
 
+        //deletes a selected habitEvent
         showEventsDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,6 +133,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
             }
         });
 
+        //edits a selected habitEvent through addEventActivity
         showEventsEditButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,6 +151,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
 
     }
 
+    //Deletes an instance of a habitEvent in Firebase
     public void deleteHabitEvent(HabitEvent event){
         db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS).document(habitHid)
                 .collection(COLLECTION_EVENTS).document(sdf.format(event.getDate().getTime()))
@@ -208,6 +216,10 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
         });
     }
 
+    /**
+     * Deals with calendarFragment by grabbing a date, and sending it to addEventActivity
+     * @param dateToStart : the selected Date
+     */
     @Override
     public void onConfirmPressed(String dateToStart) {
         Intent intent = new Intent(ShowEventsForHabitActivity.this, AddEventActivity.class);
