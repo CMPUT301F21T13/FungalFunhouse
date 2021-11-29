@@ -103,12 +103,6 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
         //settings
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //https://stackoverflow.com/questions/22471100/how-to-show-current-position-marker-on-map-in-android
-            //TODO: Check out this link for setting current position markers
-            return;
-        }
-        googleMap.setMyLocationEnabled(true);
 
         // Add a marker and move the camera
         userLocation = mMap.addMarker(new MarkerOptions().position(userPosition).title("You").draggable(true));

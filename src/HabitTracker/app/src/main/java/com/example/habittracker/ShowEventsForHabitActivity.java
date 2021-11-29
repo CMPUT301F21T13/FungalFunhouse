@@ -114,8 +114,8 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
                 Intent intent = new Intent(ShowEventsForHabitActivity.this, AddEventActivity.class);
                 intent.putExtra("habit id", habitHid);
                 intent.putExtra("user", usernameStr);
-                intent.putExtra("Flag", "DateNeeded");
-                //activityLauncher.launch(intent);
+                intent.putExtra("Flag", "AddEvent");
+                activityLauncher.launch(intent);
             }
         });
 
@@ -123,8 +123,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(currentEvent != null){
-                    Intent intent = new Intent();
-                    activityLauncher.launch(intent);
+
                 }
             }
         });
@@ -135,6 +134,12 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
                 if(currentEvent != null){
                     //TODO Send HabitEvent to "AddEventActivity" with activity Launcher for result
                     //TODO Set "Edit" Flag on Intent when sending to AddEventActivity
+                    Intent intent = new Intent(ShowEventsForHabitActivity.this, AddEventActivity.class);
+                    intent.putExtra("habit id", habitHid);
+                    intent.putExtra("user", usernameStr);
+                    intent.putExtra("date", sdf.format(currentEvent.getDate().getTime()));
+                    intent.putExtra("Flag", "EditEvent");
+                    activityLauncher.launch(intent);
                 }
             }
         });

@@ -16,10 +16,12 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
@@ -49,6 +51,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * An Activity for adding attributes to a Habit Event
@@ -66,6 +69,10 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private String COLLECTION_EVENTS = "habitEvents";
+
+    private String KEY_DONE = "done";
+    private String KEY_LOCATION = "location";
+    private String KEY_IMAGE = "image";
     private String KEY_COMMENT = "comment";
     private String TAG = "AddEventActivity";
 
@@ -103,13 +110,12 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
             habitHid = getIntent().getStringExtra("habit id");
             usernameStr = getIntent().getStringExtra("user");
 
-
         } catch (NullPointerException e){
             Log.e("AddEventActivity: ", "Could not get 'habit id', 'user' or 'date' from bundle" + e);
         }
 
         if(getIntent().getStringExtra("Flag") != null){
-            //TODO: Implement DatePicker Fragment
+            currentDate = getIntent().getStringExtra("date");
         }else{
             currentDate = getIntent().getStringExtra("date");
         }
@@ -236,7 +242,26 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                     public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
                             commentEditText.setText(documentSnapshot.getData().get(KEY_COMMENT).toString());
-                            //TODO Set Location and Photo if not null
+
+                            //If there is an image, show it
+                            if (documentSnapshot.getData().get(KEY_IMAGE) != null) {
+                                Bitmap bm = StringToBitMap(documentSnapshot.getData().get(KEY_IMAGE).toString());
+                                photoImageView.setImageBitmap(bm);
+                                photoImageView.setVisibility(View.VISIBLE);
+                                currentHabitEvent.setPhotograph(bm);
+                                photoImageView.getLayoutParams().height = 400;
+                                photoImageView.getLayoutParams().width = 300;
+                            }
+
+                            //If there is a location show it
+                            if(documentSnapshot.getData().get(KEY_LOCATION) != null){
+                                Map<String, Double> position = (Map<String, Double>) documentSnapshot.getData().get(KEY_LOCATION);
+
+                                userPosition = new LatLng(position.get("latitude"), position.get("longitude"));
+                                currentHabitEvent.setLocation(userPosition);
+                                mapsLayout.setVisibility(View.VISIBLE);
+                                userMarker.setPosition(userPosition);
+                            }
 
                         }
                     }
@@ -271,5 +296,20 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         userMarker.setTag(0);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
 
+    }
+
+    /**
+     * @param encodedString
+     * @return bitmap (from given string)
+     */
+    public Bitmap StringToBitMap(String encodedString){
+        try {
+            byte [] encodeByte= Base64.decode(encodedString, Base64.DEFAULT);
+            Bitmap bitmap= BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        } catch(Exception e) {
+            e.getMessage();
+            return null;
+        }
     }
 }
