@@ -37,6 +37,11 @@ public class HabitRecyclerAdapter extends RecyclerView.Adapter<HabitRecyclerAdap
         return holder;
     }
 
+    /**
+     * Sets the specific habits details to the views being displayed
+     * @param holder The current holder that needs to get information
+     * @param position The position of the habit in the array and recyclerview
+     */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: called");
@@ -57,6 +62,12 @@ public class HabitRecyclerAdapter extends RecyclerView.Adapter<HabitRecyclerAdap
         return habits.size();
     }
 
+    /**
+     * Swaps the positions of the habits to mimic the positions displayed to the user
+     * after the user has manually reordered them on screen
+     * @param fromPosition Old position of the habit dragged
+     * @param toPosition New position of the habit dragged
+     */
     @Override
     public void onItemMove(int fromPosition, int toPosition) {
         //Visually move the habit
@@ -71,6 +82,9 @@ public class HabitRecyclerAdapter extends RecyclerView.Adapter<HabitRecyclerAdap
         this.habitTouchHelper = touchHelper;
     }
 
+    /**
+     * Used to control logic and views for each individual view in RecyclerView
+     */
     public class ViewHolder extends RecyclerView.ViewHolder
             implements View.OnTouchListener,
             GestureDetector.OnGestureListener {
@@ -84,6 +98,11 @@ public class HabitRecyclerAdapter extends RecyclerView.Adapter<HabitRecyclerAdap
         GestureDetector gestureDetector;
         OnHabitListener onHabitListener;
 
+        /**
+         * Initializes the views, layout, Detector and listener to their proper IDs
+         * @param itemView
+         * @param onHabitListener
+         */
         public ViewHolder(@NonNull View itemView, OnHabitListener onHabitListener) {
             super(itemView);
             habitTitle = itemView.findViewById(R.id.habit_title);
@@ -108,6 +127,12 @@ public class HabitRecyclerAdapter extends RecyclerView.Adapter<HabitRecyclerAdap
 
         }
 
+        /**
+         * Acts as an onClickEventListener for recyclerview
+         * When the view is clicked on it calls onHabitClick to do further logic
+         * @param motionEvent
+         * @return
+         */
         @Override
         public boolean onSingleTapUp(MotionEvent motionEvent) {
             onHabitListener.onHabitClick(getAdapterPosition(), itemView);
@@ -119,6 +144,10 @@ public class HabitRecyclerAdapter extends RecyclerView.Adapter<HabitRecyclerAdap
             return false;
         }
 
+        /**
+         * When a view is pressed for longer than a click it initiates startDrag on that view
+         * @param motionEvent
+         */
         @Override
         public void onLongPress(MotionEvent motionEvent) {
             habitTouchHelper.startDrag(this);

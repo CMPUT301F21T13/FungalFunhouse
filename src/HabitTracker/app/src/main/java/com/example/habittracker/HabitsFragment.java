@@ -39,8 +39,6 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
     public HabitsFragment() {
         super(R.layout.habit_fragment);
     }
-    // TODO(GLENN): Add visual indicator of how well the user is following the
-    // habits
 
     // Declare variables
     private FloatingActionButton addHabit;
@@ -53,8 +51,6 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
     private ArrayList<Habit> habitArrayList;
     private boolean following;
     private FirebaseFirestore db;
-
-    //Testing recyclerview
     private RecyclerView habitRecyclerView;
     private HabitRecyclerAdapter habitRecyclerAdapter;
 
@@ -256,69 +252,72 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
     @Override
     public void onHabitClick(int position, View view) {
         //May need to keep track of the old view by setting it to a variable
-            if(selectedView != null) {
-                selectedView.findViewById(R.id.habit_reason).setVisibility(View.GONE);
-                selectedView.findViewById(R.id.habit_datetostart).setVisibility(View.GONE);
-                selectedView.findViewById(R.id.habit_weekdays).setVisibility(View.GONE);
-                selectedView.findViewById(R.id.habit_indicator_green).setVisibility(View.GONE);
-                selectedView.findViewById(R.id.habit_indicator_yellow).setVisibility(View.GONE);
-                selectedView.findViewById(R.id.habit_indicator_red).setVisibility(View.GONE);
-                selectedView.findViewById(R.id.habit_checkmark).setVisibility(View.GONE);
-            }
+        if(selectedView != null) {
+            selectedView.findViewById(R.id.habit_reason).setVisibility(View.GONE);
+            selectedView.findViewById(R.id.habit_datetostart).setVisibility(View.GONE);
+            selectedView.findViewById(R.id.habit_weekdays).setVisibility(View.GONE);
+            selectedView.findViewById(R.id.habit_indicator_green).setVisibility(View.GONE);
+            selectedView.findViewById(R.id.habit_indicator_yellow).setVisibility(View.GONE);
+            selectedView.findViewById(R.id.habit_indicator_red).setVisibility(View.GONE);
+            selectedView.findViewById(R.id.habit_checkmark).setVisibility(View.GONE);
+        }
 
-            if (!following) {
-                editHabit.setVisibility(View.VISIBLE);
-                deleteHabit.setVisibility(View.VISIBLE);
-            }
-            selectedHabit = position;
-            selectedView = view;
-            view.findViewById(R.id.habit_reason).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.habit_datetostart).setVisibility(View.VISIBLE);
-            view.findViewById(R.id.habit_weekdays).setVisibility(View.VISIBLE);
+        if (!following) {
+            editHabit.setVisibility(View.VISIBLE);
+            deleteHabit.setVisibility(View.VISIBLE);
+        }
+        selectedHabit = position;
+        selectedView = view;
+        view.findViewById(R.id.habit_reason).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.habit_datetostart).setVisibility(View.VISIBLE);
+        view.findViewById(R.id.habit_weekdays).setVisibility(View.VISIBLE);
 
-            db.collection("users").document(usernameStr).collection("habits")
-                    .document(habitArrayList.get(position).getHid()).collection("habitEvents").get()
-                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                        @Override
-                        public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                            int eventsCompleted = 0;
-                            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
-                                boolean doneFlag = (boolean) doc.getData().get("done");
-                                if(doneFlag) {
-                                    Log.d(TAG, "onEvent: Got event complete");
-                                    eventsCompleted++;
-                                }
+        //When a user clicks on a habit to display its information
+        //This grabs all the habitEvents associated with that Habit
+        //and calculates its completion ratio to show the proper visual indicator
+        db.collection("users").document(usernameStr).collection("habits")
+                .document(habitArrayList.get(position).getHid()).collection("habitEvents").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        int eventsCompleted = 0;
+                        for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                            boolean doneFlag = (boolean) doc.getData().get("done");
+                            if(doneFlag) {
+                                Log.d(TAG, "onEvent: Got event complete");
+                                eventsCompleted++;
                             }
-                            habitArrayList.get(position).setEventsCompleted(eventsCompleted);
-
-
-                            //Deal with visual indicator
-                            double ratio = habitArrayList.get(position).getCompletionRatio();
-
-                            Log.d(TAG, "onHabitClick: eventsCompleted = " + habitArrayList.get(position).getEventsCompleted());
-                            Log.d(TAG, "onHabitClick: ratio = " + ratio);
-
-                            if(habitArrayList.get(position).getEventsCompleted() == 0 && habitArrayList.get(position).getPastEventDays() == 0.0){
-                                selectedView.findViewById(R.id.habit_indicator_green).setVisibility(View.GONE);
-                                selectedView.findViewById(R.id.habit_indicator_yellow).setVisibility(View.GONE);
-                                selectedView.findViewById(R.id.habit_indicator_red).setVisibility(View.GONE);
-                                selectedView.findViewById(R.id.habit_checkmark).setVisibility(View.GONE);
-                            }
-                            else if(ratio <= 0.33){
-                                view.findViewById(R.id.habit_indicator_red).setVisibility(View.VISIBLE);
-                            }
-                            else if(ratio > 0.33 && ratio <= 0.66){
-                                view.findViewById(R.id.habit_indicator_yellow).setVisibility(View.VISIBLE);
-                            }
-                            else if(ratio > 0.66 && ratio <= 0.99){
-                                view.findViewById(R.id.habit_indicator_green).setVisibility(View.VISIBLE);
-                            }
-                            else {
-                                view.findViewById(R.id.habit_checkmark).setVisibility(View.VISIBLE);
-                            }
-
                         }
-                    });
+                        habitArrayList.get(position).setEventsCompleted(eventsCompleted);
+
+
+                        //Deal with visual indicator
+                        double ratio = habitArrayList.get(position).getCompletionRatio();
+
+                        Log.d(TAG, "onHabitClick: eventsCompleted = " + habitArrayList.get(position).getEventsCompleted());
+                        Log.d(TAG, "onHabitClick: ratio = " + ratio);
+
+                        if(habitArrayList.get(position).getEventsCompleted() == 0 && habitArrayList.get(position).getPastEventDays() == 0.0){
+                            selectedView.findViewById(R.id.habit_indicator_green).setVisibility(View.GONE);
+                            selectedView.findViewById(R.id.habit_indicator_yellow).setVisibility(View.GONE);
+                            selectedView.findViewById(R.id.habit_indicator_red).setVisibility(View.GONE);
+                            selectedView.findViewById(R.id.habit_checkmark).setVisibility(View.GONE);
+                        }
+                        else if(ratio <= 0.33){
+                            view.findViewById(R.id.habit_indicator_red).setVisibility(View.VISIBLE);
+                        }
+                        else if(ratio > 0.33 && ratio <= 0.66){
+                            view.findViewById(R.id.habit_indicator_yellow).setVisibility(View.VISIBLE);
+                        }
+                        else if(ratio > 0.66 && ratio <= 0.99){
+                            view.findViewById(R.id.habit_indicator_green).setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            view.findViewById(R.id.habit_checkmark).setVisibility(View.VISIBLE);
+                        }
+
+                    }
+                });
 
         }
 }

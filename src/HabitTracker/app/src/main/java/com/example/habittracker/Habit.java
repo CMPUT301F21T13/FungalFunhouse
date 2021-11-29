@@ -154,6 +154,10 @@ public class Habit {
         this.eventsCompleted = eventsCompleted;
     }
 
+    /**
+     * Grab the eventsDone to events that could have been done ratio
+     * @return event completion ratio
+     */
     public double getCompletionRatio() {
         double ratio = 0.0;
 
@@ -162,6 +166,11 @@ public class Habit {
         return ratio;
     }
 
+    /**
+     * Calculates the number of days in which the habit could have been done
+     * based on the weekly schedule and dateToStart
+     * @return Number of days the event could have been completed on
+     */
     public double getPastEventDays() {
         String[] dateArray = dateToStart.split("-");
 
