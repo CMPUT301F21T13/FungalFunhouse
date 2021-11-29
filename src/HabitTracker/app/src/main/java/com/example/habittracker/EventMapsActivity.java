@@ -1,11 +1,18 @@
 package com.example.habittracker;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import com.example.habittracker.databinding.ActivityEventMapsBinding;
@@ -23,6 +30,8 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
     private GoogleMap mMap;
     private ActivityEventMapsBinding binding;
     private Button enterMapsButton;
+    LocationManager locationManager;
+    LocationListener locationListener;
 
     private LatLng userPosition = new LatLng( 53.5461, -113.4938);
     private Marker userLocation;
@@ -43,6 +52,15 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
             double longitude = bundle.getDouble("longitude");
             userPosition = new LatLng(latitude, longitude);
             Log.d(TAG, "latitude: " + latitude + " longitude: " + longitude);
+        }else{
+            //Attempt to use Device's current location
+            locationManager = (LocationManager)this.getSystemService(getApplicationContext().LOCATION_SERVICE);
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
+                Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                userPosition = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+            } else {
+                ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
+            }
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -64,6 +82,7 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
 
     }
 
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -81,10 +100,10 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true);
 
-        // Add a marker in Edmonton and move the camera
+        // Add a marker and move the camera
         userLocation = mMap.addMarker(new MarkerOptions().position(userPosition).title("You").draggable(true));
         userLocation.setTag(0);
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userPosition, 9));
         mMap.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
             @Override
             public void onMarkerDragStart(Marker arg0) {
@@ -102,4 +121,5 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
             }
         });
     }
+
 }
