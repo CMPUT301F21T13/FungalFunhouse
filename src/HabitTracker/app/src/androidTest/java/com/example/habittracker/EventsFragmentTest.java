@@ -46,10 +46,15 @@ public class EventsFragmentTest {
         Intents.init();
     }
 
+    /**
+     * Tests if selecting an item correctly sends you to showEventsForHabitActivity
+     * @throws InterruptedException
+     */
     @Test
-    public void testHabitEventsSelection() {
+    public void testHabitEventsSelection() throws InterruptedException {
         //click on events fragment button
         Espresso.onView(withId(R.id.event_button)).perform(click());
+        Thread.sleep(1000);
         //click on habit in list with title Run
         Espresso.onView(withText("Run")).perform(click());
         //check to make sure the ShowEventsForHabitActivity is opened
