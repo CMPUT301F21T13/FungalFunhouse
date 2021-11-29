@@ -191,6 +191,11 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                 Intent intent = new Intent();
                 intent.putExtra("user", usernameStr);
                 setResult(0, intent);
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 finish();
             }
         });
