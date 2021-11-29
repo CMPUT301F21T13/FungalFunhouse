@@ -1,21 +1,26 @@
 package com.example.habittracker;
 
+import static android.Manifest.permission_group.CAMERA;
+
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -157,15 +162,31 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
+
+
         photoButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if(getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-                    activityLauncher.launch(intent);
-                }else{ Toast.makeText(AddEventActivity.this, "No Camera App Found", Toast.LENGTH_SHORT).show();}
+
+                if (ContextCompat.checkSelfPermission(
+                        AddEventActivity.this, Manifest.permission.CAMERA) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (getApplicationContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+                        activityLauncher.launch(intent);
+                    } else {
+                        Toast.makeText(AddEventActivity.this, "No Camera App Found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestPermissionLauncher.launch(
+                            Manifest.permission.CAMERA);
                 }
+
+            }
         });
+
 
 
         mapsButton.setOnClickListener(new View.OnClickListener() {
@@ -195,6 +216,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         });
 
     }
+
 
     /**
      * Loads the current Habit and details needed
@@ -264,4 +286,17 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(userPosition));
 
     }
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    // Permission is granted. Continue the action or workflow in your
+                    // app.
+                } else {
+                    // Explain to the user that the feature is unavailable because the
+                    // features requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                }
+            });
 }
