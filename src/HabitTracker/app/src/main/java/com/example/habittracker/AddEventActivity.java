@@ -26,6 +26,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -84,12 +86,19 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
     private Marker userMarker;
     private LatLng userPosition = new LatLng( 53.5461, -113.4938);
 
+    //Google API services Variables
+    GoogleApiAvailability googleApiAvailability;
+    int resultCode;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTheme(R.style.HomeTheme);
         setContentView(R.layout.activity_add_event);
+
+        googleApiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = googleApiAvailability.isGooglePlayServicesAvailable(this);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.add_event_map);
@@ -201,8 +210,13 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(AddEventActivity.this, EventMapsActivity.class);
-                activityLauncher.launch(intent);
+                if(resultCode == ConnectionResult.SUCCESS) {
+                    Intent intent = new Intent(AddEventActivity.this, EventMapsActivity.class);
+                    activityLauncher.launch(intent);
+                }else{
+                    Toast.makeText(AddEventActivity.this, "No Maps App Found", Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
