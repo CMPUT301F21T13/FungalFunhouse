@@ -123,7 +123,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(currentEvent != null){
-
+                    deleteHabitEvent(currentEvent);
                 }
             }
         });
@@ -147,12 +147,36 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
 
     }
 
+    public void deleteHabitEvent(HabitEvent event){
+        db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS).document(habitHid)
+                .collection(COLLECTION_EVENTS).document(sdf.format(event.getDate().getTime()))
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(@NonNull Void unused) {
+                        Log.d(TAG, "Successful in deleting document");
+                        loadHabitEventList();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Failed to delete document");
+            }
+        });
+    }
+
+    /**
+     * Loads in every HabitEvent for this Activities Habit
+     * Into showEventsDataList
+     * Mainly used for a HabitEvent ListView
+     */
     public void loadHabitEventList(){
         db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
                 .document(habitHid).collection(COLLECTION_EVENTS).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                        showEventsDataList.clear();
                         if(!queryDocumentSnapshots.isEmpty()){
                             for(QueryDocumentSnapshot doc : queryDocumentSnapshots){
                                 HabitEvent event = new HabitEvent();

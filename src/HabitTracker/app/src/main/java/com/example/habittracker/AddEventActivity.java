@@ -256,11 +256,14 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                             //If there is a location show it
                             if(documentSnapshot.getData().get(KEY_LOCATION) != null){
                                 Map<String, Double> position = (Map<String, Double>) documentSnapshot.getData().get(KEY_LOCATION);
-
-                                userPosition = new LatLng(position.get("latitude"), position.get("longitude"));
-                                currentHabitEvent.setLocation(userPosition);
-                                mapsLayout.setVisibility(View.VISIBLE);
-                                userMarker.setPosition(userPosition);
+                                double latitude = position.get("latitude");
+                                double longitude = position.get("longitude");
+                                if(latitude != 0 && longitude != 0) {
+                                    userPosition = new LatLng(latitude, longitude);
+                                    currentHabitEvent.setLocation(userPosition);
+                                    mapsLayout.setVisibility(View.VISIBLE);
+                                    userMarker.setPosition(userPosition);
+                                }
                             }
 
                         }
