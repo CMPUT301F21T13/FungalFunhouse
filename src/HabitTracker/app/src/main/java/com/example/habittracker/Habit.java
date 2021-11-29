@@ -2,6 +2,7 @@ package com.example.habittracker;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -17,7 +18,7 @@ public class Habit {
     private String dateToStart;
     private Boolean publicVisibility;
     private ArrayList<HabitEvent> habitEventList;
-  
+    private int eventsCompleted;
     //private long listPosition;
 
 
@@ -50,13 +51,14 @@ public class Habit {
      * @param publicVisibility Determines whether followers see this habit, true to show, false otherwise
      * @param weekdays ArrayList of weekdays the habit is to be performed on
      */
-    public Habit(String title, String reason, String hid, String dateToStart, boolean publicVisibility, ArrayList<String> weekdays) {
+    public Habit(String title, String reason, String hid, String dateToStart, boolean publicVisibility, ArrayList<String> weekdays, int eventsCompleted) {
         this.title = title;
         this.reason = reason;
         this.hid = hid;
         this.dateToStart = dateToStart;
         this.publicVisibility = publicVisibility;
         this.weeklySchedule = new WeeklySchedule(weekdays);
+        this.eventsCompleted = eventsCompleted;
     }
 
     /**
@@ -101,6 +103,10 @@ public class Habit {
 
     public ArrayList<HabitEvent> getHabitEventList(){return habitEventList; }
 
+    public int getEventsCompleted() {
+        return eventsCompleted;
+    }
+
     public void setTitle(String title) {
             this.title = title;
     }
@@ -143,4 +149,40 @@ public class Habit {
     }
 
     public void setHabitEventList(ArrayList<HabitEvent> habitEventList){this.habitEventList = habitEventList; }
+
+    public void setEventsCompleted(int eventsCompleted) {
+        this.eventsCompleted = eventsCompleted;
+    }
+
+    public double getCompletionRatio() {
+        double ratio = 0.0;
+
+        ratio = eventsCompleted / getPastEventDays();
+
+        return ratio;
+    }
+
+    public double getPastEventDays() {
+        String[] dateArray = dateToStart.split("-");
+
+        //set start date to the habits dateToStart
+        Calendar start = Calendar.getInstance();
+        start.set(Integer.parseInt(dateArray[0]), Integer.parseInt(dateArray[1]) - 1, Integer.parseInt(dateArray[2]) - 1);
+        //set end date to current date
+        Calendar end = Calendar.getInstance();
+
+        double numberOfDays = 0;
+        //Calculate the number of days the event should have occurred on based on the
+        //current weeklySchedule and eventsCompleted
+        while (start.before(end)) {
+            if (weeklySchedule.contains(start.get(Calendar.DAY_OF_WEEK))) {
+                numberOfDays++;
+            }
+            start.add(Calendar.DATE, 1);
+
+        }
+
+        return numberOfDays;
+    }
+
 }//Habit

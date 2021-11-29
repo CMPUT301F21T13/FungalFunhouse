@@ -154,7 +154,8 @@ public class DailyFragment extends Fragment {
                             boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
                             ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
+                            //TODO(GLENN): update this to include visual indicator code
+                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays, 0);
 
                             if(habitHappensToday(habit, dateToCheck)) {
                                 dailyDataList.add(habit);
