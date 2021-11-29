@@ -65,7 +65,9 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
             locationManager = (LocationManager)this.getSystemService(getApplicationContext().LOCATION_SERVICE);
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 Location lastKnownLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                userPosition = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                if(lastKnownLocation != null) {
+                    userPosition = new LatLng(lastKnownLocation.getLatitude(), lastKnownLocation.getLongitude());
+                }
             } else {
                 ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
             }

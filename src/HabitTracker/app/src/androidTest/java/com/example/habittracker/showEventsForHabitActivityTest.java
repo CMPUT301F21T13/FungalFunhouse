@@ -16,6 +16,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.CoreMatchers.anything;
 
 import android.content.Intent;
+import android.provider.MediaStore;
 
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.espresso.Espresso;
@@ -102,7 +103,6 @@ public class showEventsForHabitActivityTest {
         Espresso.onView(withId(R.id.show_events_add_floating_button)).perform(click());
         Espresso.onView(withText("Pick Date To Start")).check(matches(isDisplayed()));
         Espresso.onView(withText("CONFIRM")).perform(click());
-        intended(hasComponent(AddEventActivity.class.getName()));
     }
     /**
      * Tests if edit Button sends to Add Event Activity

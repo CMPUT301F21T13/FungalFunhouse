@@ -122,7 +122,7 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         habitTitleTextView = findViewById(R.id.add_event_title);
         finishButton = findViewById(R.id.add_event_finish_button);
         commentEditText = findViewById(R.id.add_event_comment_edittext);
-        photoButton = findViewById(R.id.daily_listview_photo_button);
+        photoButton = findViewById(R.id.add_event_photo_button);
         photoImageView = findViewById(R.id.add_event_image_imageview);
         mapsButton = findViewById(R.id.add_event_maps_button);
         mapsLayout = findViewById(R.id.add_event_placeholder_for_maps);
