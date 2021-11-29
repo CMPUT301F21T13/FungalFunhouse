@@ -290,6 +290,7 @@ public class AddHabitActivity extends AppCompatActivity
                                             e.printStackTrace();
                                         }
                                         startActivity(homeTabIntent());
+                                        finish();
                                     }
                                 }).addOnFailureListener(new OnFailureListener() {
                                     @Override
@@ -304,6 +305,7 @@ public class AddHabitActivity extends AppCompatActivity
                         Toast.makeText(AddHabitActivity.this, "Database Error, try again",
                                 Toast.LENGTH_LONG).show();
                         startActivity(homeTabIntent());
+                        finish();
                     }
                 } else { // Editing a habit
                          // Grab hid from intent only when editing
