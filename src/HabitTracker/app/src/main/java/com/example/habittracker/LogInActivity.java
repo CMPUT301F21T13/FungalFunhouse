@@ -30,6 +30,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+/**
+ * This is the activity used for users logging into the app.
+ * This activity acts as the home activity and is the first
+ * activity displayed to users upon opening the app.
+ * This activity allows users to either login to an existing account
+ * or select 'create new account' to take them to the account creation activity
+ *
+ * note: although this acts as the main activity, it is not. The main activity
+ *       starts at app startup, opens this activity, and then mainactivity is killed
+ */
 public class LogInActivity extends AppCompatActivity {
 
     private static final String TAG = "LogInActivity";
