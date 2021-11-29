@@ -34,16 +34,16 @@ public class HabitListAdapter extends ArrayAdapter<Habit>{
         View view = convertView;
 
         if(view == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.habit_listview_content, parent, false);
+            view = LayoutInflater.from(context).inflate(R.layout.events_habit_listview_content, parent, false);
         }
 
         Habit habit = habits.get(position);
 
         //Setup required TextViews
-        TextView habitTitle = (TextView) view.findViewById(R.id.habit_title);
-        TextView habitReason = (TextView) view.findViewById(R.id.habit_reason);
-        TextView habitDateToStart = (TextView) view.findViewById(R.id.habit_datetostart);
-        TextView habitWeekdays = (TextView) view.findViewById(R.id.habit_weekdays);
+        TextView habitTitle = (TextView) view.findViewById(R.id.events_habit_title);
+        TextView habitReason = (TextView) view.findViewById(R.id.events_habit_reason);
+        TextView habitDateToStart = (TextView) view.findViewById(R.id.events_habit_datetostart);
+        TextView habitWeekdays = (TextView) view.findViewById(R.id.events_habit_weekdays);
 
         //fill in the TextViews
         habitTitle.setText(habit.getTitle());

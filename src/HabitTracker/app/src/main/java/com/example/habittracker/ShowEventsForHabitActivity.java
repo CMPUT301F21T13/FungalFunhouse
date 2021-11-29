@@ -60,6 +60,7 @@ public class ShowEventsForHabitActivity extends AppCompatActivity implements Add
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.HomeTheme);
         setContentView(R.layout.activity_show_events_for_habit);
 
         //initialize variables

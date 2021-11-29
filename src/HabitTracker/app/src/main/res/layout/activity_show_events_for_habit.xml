@@ -5,6 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/HomeTheme"
+    android:background="@drawable/app_background_5"
     tools:context=".ShowEventsForHabitActivity">
     <TextView
         android:id="@+id/show_events_log_id"
@@ -12,10 +14,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@color/grey"
+        android:layout_marginTop="10dp"
         android:textColor="@color/white"
         android:fontFamily="sans-serif-condensed"
+        android:textAllCaps="true"
         android:textSize="30sp" />
     <TextView
         android:id="@+id/show_events_title"
@@ -23,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/show_events_log_id"
         android:layout_centerHorizontal="true"
-        android:background="@color/grey"
+        android:layout_marginTop="0dp"
         android:text="EVENT LOGS"
         android:textColor="@color/white"
         android:fontFamily="sans-serif-condensed"
@@ -35,11 +37,12 @@
         android:layout_margin="20dp"
         android:choiceMode="singleChoice"
         android:listSelector="@color/light_grey"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"
+        android:divider="@color/light_grey"
+        android:dividerHeight="1sp"
         android:layout_below="@+id/show_events_title"
+        android:layout_above="@+id/show_events_add_floating_button"
         android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"></ListView>
+        android:layout_centerInParent="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/show_events_add_floating_button"

@@ -29,13 +29,12 @@
         android:layout_height="500dp"
         android:layout_below="@+id/inbox_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:choiceMode="singleChoice"
-        android:divider="@null"
-        android:dividerHeight="10dp"
+        android:divider="@color/light_grey"
+        android:dividerHeight="1sp"
         android:listSelector="@color/light_grey"
-        android:paddingHorizontal="5dp"
-        android:paddingVertical="5dp" />
+        android:padding="15dp" />
 
     <LinearLayout
         android:id="@+id/request_handler"
