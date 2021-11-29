@@ -62,7 +62,7 @@ public class AddEventActivityTest {
     }
 
     /**
-     * this tests checks the behaviour when all fields are empty and finish button is pressed
+     * this tests checks if the comment edittext is empty
      * @throws InterruptedException
      */
     @Test
@@ -71,12 +71,20 @@ public class AddEventActivityTest {
         Espresso.onView(withId(R.id.add_event_comment_edittext)).check(matches(withText("")));
     }
 
+    /**
+     * this tests checks if the ImageView is empty
+     * @throws InterruptedException
+     */
     @Test
     public void emptyImageView() throws InterruptedException {
         // checks to see if ImageView is empty
         assertThat(Espresso.onView(withId(R.id.add_event_image_imageview)).check(matches(isDisplayed())), is(false));
     }
 
+    /**
+     * this tests checks if the Map fragment is empty
+     * @throws InterruptedException
+     */
     @Test
     public void emptyMapFragment() throws InterruptedException {
         // checks to see if ImageView is empty

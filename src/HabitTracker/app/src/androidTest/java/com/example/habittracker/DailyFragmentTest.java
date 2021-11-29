@@ -27,6 +27,9 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 @LargeTest
 
+/**
+ * This class does basic intent testing for the Daily Fragment in the HomeTabActivity
+ */
 public class DailyFragmentTest {
 
     //Sets the intent to a pre-existing user
