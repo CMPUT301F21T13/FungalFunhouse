@@ -4,7 +4,6 @@
     android:id="@+id/daily_listview_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/border"
     android:layout_centerHorizontal="true"
     android:orientation="vertical">
 
@@ -48,7 +47,9 @@
             android:layout_width="wrap_content"
             android:layout_margin="10dp"
             android:layout_height="wrap_content"
-            android:text="Show Location"></Button>
+            android:text="show location"
+            android:textAllCaps="false"
+            android:backgroundTint="@color/orange"/>
     </LinearLayout>
 
 
