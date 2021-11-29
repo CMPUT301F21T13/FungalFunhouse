@@ -68,6 +68,8 @@
         android:layout_height="match_parent"
         app:layout_constraintTop_toBottomOf="@id/habit_fragment_title"
         android:layout_marginTop="90dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         tools:visibility="gone"
         android:choiceMode="singleChoice"
         android:listSelector="@color/light_grey">
