@@ -21,16 +21,15 @@
         android:textSize="30sp" />
     <ListView
         android:id="@+id/events_fragment_listview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_below="@id/events_fragment_title"
-        android:layout_above="@+id/events_add_floating_button"
         android:layout_margin="20dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"
+        android:choiceMode="singleChoice"
+        android:divider="@color/light_grey"
+        android:dividerHeight="1sp"
         android:layout_centerHorizontal="true"
-        android:layout_centerInParent="true"
-        ></ListView>
+        android:layout_centerInParent="true"/>
 
 
 </RelativeLayout>
