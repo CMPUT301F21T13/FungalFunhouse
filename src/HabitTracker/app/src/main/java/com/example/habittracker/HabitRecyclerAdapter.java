@@ -1,57 +1,32 @@
 package com.example.habittracker;
 
-import android.content.Context;
-import android.gesture.Gesture;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HabitRecyclerAdapter extends RecyclerView.Adapter<HabitRecyclerAdapter.ViewHolder> implements ItemTouchHelperAdapter{
     private final static String TAG = "HabitRecyclerAdapter";
 
-    private ArrayList<Habit> habits = new ArrayList<>();
+    private ArrayList<Habit> habits;
     private ItemTouchHelper habitTouchHelper;
     private OnHabitListener onHabitListener;
-    private String usernameStr;
 
-    private FirebaseFirestore db;
 
-    // Firebase collection constants
-    private static final String COLLECTION_USERS = "users";
-    private static final String COLLECTION_HABITS = "habits";
-
-    // Habit document keys
-    private static final String KEY_HABIT_TITLE = "title";
-    private static final String KEY_HABIT_REASON = "reason";
-    private static final String KEY_HABIT_PUBLIC_VISIBILITY = "publicVisibility";
-    private static final String KEY_HABIT_HID = "hid";
-    private static final String KEY_HABIT_DATE_TO_START = "dateToStart";
-    private static final String KEY_HABIT_LIST_POSITION = "listPosition";
-    private static final String KEY_HABIT_WEEKDAYS = "weekdays";
-
-    public HabitRecyclerAdapter(ArrayList<Habit> habits, OnHabitListener onHabitListener, String usernameStr) {
+    public HabitRecyclerAdapter(ArrayList<Habit> habits, OnHabitListener onHabitListener) {
         this.habits = habits;
         this.onHabitListener = onHabitListener;
-        this.usernameStr = usernameStr;
-        db = FirebaseFirestore.getInstance();
     }
 
     @NonNull
@@ -89,9 +64,6 @@ public class HabitRecyclerAdapter extends RecyclerView.Adapter<HabitRecyclerAdap
         habits.remove(fromHabit);
         habits.add(toPosition, fromHabit);
         notifyItemMoved(fromPosition, toPosition);
-
-//        habits.get(fromPosition).setListPosition(toPosition);
-//        habits.get(toPosition).setListPosition(fromPosition);
 
     }
 

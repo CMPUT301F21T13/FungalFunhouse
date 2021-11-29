@@ -230,6 +230,35 @@ public class WeeklySchedule {
         return days;
     }
 
+    public boolean contains(int day) {
+        boolean bFlag = false;
+
+        switch(day) {
+            case 7:
+                bFlag = checkSunday();
+                break;
+            case 1:
+                bFlag = checkMonday();
+                break;
+            case 2:
+                bFlag = checkTuesday();
+                break;
+            case 3:
+                bFlag = checkWednesday();
+                break;
+            case 4:
+                bFlag = checkThursday();
+                break;
+            case 5:
+                bFlag = checkFriday();
+                break;
+            case 6:
+                bFlag = checkSaturday();
+                break;
+        }
+
+        return bFlag;
+    }
 }//WeeklySchedule
 
 
