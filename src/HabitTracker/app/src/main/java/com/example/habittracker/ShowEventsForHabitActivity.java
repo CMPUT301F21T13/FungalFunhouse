@@ -33,6 +33,7 @@ import java.util.Date;
 /**
  * Activity for showing all habitEvent instances for a specific Habit
  * Events exist as that day's event instance of a Habit
+ * Intents require a habitid:"habit id", username:"user", and habit title: "habit title"
  */
 public class ShowEventsForHabitActivity extends AppCompatActivity implements AddHabitCalendarFragment.OnFragmentInteractionListener{
 
