@@ -18,6 +18,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
+/**
+ * This is the main activity, though its only function is to
+ * open LogInActivity and then be killed.
+ */
 public class MainActivity extends AppCompatActivity {
 
     FirebaseFirestore db;
@@ -26,7 +30,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        db = FirebaseFirestore.getInstance();
         startActivity(new Intent(MainActivity.this, LogInActivity.class));
         finish();
         

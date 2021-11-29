@@ -20,6 +20,11 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This is the activity used for account creation. The user is prompted
+ * to enter a unique username and a password and then must press the
+ * signup button to create their account and be sent back to the login page (loginactivity)
+ */
 public class CreateUser extends AppCompatActivity {
 
     private static final String TAG = "CreateUser";
@@ -66,6 +71,7 @@ public class CreateUser extends AppCompatActivity {
                                         username.setError("Username Taken");
                                         username.requestFocus();
                                     } else {
+                                        // addUser method is called hear to create new user and add them to db
                                         addUser(usernameStr, passwordStr);
                                     }
                                 }
@@ -82,6 +88,12 @@ public class CreateUser extends AppCompatActivity {
         });
     }
 
+
+    /**
+     * addUser method used to modularize the functionality for user account creation for readability
+     * @param usernameStr username
+     * @param passwordStr password
+     */
     public void addUser(String usernameStr, String passwordStr) {
         Map<String, Object> user = new HashMap<>();
         user.put(KEY_USERNAME, usernameStr);
