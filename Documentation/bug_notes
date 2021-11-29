@@ -10,3 +10,5 @@ Bugs/Issues:
 
 -when adding an event in daily page, when you press the finish button it logs you out. The event is created and can viewed on log in but user will be logged out still
 
+-After editing in habits switching to Daily or Events crashed (fixed: Error in Contexts provided for ListAdaptors)
+

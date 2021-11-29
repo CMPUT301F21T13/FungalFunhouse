@@ -105,7 +105,7 @@ public class EventsFragment extends Fragment {
                             eventsHabitDataList.add(habit);
                         }
                         Context context = getContext();
-                        eventsListAdapter = new HabitListAdapter(context, eventsHabitDataList);
+                        eventsListAdapter = new HabitListAdapter(getActivity(), eventsHabitDataList);
                         eventsListView.setAdapter(eventsListAdapter);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

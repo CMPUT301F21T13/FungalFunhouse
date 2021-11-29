@@ -163,7 +163,7 @@ public class DailyFragment extends Fragment {
 
 
                             Context context = getContext();
-                            dailyListAdapter = new DailyHabitListAdapter(context, dailyDataList, calendar, usernameStr);
+                            dailyListAdapter = new DailyHabitListAdapter(getActivity(), dailyDataList, calendar, usernameStr);
                             dailyListView.setAdapter(dailyListAdapter);
                         }
                     }
