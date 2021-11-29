@@ -121,9 +121,12 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         }
 
         if(getIntent().getStringExtra("Flag") != null){
+            //Edit Event and Add out of date Event
             currentDate = getIntent().getStringExtra("date");
         }else{
+            //Add today's event
             currentDate = getIntent().getStringExtra("date");
+            currentHabitEvent.setDone(true);
         }
         //initialize variables
         habitTitleTextView = findViewById(R.id.add_event_title);
@@ -264,6 +267,8 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
                     @Override
                     public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
                         if(documentSnapshot.exists()){
+
+                            currentHabitEvent.setDone((boolean)documentSnapshot.getData().get(KEY_DONE));
                             commentEditText.setText(documentSnapshot.getData().get(KEY_COMMENT).toString());
 
                             //If there is an image, show it
@@ -307,7 +312,6 @@ public class AddEventActivity extends AppCompatActivity implements OnMapReadyCal
         habitTitleTextView = findViewById(R.id.add_event_title);
         if (!commentEditText.getText().equals("")){
             currentHabitEvent.setComment(commentEditText.getText().toString());
-            currentHabitEvent.setDone(true);
         }
 
         Serialization.writeHabitEvent(usernameStr, habitHid, currentHabitEvent);

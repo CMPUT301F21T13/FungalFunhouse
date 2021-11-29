@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class ShowEventsForHabitActivity extends AppCompatActivity {
+public class ShowEventsForHabitActivity extends AppCompatActivity implements AddHabitCalendarFragment.OnFragmentInteractionListener{
     private ListView showEventsListView;
     private EventsListAdapter showEventsListAdaptor;
     private ArrayList<HabitEvent> showEventsDataList;
@@ -111,11 +111,9 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent intent = new Intent(ShowEventsForHabitActivity.this, AddEventActivity.class);
-                intent.putExtra("habit id", habitHid);
-                intent.putExtra("user", usernameStr);
-                intent.putExtra("Flag", "AddEvent");
-                activityLauncher.launch(intent);
+                AddHabitCalendarFragment fragment = new AddHabitCalendarFragment();
+
+                fragment.show(getSupportFragmentManager(), "SET_DATETOSTART");
             }
         });
 
@@ -132,8 +130,6 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(currentEvent != null){
-                    //TODO Send HabitEvent to "AddEventActivity" with activity Launcher for result
-                    //TODO Set "Edit" Flag on Intent when sending to AddEventActivity
                     Intent intent = new Intent(ShowEventsForHabitActivity.this, AddEventActivity.class);
                     intent.putExtra("habit id", habitHid);
                     intent.putExtra("user", usernameStr);
@@ -209,5 +205,15 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
                 Log.d(TAG, "Document Retrieval for Events Failed");
             }
         });
+    }
+
+    @Override
+    public void onConfirmPressed(String dateToStart) {
+        Intent intent = new Intent(ShowEventsForHabitActivity.this, AddEventActivity.class);
+        intent.putExtra("habit id", habitHid);
+        intent.putExtra("user", usernameStr);
+        intent.putExtra("date", dateToStart);
+        intent.putExtra("Flag", "AddEvent");
+        activityLauncher.launch(intent);
     }
 }
