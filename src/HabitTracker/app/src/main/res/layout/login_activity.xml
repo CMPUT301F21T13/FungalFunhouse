@@ -76,7 +76,7 @@
             android:padding="15dp"
             android:textColor="@color/black"
             android:textColorHint="@color/text_hint"
-            android:textSize="18dp"/>
+            android:textSize="18dp" />
 
 <!--        <TextView-->
 <!--            android:layout_width="wrap_content"-->
@@ -102,7 +102,8 @@
             android:layout_marginTop="40dp"
             android:backgroundTint="@color/orange"
             android:textAllCaps="false"
-            android:text="@string/log_in_button" />
+            android:text="@string/log_in_button"
+            android:textSize="17dp"/>
 
         <TextView
             android:id="@+id/newuser"

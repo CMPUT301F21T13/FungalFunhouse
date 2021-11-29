@@ -23,8 +23,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="20dp"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="10.0sp"
+        android:divider="@color/light_grey"
+        android:dividerHeight="1sp"
         android:layout_below="@+id/daily_title"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true">
