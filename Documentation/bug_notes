@@ -10,7 +10,7 @@ Bugs/Issues:
 
 -when adding an event in daily page, when you press the finish button it logs you out. The event is created and can viewed on log in but user will be logged out still
 
--Deleting a habit crashes the app, apparently from the DailyHabitListAdaptor
+-Deleting a habit crashes the app, apparently from the DailyHabitListAdaptor(fixed: adding exception for getActivity() in fragments)
 
 -After editing in habits switching to Daily or Events crashed (fixed: Error in Contexts provided for ListAdaptors)
 
