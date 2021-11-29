@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="sans-serif-condensed"
         android:text="USER SEARCH"
         android:textColor="@color/white"
@@ -23,19 +23,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/request_title"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="35dp"
         android:orientation="horizontal">
 
         <EditText
             android:id="@+id/username_input"
             android:layout_width="230dp"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="20dp"
             android:autofillHints="username"
-            android:background="#F8F6F6"
-            android:hint="Search"
+            android:background="#EFEEEE"
+            android:hint=" Search"
             android:inputType="text"
             android:textColorHint="@color/text_hint" />
 
@@ -43,7 +43,7 @@
             android:id="@+id/search_button"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="9dp"
             android:layout_marginRight="10sp"
             android:backgroundTint="@color/orange"
             android:text="go"
