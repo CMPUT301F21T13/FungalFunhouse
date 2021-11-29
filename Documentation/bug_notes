@@ -15,3 +15,5 @@ Bugs/Issues:
 -After editing in habits switching to Daily or Events crashed (fixed: Error in Contexts provided for ListAdaptors)
 
 -Clicking a Follow Request failed to pull up Accept and reject buttons (fixed: edited inbox_layout for alignments)
+
+-EventsMapsActivity would crash if no Google Play Services found (added check for google API before going into Maps) 
