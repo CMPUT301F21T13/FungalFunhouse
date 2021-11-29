@@ -198,6 +198,9 @@ public class ShowEventsForHabitActivity extends AppCompatActivity {
                         }else{
                             Log.d(TAG, "Document Retrieval for Events was empty");
                             Log.d(TAG, "user: " + usernameStr + " hid: " + habitHid);
+                            showEventsDataList.clear();
+                            showEventsListAdaptor = new EventsListAdapter(ShowEventsForHabitActivity.this, showEventsDataList, usernameStr);
+                            showEventsListView.setAdapter(showEventsListAdaptor);
                         }
                     }
                 }).addOnFailureListener(new OnFailureListener() {
