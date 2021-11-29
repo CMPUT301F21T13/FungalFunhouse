@@ -1,6 +1,6 @@
 Bugs/Issues:
 
--in user search page in the friend tab: if you press the select button without first selecting a user, the app crashes 
+-in user search page in the friend tab: if you press the select button without first selecting a user, the app crashes(fixed: added if statement for listview being selected)
 
 -you looking at a friends habits, if you use built back button on phone, it takes you to log in screen. So user has to use the back button in the app. (possible fix is making the page into an activity instead of a fragment)
 
@@ -9,4 +9,8 @@ Bugs/Issues:
 -when adding an image in the create event page, if you already have a location selected it will be deleted and you will have to re add your location
 
 -when adding an event in daily page, when you press the finish button it logs you out. The event is created and can viewed on log in but user will be logged out still
+
+-Deleting a habit crashes the app, apparently from the DailyHabitListAdaptor(fixed: adding exception for getActivity() in fragments)
+
+-After editing in habits switching to Daily or Events crashed (fixed: Error in Contexts provided for ListAdaptors)
 

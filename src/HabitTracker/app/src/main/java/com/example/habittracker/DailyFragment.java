@@ -160,10 +160,9 @@ public class DailyFragment extends Fragment {
                             if(habitHappensToday(habit, dateToCheck)) {
                                 dailyDataList.add(habit);
                             }
-
-
-                            Context context = getContext();
-                            dailyListAdapter = new DailyHabitListAdapter(context, dailyDataList, calendar, usernameStr);
+                        }
+                        if(getActivity() != null) {
+                            dailyListAdapter = new DailyHabitListAdapter(getActivity(), dailyDataList, calendar, usernameStr);
                             dailyListView.setAdapter(dailyListAdapter);
                         }
                     }
