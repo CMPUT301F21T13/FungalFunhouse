@@ -57,12 +57,12 @@
         android:layout_height="530dp"
         android:layout_centerHorizontal="true"
         android:layout_below="@+id/search_bar"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
         android:choiceMode="singleChoice"
         android:listSelector="@color/light_grey"
-        android:divider="@null"
-        android:dividerHeight="10dp"
-        android:padding="5dp"
+        android:divider="@color/light_grey"
+        android:dividerHeight="1sp"
+        android:padding="15dp"
 
         />
 

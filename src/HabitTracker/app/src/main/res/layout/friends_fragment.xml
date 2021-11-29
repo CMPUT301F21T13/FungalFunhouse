@@ -27,18 +27,16 @@
         android:layout_height="match_parent"
         android:layout_above="@id/mail_inbox_activity_button"
         android:layout_below="@id/friends_title"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="15dp">
+        android:layout_marginTop="10dp">
         <ListView
             android:id="@+id/friends_fragment_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:choiceMode="singleChoice"
             android:listSelector="@color/light_grey"
-            android:divider="@null"
-            android:dividerHeight="10dp"
-            android:padding="0dp"
-        />
+            android:divider="@color/light_grey"
+            android:dividerHeight="1sp"
+            android:padding="15dp" />
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
