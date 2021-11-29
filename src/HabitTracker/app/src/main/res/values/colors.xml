@@ -17,6 +17,6 @@
     <color name="light_grey">#AfB7C2</color>
     <color name="text_hint">#6B6B6B</color>
     <color name="indicator_green">#33cc33</color>
-    <color name="indicator_yellow">#ffff00</color>
+    <color name="indicator_yellow">#EDD119</color>
     <color name="indicator_red">#ff0000</color>
 </resources>
