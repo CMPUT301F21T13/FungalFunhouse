@@ -64,6 +64,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:background="#EFEEEE"
+                    android:textColorHint="@color/text_hint"
                     android:hint=" Add a closing comment..."
                     android:maxLength="20" />
 
@@ -84,13 +85,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
+                    android:layout_gravity="left"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginBottom="10dp"
+                    android:backgroundTint="@color/baby_blue"
                     android:text="add image"
-                    android:textAllCaps="false"/>
+                    android:textAllCaps="false" />
 
                 <ImageView
                     android:id="@+id/add_event_image_imageview"
@@ -117,9 +119,10 @@
                     android:id="@+id/add_event_maps_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="left"
                     android:layout_margin="10dp"
                     android:text="add location"
+                    android:backgroundTint="@color/baby_blue"
                     android:textAllCaps="false"/>
 
                 <LinearLayout
