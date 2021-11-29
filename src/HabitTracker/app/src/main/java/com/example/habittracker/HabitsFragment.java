@@ -2,13 +2,12 @@ package com.example.habittracker;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,25 +18,16 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * This is a Fragment for the HABITS tab that uses the xml file
@@ -123,7 +113,8 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         habitArrayList.clear();
                         for (QueryDocumentSnapshot doc : value) {
-                            Log.d(TAG, doc.getId());
+
+                            Log.d(TAG, (String) doc.getData().get("title"));
                             String title = (String) doc.getData().get("title");
                             String reason = (String) doc.getData().get("reason");
                             String hid = (String) doc.getData().get("hid");
@@ -132,8 +123,8 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
                             boolean publicVisibility = (boolean) doc.getData().get("publicVisibility");
                             ArrayList<String> weekdays = (ArrayList<String>) doc.getData().get("weekdays");
 
-                            //Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, listPosition, weekdays);
-                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays);
+                            //TODO(GLENN): Update this to include visual indicator code
+                            Habit habit = new Habit(title, reason, hid, dateToStart, publicVisibility, weekdays, 0);
                             Log.d(TAG, habit.toString());
 
                             habitArrayList.add(habit);
@@ -146,7 +137,7 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
 
                             Context context = getContext();
 
-                            habitRecyclerAdapter = new HabitRecyclerAdapter(habitArrayList, HabitsFragment.this, usernameStr);
+                            habitRecyclerAdapter = new HabitRecyclerAdapter(habitArrayList, HabitsFragment.this);
                             habitRecyclerView.setAdapter(habitRecyclerAdapter);
                             habitRecyclerView.setLayoutManager(new LinearLayoutManager(context));
 
@@ -264,6 +255,10 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
                 selectedView.findViewById(R.id.habit_reason).setVisibility(View.GONE);
                 selectedView.findViewById(R.id.habit_datetostart).setVisibility(View.GONE);
                 selectedView.findViewById(R.id.habit_weekdays).setVisibility(View.GONE);
+                selectedView.findViewById(R.id.habit_indicator_green).setVisibility(View.GONE);
+                selectedView.findViewById(R.id.habit_indicator_yellow).setVisibility(View.GONE);
+                selectedView.findViewById(R.id.habit_indicator_red).setVisibility(View.GONE);
+                selectedView.findViewById(R.id.habit_checkmark).setVisibility(View.GONE);
             }
 
             if (!following) {
@@ -275,5 +270,50 @@ public class HabitsFragment extends Fragment  implements HabitRecyclerAdapter.On
             view.findViewById(R.id.habit_reason).setVisibility(View.VISIBLE);
             view.findViewById(R.id.habit_datetostart).setVisibility(View.VISIBLE);
             view.findViewById(R.id.habit_weekdays).setVisibility(View.VISIBLE);
+
+            db.collection("users").document(usernameStr).collection("habits")
+                    .document(habitArrayList.get(position).getHid()).collection("habitEvents").get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
+                            int eventsCompleted = 0;
+                            for(QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+                                boolean doneFlag = (boolean) doc.getData().get("done");
+                                if(doneFlag) {
+                                    Log.d(TAG, "onEvent: Got event complete");
+                                    eventsCompleted++;
+                                }
+                            }
+                            habitArrayList.get(position).setEventsCompleted(eventsCompleted);
+
+
+                            //Deal with visual indicator
+                            double ratio = habitArrayList.get(position).getCompletionRatio();
+
+                            Log.d(TAG, "onHabitClick: eventsCompleted = " + habitArrayList.get(position).getEventsCompleted());
+                            Log.d(TAG, "onHabitClick: ratio = " + ratio);
+
+                            if(habitArrayList.get(position).getEventsCompleted() == 0 && habitArrayList.get(position).getPastEventDays() == 0.0){
+                                selectedView.findViewById(R.id.habit_indicator_green).setVisibility(View.GONE);
+                                selectedView.findViewById(R.id.habit_indicator_yellow).setVisibility(View.GONE);
+                                selectedView.findViewById(R.id.habit_indicator_red).setVisibility(View.GONE);
+                                selectedView.findViewById(R.id.habit_checkmark).setVisibility(View.GONE);
+                            }
+                            else if(ratio <= 0.33){
+                                view.findViewById(R.id.habit_indicator_red).setVisibility(View.VISIBLE);
+                            }
+                            else if(ratio > 0.33 && ratio <= 0.66){
+                                view.findViewById(R.id.habit_indicator_yellow).setVisibility(View.VISIBLE);
+                            }
+                            else if(ratio > 0.66 && ratio <= 0.99){
+                                view.findViewById(R.id.habit_indicator_green).setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                view.findViewById(R.id.habit_checkmark).setVisibility(View.VISIBLE);
+                            }
+
+                        }
+                    });
+
         }
 }

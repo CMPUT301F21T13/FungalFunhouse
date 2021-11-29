@@ -230,8 +230,8 @@ public class AddHabitActivity extends AppCompatActivity
                                 ArrayList<String> weekdays = (ArrayList<String>) documentSnapshot.getData()
                                         .get(KEY_HABIT_WEEKDAYS);
 
-                                //Habit habit = new Habit(title, reason, hid, startDate, publicVisibility, listPosition, weekdays);
-                                Habit habit = new Habit(title, reason, hid, startDate, publicVisibility, weekdays);
+                                //Do not need to properly input the eventsCompleted so its set to 0
+                                Habit habit = new Habit(title, reason, hid, startDate, publicVisibility, weekdays, 0);
                                 Log.d(TAG, habit.toString());
                                 fillParameters(habit); // Fill in the parameters using the habit
 
