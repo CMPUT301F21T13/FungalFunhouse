@@ -1,6 +1,5 @@
 package com.example.habittracker;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,27 +15,28 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 /**
  * This is a Fragment for the EVENTS tab
  * that uses the xml file events_fragment.xml
+ * This fragment shows existing habits that when clicked
+ * Send you to an Event Log of all existing days instances of that Habit
  */
 public class EventsFragment extends Fragment {
 
+    //initialize variables
     ListView eventsListView;
     private HabitListAdapter eventsListAdapter;
     private ArrayList<Habit> eventsHabitDataList;
     private UserProfile currentUser;
     private String usernameStr;
 
+    //Firebase references
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private FirebaseFirestore db;
@@ -66,6 +66,7 @@ public class EventsFragment extends Fragment {
         usernameStr = currentUser.getUsername();
         loadHabitinList();
 
+        //Sends User to show events for the clicked habit
         eventsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -77,10 +78,12 @@ public class EventsFragment extends Fragment {
             }
         });
 
-        //TODO: Make this look prettier
         return view;
     }
 
+    /**
+     * Loads all habits into eventsHabitDataList for the eventsListView
+     */
     public void loadHabitinList(){
         db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {

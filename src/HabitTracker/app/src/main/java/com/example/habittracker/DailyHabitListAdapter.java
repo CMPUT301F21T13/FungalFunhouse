@@ -39,15 +39,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
+/**
+ * CustomAdapator for Habits that occur on today's date
+ * Each habit will show today's habitEvent and its following attributes
+ * if they exist (comments, photo and/or location)
+ */
 public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
 
-
+    //initialize variables
     private ArrayList<Habit> habits;
     private Context context;
     private Calendar calendar;
     private FirebaseFirestore db;
     private String usernameStr;
 
+    //firestore references
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private String COLLECTION_EVENTS = "habitEvents";
@@ -94,6 +100,7 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
         dailyPhotoImageView.setVisibility(View.GONE);
         mapsButton.setVisibility(View.GONE);
 
+        //Sets a button on each listview item to show their location in EventsMapsActivity
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -112,6 +119,7 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
         Log.d(TAG, "Habit: " + habit.getHid());
         Log.d(TAG, "Habit Events " + habit.getHabitEventList());
 
+        //sets the ListView Items to contain existing habitEvent attributes
         db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
                 .document(habit.getHid()).collection(COLLECTION_EVENTS)
                 .document(sdf.format(calendar.getTime())).get()
@@ -168,13 +176,12 @@ public class DailyHabitListAdapter extends ArrayAdapter<Habit> {
         });
         dailyTitleTextView.setText(habit.getTitle());
 
-        //add in holders for all habit events variables afterwards
-
-
         return view;
 
     }
+
     /**
+     * Encodes an inputted String to a base64 Bitmap
      * @param encodedString
      * @return bitmap (from given string)
      */

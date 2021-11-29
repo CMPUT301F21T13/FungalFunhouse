@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 
 import android.os.Bundle;
@@ -28,13 +27,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * EventMapsActivity is a Google Maps Activity
+ * that allows Users to drag and drop a marker to their desired location
+ */
 public class EventMapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    //initializes variables
     private GoogleMap mMap;
     private ActivityEventMapsBinding binding;
     private Button enterMapsButton;
     LocationManager locationManager;
-    LocationListener locationListener;
 
     private LatLng userPosition = new LatLng(53.5461, -113.4938);
     private Marker userLocation;
@@ -49,6 +52,7 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
         setContentView(binding.getRoot());
         enterMapsButton = findViewById(R.id.maps_enter_button);
 
+        //Sets the Location to either the inputted location, or a user's location
         if (getIntent().getFlags() == Intent.FLAG_ACTIVITY_NO_USER_ACTION) {
             enterMapsButton.setVisibility(View.GONE);
             Bundle bundle = getIntent().getExtras();
@@ -72,6 +76,7 @@ public class EventMapsActivity extends FragmentActivity implements OnMapReadyCal
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        //Sends the marker's location back to the calling Activity
         enterMapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

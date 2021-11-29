@@ -47,6 +47,7 @@ import java.util.List;
 /**
  * This is a Fragment for the DAILY tab
  * that uses the xml file daily_fragment.xml
+ * Daily deals with habitEvents that occur on the device's current set date
  */
 public class DailyFragment extends Fragment {
     public DailyFragment(){
@@ -54,7 +55,7 @@ public class DailyFragment extends Fragment {
     }
 
     //declare variables
-    ListView dailyListView;
+    private ListView dailyListView;
     private DailyHabitListAdapter dailyListAdapter;
     private ArrayList<Habit> dailyDataList;
     private UserProfile currentUser;
@@ -65,6 +66,7 @@ public class DailyFragment extends Fragment {
 
     private FirebaseFirestore db;
 
+    //firestore references
     private String COLLECTION_USERS = "users";
     private String COLLECTION_HABITS = "habits";
     private String COLLECTION_HABIT_EVENTS = "habitEvents";
@@ -84,7 +86,6 @@ public class DailyFragment extends Fragment {
 
         //initialize variables
         dailyListView = view.findViewById(R.id.daily_listview);
-
         calendar = Calendar.getInstance();
         dateToCheck = calendar.getTime();
 
@@ -110,36 +111,42 @@ public class DailyFragment extends Fragment {
             public void onActivityResult(ActivityResult result) {
                 if (result.getResultCode() == RESULT_OK && result.getData() != null) {
                     loadHabitList();
-
                 }
             }
         });
-            dailyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    currentHabit = dailyDataList.get(i);
-                    if(currentHabit.getHabitEventList()== null) {
-                        Intent intent = new Intent(getActivity(), AddEventActivity.class);
-                        intent.putExtra("habit id", currentHabit.getHid());
-                        intent.putExtra("user", usernameStr);
-                        intent.putExtra("date", sdf.format(dateToCheck));
-                        getActivity().startActivity(intent);
-                    }else if(!currentHabit.getHabitEventList().get(0).getDone()) {
-                        Log.d(TAG, "Done " + currentHabit.getHabitEventList().get(0).getDone());
-                            Intent intent = new Intent(getActivity(), AddEventActivity.class);
-                            intent.putExtra("habit id", currentHabit.getHid());
-                            intent.putExtra("user", usernameStr);
-                            intent.putExtra("date", sdf.format(dateToCheck));
-                        activityLauncher.launch(intent);
-                        }
 
+        //dailListView shows all habitEvents for that day
+        dailyListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                currentHabit = dailyDataList.get(i);
+                if(currentHabit.getHabitEventList()== null) {
+                    Intent intent = new Intent(getActivity(), AddEventActivity.class);
+                    intent.putExtra("habit id", currentHabit.getHid());
+                    intent.putExtra("user", usernameStr);
+                    intent.putExtra("date", sdf.format(dateToCheck));
+                    getActivity().startActivity(intent);
+                }else if(!currentHabit.getHabitEventList().get(0).getDone()) {
+                    Log.d(TAG, "Done " + currentHabit.getHabitEventList().get(0).getDone());
+                    Intent intent = new Intent(getActivity(), AddEventActivity.class);
+                    intent.putExtra("habit id", currentHabit.getHid());
+                    intent.putExtra("user", usernameStr);
+                    intent.putExtra("date", sdf.format(dateToCheck));
+                    activityLauncher.launch(intent);
                 }
-            });
+
+            }
+        });
 
         return view; }
 
 
-        public void loadHabitList(){
+    /**
+     * This functions loads all relevant habits into
+     * dailyDataList for the dailyListView
+     * Relevant habits are only those that occur on the day of the week today falls on
+     */
+    public void loadHabitList(){
         db.collection(COLLECTION_USERS).document(usernameStr).collection(COLLECTION_HABITS)
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -168,6 +175,8 @@ public class DailyFragment extends Fragment {
                     }
                 });
         }
+
+
     /**
      * Tests if the habit inputted occurs during the
      * inputted date
