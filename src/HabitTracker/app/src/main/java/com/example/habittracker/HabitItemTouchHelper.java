@@ -26,6 +26,11 @@ public class HabitItemTouchHelper extends ItemTouchHelper.Callback{
         return super.isItemViewSwipeEnabled();
     }
 
+    /**
+     * Used to reset the color of the view after it has been dragged to its original color
+     * @param recyclerView
+     * @param viewHolder
+     */
     @Override
     public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
@@ -34,6 +39,11 @@ public class HabitItemTouchHelper extends ItemTouchHelper.Callback{
         );
     }
 
+    /**
+     * Changes the color of the view that is currently in the drag state
+     * @param viewHolder
+     * @param actionState
+     */
     @Override
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
@@ -42,6 +52,13 @@ public class HabitItemTouchHelper extends ItemTouchHelper.Callback{
         }
     }
 
+    /**
+     * Sets the movement flags for dragging and swiping views
+     * The swipe flags are not implemented as we do not want that functionality
+     * @param recyclerView
+     * @param viewHolder
+     * @return
+     */
     @Override
     public int getMovementFlags(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
@@ -50,6 +67,13 @@ public class HabitItemTouchHelper extends ItemTouchHelper.Callback{
         return makeMovementFlags(dragFlags, swipeFlags);
     }
 
+    /**
+     * When the item is done being moved it calls the onItemMove to do further logic
+     * @param recyclerView
+     * @param viewHolder
+     * @param target
+     * @return
+     */
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
         touchAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());

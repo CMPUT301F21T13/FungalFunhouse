@@ -230,6 +230,11 @@ public class WeeklySchedule {
         return days;
     }
 
+    /**
+     * Used to calculate the number of days between dateToStart and the current date
+     * @param day The day to be checked against the weekly schedule
+     * @return True if the day given is on the schedule
+     */
     public boolean contains(int day) {
         boolean bFlag = false;
 
