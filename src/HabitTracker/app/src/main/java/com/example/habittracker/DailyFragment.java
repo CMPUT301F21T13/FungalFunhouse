@@ -56,6 +56,7 @@ public class DailyFragment extends Fragment {
 
     //declare variables
     private ListView dailyListView;
+    private TextView dailyFragmentTitle;
     private DailyHabitListAdapter dailyListAdapter;
     private ArrayList<Habit> dailyDataList;
     private UserProfile currentUser;
@@ -86,10 +87,14 @@ public class DailyFragment extends Fragment {
 
         //initialize variables
         dailyListView = view.findViewById(R.id.daily_listview);
+        dailyFragmentTitle = view.findViewById(R.id.daily_title);
         calendar = Calendar.getInstance();
         dateToCheck = calendar.getTime();
 
         sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        //Set the Daily Title to Today's Date
+        dailyFragmentTitle.setText("DAILY " + sdf.format(dateToCheck));
 
         // Grab the username of the current logged in user
         Bundle bundle = getArguments();

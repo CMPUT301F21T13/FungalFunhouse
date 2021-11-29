@@ -54,7 +54,7 @@ public class HomeTabActivityTest {
         //click the habit button
         Espresso.onView(withId(R.id.habit_button)).perform(click());
         //check if its the habit tab
-        Espresso.onView(withId(R.id.habit_fragment_title)).check(matches(withText("Habits")));
+        Espresso.onView(withId(R.id.habit_fragment_title)).check(matches(isDisplayed()));
     }
 
     /**
@@ -84,12 +84,14 @@ public class HomeTabActivityTest {
     /**
      * Tests if the activity shows the Friends Fragment
      * When Friends button pressed
+     * @throws Exception
      */
     @Test
-    public void showFriendsFragment(){
+    public void showFriendsFragment() throws Exception{
         //click the follow button
         Espresso.onView(withId(R.id.follow_button)).perform(click());
-        //check if its the habit tab
+        //check if its the friends tab
+        Thread.sleep(1000);
         Espresso.onView(withId(R.id.friends_title)).check(matches(isDisplayed()));
     }
 
