@@ -159,8 +159,6 @@ public class DailyFragment extends Fragment {
 
                             if(habitHappensToday(habit, dateToCheck)) {
                                 dailyDataList.add(habit);
-                            }else if(Serialization.checkForHabitEvent(usernameStr, habit.getHid(),sdf.format(dateToCheck))){
-                                dailyDataList.add(habit);
                             }
 
 

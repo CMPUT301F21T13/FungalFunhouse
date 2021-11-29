@@ -398,21 +398,6 @@ public class Serialization {
 		});
 	}
 
-	public static boolean checkForHabitEvent(String username, String hid, String Date){
-		final boolean[] eventExists = {false};
-		db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS).document(hid)
-				.collection(COLLECTION_HABIT_EVENTS).document(Date)
-				.get()
-				.addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-					@Override
-					public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
-						eventExists[0] = true;
-						Log.d(TAG, "Habit Event occurs " + Date);
-					}
-				});
-		return eventExists[0];
-	}
-
 	public static CollectionReference getHabitCollection(String username) {
 		return db.collection(COLLECTION_USERS).document(username).collection(COLLECTION_HABITS);
 	}
